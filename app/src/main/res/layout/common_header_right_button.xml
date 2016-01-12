@@ -7,7 +7,7 @@
     android:focusable="true"
     android:gravity="center"
     android:padding="6dip">
-    <TextView
+    <Button
         android:id="@+id/tv_header_right_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
