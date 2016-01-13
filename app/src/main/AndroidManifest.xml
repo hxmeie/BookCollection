@@ -22,6 +22,21 @@
             android:theme="@style/AnimActivityTheme">
         </activity>
 
+        <activity android:name=".activity.ActivityLogin"
+            android:theme="@style/AnimActivityTheme">
+        </activity>
+
+        <activity android:name=".activity.ActivityRegister"
+            android:theme="@style/AnimActivityTheme">
+        </activity>
+
+        <activity android:name=".activity.ActivityBookDetails"
+            android:theme="@style/AnimActivityTheme">
+        </activity>
+
+        <activity android:name=".activity.ActivityMain"
+            android:theme="@style/AnimActivityTheme">
+        </activity>
     </application>
 
 </manifest>
