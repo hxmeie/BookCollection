@@ -37,6 +37,10 @@
         <activity android:name=".activity.ActivityMain"
             android:theme="@style/AnimActivityTheme">
         </activity>
+
+        <activity android:name=".activity.ActivityScan"
+            android:theme="@style/AnimActivityTheme">
+        </activity>
     </application>
 
 </manifest>
