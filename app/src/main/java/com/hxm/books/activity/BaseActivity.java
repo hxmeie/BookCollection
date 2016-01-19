@@ -1,6 +1,7 @@
 package com.hxm.books.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -37,42 +38,6 @@ public class BaseActivity extends Activity {
         mScreenHeight = metric.heightPixels;
     }
 
-    public void ShowToast(final String text) {
-        if (!TextUtils.isEmpty(text)) {
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    // TODO Auto-generated method stub
-                    if (mToast == null) {
-                        mToast = Toast.makeText(getApplicationContext(), text,
-                                Toast.LENGTH_LONG);
-                    } else {
-                        mToast.setText(text);
-                    }
-                    mToast.show();
-                }
-            });
-
-        }
-    }
-
-    public void ShowToast(final int resId) {
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                if (mToast == null) {
-                    mToast = Toast.makeText(BaseActivity.this.getApplicationContext(), resId,
-                            Toast.LENGTH_LONG);
-                } else {
-                    mToast.setText(resId);
-                }
-                mToast.show();
-            }
-        });
-    }
 
     public void startAnimActivity(Class<?> cla) {
         this.startActivity(new Intent(this, cla));
@@ -80,6 +45,14 @@ public class BaseActivity extends Activity {
 
     public void startAnimActivity(Intent intent) {
         this.startActivity(intent);
+    }
+
+    /**
+     * 获取string。xml字符串
+     * @param id 字符串id
+     */
+    public String stringId(Context context,int id){
+       return context.getResources().getString(id);
     }
 
     /**

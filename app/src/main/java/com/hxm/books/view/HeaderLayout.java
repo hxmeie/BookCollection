@@ -86,7 +86,7 @@ public class HeaderLayout extends LinearLayout {
         }
     }
 
-    //默认文字标题
+    //清除title信息
     public void defaultTitle() {
         mLayoutRightContainer.removeAllViews();
         mLayoutLeftContainer.removeAllViews();

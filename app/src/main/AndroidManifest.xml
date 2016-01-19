@@ -17,29 +17,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".activity.BaseActivity"
+        <!-- Activity基类-->
+        <activity
+            android:name=".activity.BaseActivity"
             android:theme="@style/AnimActivityTheme">
+
         </activity>
-
-        <activity android:name=".activity.ActivityLogin"
+        <!-- 登录界面-->
+        <activity
+            android:name=".activity.ActivityLogin"
             android:theme="@style/AnimActivityTheme">
+
         </activity>
-
-        <activity android:name=".activity.ActivityRegister"
+        <!-- 注册页面-->
+        <activity
+            android:name=".activity.ActivityRegister"
             android:theme="@style/AnimActivityTheme">
+
         </activity>
-
-        <activity android:name=".activity.ActivityBookDetails"
+        <!-- 书籍详细信息-->
+        <activity
+            android:name=".activity.ActivityBookDetails"
             android:theme="@style/AnimActivityTheme">
+
         </activity>
-
-        <activity android:name=".activity.ActivityMain"
+        <!-- 主页面-->
+        <activity
+            android:name=".activity.ActivityMain"
             android:theme="@style/AnimActivityTheme">
+
         </activity>
-
-        <activity android:name=".activity.ActivityScan"
+        <!-- 扫描页面-->
+        <activity
+            android:name=".activity.ActivityScan"
             android:theme="@style/AnimActivityTheme">
+
         </activity>
     </application>
 
