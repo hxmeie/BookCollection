@@ -6,4 +6,5 @@
     <include
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
+
 </LinearLayout>

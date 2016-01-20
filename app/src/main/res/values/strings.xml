@@ -2,10 +2,15 @@
     <string name="app_name">MyBooks</string>
     <!-- ActivityTitle-->
     <string name="activity_scan_title">条形码扫描</string>
+    <string name="activity_main_title">MyBooks</string>
 
     <!-- ActivitySplash-->
     <string name="splash_text_1">Android开发艺术探索</string>
     <string name="splash_text_2">MyBook,不只是收藏</string>
+
+    <!-- ActivityLogin-->
+    <string name="login_title">登录</string>
+    <string name="login_title_right_button_text">注册</string>
 
     <!-- ActivityScan-->
     <string name="scan_text">将二维码/条形码放入框内, 即可自动扫描</string>

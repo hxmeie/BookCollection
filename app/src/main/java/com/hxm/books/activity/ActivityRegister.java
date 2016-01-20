@@ -6,7 +6,7 @@ import android.os.Bundle;
 /**
  * Created by hxm on 2016/1/9.
  */
-public class ActivityRegister extends Activity{
+public class ActivityRegister extends BaseActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

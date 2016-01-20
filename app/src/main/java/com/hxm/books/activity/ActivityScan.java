@@ -3,7 +3,6 @@ package com.hxm.books.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -12,13 +11,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Toast;
-
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
@@ -29,13 +26,11 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.hxm.books.R;
-import com.hxm.books.view.HeaderLayout;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.decoding.CaptureActivityHandler;
 import com.hxm.books.zxing.decoding.InactivityTimer;
 import com.hxm.books.zxing.decoding.RGBLuminanceSource;
 import com.hxm.books.zxing.view.ViewfinderView;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
@@ -80,7 +75,6 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     }
 
     public void initView(){
-        mHeaderLayout= (HeaderLayout) findViewById(R.id.common_actionbar);
         initOnlyTitleAndLeftBar(stringId(this, R.string.activity_scan_title));
     }
 
@@ -91,45 +85,51 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     }
 
 //    弱引用
+    private MyHandler mHandler =new MyHandler(this);
 
-//    static class MyHandler extends Handler {
-//        WeakReference<ActivityScan> mActivity;
-//
-//        public MyHandler(ActivityScan activity) {
-//            mActivity = new WeakReference<ActivityScan>(activity);
-//
-//        }
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case PARSE_BARCODE_SUC:
-//
-//                    break;
-//            }
-//        }
-//    }
+    static class MyHandler extends Handler {
+        WeakReference<ActivityScan> mActivity;
 
-    private Handler mHandler = new Handler() {
+        public MyHandler(ActivityScan activity) {
+            mActivity = new WeakReference<>(activity);
+
+        }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
-            mProgress.dismiss();
+            ActivityScan activityScan=mActivity.get();
+            activityScan.mProgress.dismiss();
             switch (msg.what) {
                 case PARSE_BARCODE_SUC:
-                    onResultHandler((String) msg.obj);
+                    activityScan.onResultHandler((String) msg.obj);
                     break;
                 case PARSE_BARCODE_FAIL:
-                    Toast.makeText(ActivityScan.this, (String) msg.obj, Toast.LENGTH_LONG).show();
+                    Toast.makeText(activityScan, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
-
             }
         }
+    }
 
-    };
+//    private Handler mHandler = new Handler() {
+//
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//
+//            mProgress.dismiss();
+//            switch (msg.what) {
+//                case PARSE_BARCODE_SUC:
+//                    onResultHandler((String) msg.obj);
+//                    break;
+//                case PARSE_BARCODE_FAIL:
+//                    Toast.makeText(ActivityScan.this, (String) msg.obj, Toast.LENGTH_LONG).show();
+//                    break;
+//
+//            }
+//        }
+//
+//    };
 //从手机里获取二维码图片并扫描
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {

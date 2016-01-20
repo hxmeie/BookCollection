@@ -1,23 +1,24 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
+    <style name="AppTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowNoTitle">true</item>
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
     </style>
     <!-- Activity切换主题-->
-    <style name="AnimActivityTheme" >
+    <style name="AnimActivityTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/AnimActivity</item>
     </style>
 
     <!-- Activity切换动画，向右退出向左进入-->
     <style name="AnimActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/in_from_right</item>
-        <item name="android:activityOpenExitAnimation">@anim/out_to_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/out_to_left</item>
         <item name="android:activityCloseEnterAnimation">@anim/in_from_left</item>
-        <item name="android:activityCloseExitAnimation">@anim/out_to_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/out_to_right</item>
     </style>
 
     <style name="ActionBar">
@@ -31,9 +32,9 @@
     <style name="ActionBarTitle">
         <item name="android:textSize">@dimen/base_action_bar_title_text_size</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:gravity">left|center</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">@dimen/base_padding_1</item>
     </style>

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -23,19 +25,13 @@ public class BaseActivity extends Activity {
     MyApplication mApplication;
     protected HeaderLayout mHeaderLayout;
 
-    protected int mScreenWidth;
-    protected int mScreenHeight;
-
     Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = MyApplication.getInstance();
-        DisplayMetrics metric = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metric);
-        mScreenWidth = metric.widthPixels;
-        mScreenHeight = metric.heightPixels;
+      //  requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
 
@@ -63,6 +59,7 @@ public class BaseActivity extends Activity {
     public void initOnlyTitle(String titleName) {
         mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
         mHeaderLayout.initHeaderStytle(HeaderLayout.HeaderStyle.DEFAULT_TITLE);
+        mHeaderLayout.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
         mHeaderLayout.setDefaultTitle(titleName);
     }
 
@@ -117,15 +114,14 @@ public class BaseActivity extends Activity {
         }
     }
 
-    /** 隐藏软键盘
-     * hideSoftInputView
-     * @Title: hideSoftInputView
+    /**
+     * 右侧按钮点击事件
      */
-    public void hideSoftInputView() {
-        InputMethodManager manager = ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
-        if (getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (getCurrentFocus() != null)
-                manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    public class onRightClickListener implements HeaderLayout.headerLayoutRightOnclickLister{
+
+        @Override
+        public void onClick() {
+
         }
     }
 }
