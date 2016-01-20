@@ -23,7 +23,7 @@
     <style name="ActionBar">
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@color/colorBase</item>
-        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_height">@dimen/base_action_bar_height</item>
     </style>
@@ -32,9 +32,9 @@
         <item name="android:textSize">@dimen/base_action_bar_title_text_size</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:gravity">left|center</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:drawablePadding">1.0dip</item>
+        <item name="android:drawablePadding">@dimen/base_padding_1</item>
     </style>
 </resources>

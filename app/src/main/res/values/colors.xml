@@ -3,10 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorBase">#1391EF</color>
+    <color name="colorBase">#0c7bce</color>
     <color name="colorWhite">#ffffff</color>
     <color name="transparent">#00000000</color>
     <color name="result_view">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#c0ffff00</color>
+    <color name="title_verticle_line">#FF12629E</color>
+    <color name="splash_text_color">#0c7bce</color>
 </resources>

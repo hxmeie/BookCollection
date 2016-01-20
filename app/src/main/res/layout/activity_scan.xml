@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
-
-        <include
-            android:id="@+id/activity_scan_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            layout="@layout/common_header" />
 
         <SurfaceView
             android:id="@+id/surfaceview_view"
@@ -27,4 +23,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</LinearLayout>

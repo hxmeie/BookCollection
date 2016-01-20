@@ -29,6 +29,7 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.hxm.books.R;
+import com.hxm.books.view.HeaderLayout;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.decoding.CaptureActivityHandler;
 import com.hxm.books.zxing.decoding.InactivityTimer;
@@ -75,9 +76,13 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
-        initOnlyTitleAndLeftBar(stringId(this, R.string.activity_scan_title));
+        initView();
     }
 
+    public void initView(){
+        mHeaderLayout= (HeaderLayout) findViewById(R.id.common_actionbar);
+        initOnlyTitleAndLeftBar(stringId(this, R.string.activity_scan_title));
+    }
 
     @Override
     public void onClick(View v) {
@@ -125,48 +130,48 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
         }
 
     };
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case REQUEST_CODE:
-                    //获取选中图片的路径
-                    Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
-                    if (cursor.moveToFirst()) {
-                        photo_path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-                    }
-                    cursor.close();
-
-                    mProgress = new ProgressDialog(ActivityScan.this);
-                    mProgress.setMessage(stringId(this, R.string.scaning));
-                    mProgress.setCancelable(false);
-                    mProgress.show();
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Result result = scanningImage(photo_path);
-                            if (result != null) {
-                                Message m = mHandler.obtainMessage();
-                                m.what = PARSE_BARCODE_SUC;
-                                m.obj = result.getText();
-                                mHandler.sendMessage(m);
-                            } else {
-                                Message m = mHandler.obtainMessage();
-                                m.what = PARSE_BARCODE_FAIL;
-                                m.obj = "Scan failed!";
-                                mHandler.sendMessage(m);
-                            }
-                        }
-                    }).start();
-
-                    break;
-
-            }
-        }
-    }
+//从手机里获取二维码图片并扫描
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK) {
+//            switch (requestCode) {
+//                case REQUEST_CODE:
+//                    //获取选中图片的路径
+//                    Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
+//                    if (cursor.moveToFirst()) {
+//                        photo_path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+//                    }
+//                    cursor.close();
+//
+//                    mProgress = new ProgressDialog(ActivityScan.this);
+//                    mProgress.setMessage(stringId(this, R.string.scaning));
+//                    mProgress.setCancelable(false);
+//                    mProgress.show();
+//
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Result result = scanningImage(photo_path);
+//                            if (result != null) {
+//                                Message m = mHandler.obtainMessage();
+//                                m.what = PARSE_BARCODE_SUC;
+//                                m.obj = result.getText();
+//                                mHandler.sendMessage(m);
+//                            } else {
+//                                Message m = mHandler.obtainMessage();
+//                                m.what = PARSE_BARCODE_FAIL;
+//                                m.obj = "Scan failed!";
+//                                mHandler.sendMessage(m);
+//                            }
+//                        }
+//                    }).start();
+//
+//                    break;
+//
+//            }
+//        }
+//    }
 
     /**
      * 扫描二维码图片的方法
@@ -226,7 +231,8 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
             playBeep = false;
         }
         initBeepSound();
-        vibrate = true;
+        //震动
+        vibrate = false;
 
     }
 
@@ -267,7 +273,7 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
 
     private void onResultHandler(String resultString) {
         if (TextUtils.isEmpty(resultString)) {
-            Toast.makeText(ActivityScan.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityScan.this, stringId(this,R.string.scan_failed), Toast.LENGTH_SHORT).show();
             return;
         }
         Intent resultIntent = new Intent();

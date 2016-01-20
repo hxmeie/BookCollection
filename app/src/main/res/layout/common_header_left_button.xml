@@ -7,7 +7,8 @@
     android:focusable="true"
     android:gravity="center"
     android:minWidth="54dip"
-    android:padding="6dip" >
+    android:padding="6dip"
+    android:orientation="horizontal">
 
     <ImageButton
         android:id="@+id/header_left_imagebutton"
@@ -18,5 +19,10 @@
         android:focusable="false"
         android:contentDescription="@string/app_name"
         android:scaleType="centerInside" />
-
+    <View
+        android:layout_width="1dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/title_verticle_line"/>
 </LinearLayout>

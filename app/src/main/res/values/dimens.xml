@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="base_action_bar_height">45dp</dimen>
-    <dimen name="base_action_bar_title_text_size">22sp</dimen>
+    <dimen name="base_action_bar_title_text_size">18sp</dimen>
+    <dimen name="base_width_0">0dp</dimen>
+
+    <!-- margin-->
+    <dimen name="base_margin_15">15dp</dimen>
+    <dimen name="base_margin_10">10dp</dimen>
+
+    <!-- padding-->
+    <dimen name="base_padding_1">1dp</dimen>
+    <dimen name="base_padding_15">15dp</dimen>
+    <dimen name="base_padding_10">10dp</dimen>
+
+    <!-- text_size-->
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
 </resources>

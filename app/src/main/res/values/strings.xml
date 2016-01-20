@@ -3,7 +3,12 @@
     <!-- ActivityTitle-->
     <string name="activity_scan_title">条形码扫描</string>
 
+    <!-- ActivitySplash-->
+    <string name="splash_text_1">Android开发艺术探索</string>
+    <string name="splash_text_2">MyBook,不只是收藏</string>
+
     <!-- ActivityScan-->
-    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+    <string name="scan_text">将二维码/条形码放入框内, 即可自动扫描</string>
     <string name="scaning">正在扫描...</string>
+    <string name="scan_failed">扫描失败，请重试</string>
 </resources>
