@@ -59,7 +59,7 @@ public class BaseActivity extends Activity {
     public void initOnlyTitle(String titleName) {
         mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
         mHeaderLayout.initHeaderStytle(HeaderLayout.HeaderStyle.DEFAULT_TITLE);
-        mHeaderLayout.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
+//        mHeaderLayout.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
         mHeaderLayout.setDefaultTitle(titleName);
     }
 

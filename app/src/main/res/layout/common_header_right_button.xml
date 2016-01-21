@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/header_layout_right_text_layout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:clickable="true"
-    android:focusable="true"
-    android:gravity="center"
-    android:padding="6dip">
+    android:focusable="true">
     <Button
         android:id="@+id/tv_header_right_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingLeft="@dimen/base_padding_5"
+        android:paddingRight="@dimen/base_padding_5"
         android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_15"
         android:clickable="false"
         android:focusable="false"/>
 </LinearLayout>
