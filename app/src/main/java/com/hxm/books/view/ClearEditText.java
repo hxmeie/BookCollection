@@ -13,6 +13,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 
 import com.hxm.books.R;
+import com.hxm.books.utils.KeyBoardUtils;
 
 /** 带清除功能的文本输入框
  * @ClassName: ClearEditText
@@ -82,6 +83,9 @@ public class ClearEditText extends EditText implements
             setClearIconVisible(getText().length() > 0);
         } else {
             setClearIconVisible(false);
+        }
+        if(!hasFocus){
+            KeyBoardUtils.closeKeybord(v,getContext());
         }
     }
 

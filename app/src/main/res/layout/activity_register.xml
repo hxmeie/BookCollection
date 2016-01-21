@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/activity_back_color_gray"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@color/activity_back_color_gray"
     android:orientation="vertical">
+
     <include
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
+
     <com.hxm.books.view.ClearEditText
-        android:id="@+id/et_login_account"
+        android:id="@+id/et_register_account"
         android:layout_width="match_parent"
         android:background="@drawable/edit_text_background"
         android:layout_height="@dimen/et_height_45"
@@ -21,13 +24,13 @@
         android:paddingRight="@dimen/et_padding"
         android:maxLines="1"
         android:textColorHint="@color/et_hint_color"
-        android:hint="@string/et_hint_account"/>
+        android:hint="@string/et_hint_register_account"/>
     <com.hxm.books.view.ClearEditText
-        android:id="@+id/et_login_password"
+        android:id="@+id/et_register_password_first"
         android:layout_width="match_parent"
         android:background="@drawable/edit_text_background"
         android:layout_height="@dimen/et_height_45"
-        android:layout_marginTop="@dimen/base_margin_8"
+        android:layout_marginTop="@dimen/base_margin_15"
         android:layout_marginRight="@dimen/base_margin_10"
         android:layout_marginLeft="@dimen/base_margin_10"
         android:paddingLeft="@dimen/et_padding"
@@ -35,29 +38,32 @@
         android:inputType="textPassword"
         android:maxLines="1"
         android:textColorHint="@color/et_hint_color"
-        android:hint="@string/et_hint_password"/>
+        android:hint="@string/et_hint_password_first"/>
+    <com.hxm.books.view.ClearEditText
+        android:id="@+id/et_register_password_second"
+        android:layout_width="match_parent"
+        android:background="@drawable/edit_text_background"
+        android:layout_height="@dimen/et_height_45"
+        android:layout_marginTop="@dimen/base_margin_15"
+        android:layout_marginRight="@dimen/base_margin_10"
+        android:layout_marginLeft="@dimen/base_margin_10"
+        android:paddingLeft="@dimen/et_padding"
+        android:paddingRight="@dimen/et_padding"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:textColorHint="@color/et_hint_color"
+        android:hint="@string/et_hint_password_second"/>
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_register_commit"
         android:layout_width="match_parent"
         android:layout_height="@dimen/btn_height_45"
         android:layout_marginTop="@dimen/base_margin_20"
         android:layout_marginLeft="@dimen/base_margin_10"
         android:layout_marginRight="@dimen/base_margin_10"
         android:background="@drawable/btn_login_background"
-        android:text="@string/btn_login"
+        android:text="@string/btn_register_commit"
         android:textSize="@dimen/text_size_18"
         android:textColor="@color/btn_login_text_color"/>
 
-    <Button
-        android:id="@+id/btn_forget_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_forget_password"
-        android:layout_marginRight="@dimen/base_margin_10"
-        android:layout_marginTop="@dimen/base_margin_15"
-        android:background="@color/transparent"
-        android:textSize="@dimen/text_size_15"
-        android:textColor="@color/colorBase"
-        android:layout_gravity="right" />
 </LinearLayout>
