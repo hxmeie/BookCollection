@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.hxm.books.MyApplication;
 import com.hxm.books.R;
+import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.HeaderLayout;
 
 /**
@@ -25,13 +26,10 @@ public class BaseActivity extends Activity {
     MyApplication mApplication;
     protected HeaderLayout mHeaderLayout;
 
-    Toast mToast;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = MyApplication.getInstance();
-      //  requestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
 

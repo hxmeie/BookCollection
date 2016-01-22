@@ -1,5 +1,6 @@
 package com.hxm.books.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,20 +9,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.hxm.books.R;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.KeyBoardUtils;
+import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.MD5Util;
 import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
 
+import cn.bmob.v3.listener.SaveListener;
+
 /**
  * Created by hxm on 2016/1/9.
  */
-public class ActivityRegister extends BaseActivity implements View.OnClickListener{
-    private ClearEditText etRegisterAccount,etPasswordFirst,etPasswordSecond;
+public class ActivityRegister extends BaseActivity implements View.OnClickListener {
+    private ClearEditText etRegisterAccount, etPasswordFirst, etPasswordSecond;
     private Button btnRegiserCommit;
     LinearLayout mLayout;
 
@@ -33,12 +38,12 @@ public class ActivityRegister extends BaseActivity implements View.OnClickListen
     }
 
     private void initView() {
-        initOnlyTitleAndLeftBar(stringId(this,R.string.register_title));
-        mLayout= (LinearLayout) findViewById(R.id.layout_register);
-        etRegisterAccount= (ClearEditText) findViewById(R.id.et_register_account);
-        etPasswordFirst= (ClearEditText) findViewById(R.id.et_register_password_first);
-        etPasswordSecond= (ClearEditText) findViewById(R.id.et_register_password_second);
-        btnRegiserCommit= (Button) findViewById(R.id.btn_register_commit);
+        initOnlyTitleAndLeftBar(stringId(this, R.string.register_title));
+        mLayout = (LinearLayout) findViewById(R.id.layout_register);
+        etRegisterAccount = (ClearEditText) findViewById(R.id.et_register_account);
+        etPasswordFirst = (ClearEditText) findViewById(R.id.et_register_password_first);
+        etPasswordSecond = (ClearEditText) findViewById(R.id.et_register_password_second);
+        btnRegiserCommit = (Button) findViewById(R.id.btn_register_commit);
 
         btnRegiserCommit.setOnClickListener(this);
         mLayout.setOnClickListener(this);
@@ -46,9 +51,9 @@ public class ActivityRegister extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_register_commit:
-                    signUp();
+                signUp();
                 break;
         }
     }
@@ -56,49 +61,71 @@ public class ActivityRegister extends BaseActivity implements View.OnClickListen
     /**
      * 注册功能
      */
-    public void signUp(){
-        String account=etRegisterAccount.getText().toString().trim();
-        String password=etPasswordFirst.getText().toString().trim();
-        String pwd_Again=etPasswordSecond.getText().toString().trim();
+    public void signUp() {
+        String account = etRegisterAccount.getText().toString().trim();
+        String password = etPasswordFirst.getText().toString().trim();
+        String pwd_Again = etPasswordSecond.getText().toString().trim();
 
-        if(TextUtils.isEmpty(account)){
-            ToastUtils.show(this,R.string.toast_username_is_null, Toast.LENGTH_SHORT);
+        if (TextUtils.isEmpty(account)) {
+            ToastUtils.show(this, R.string.toast_username_is_null, Toast.LENGTH_SHORT);
             return;//return 表示从被调函数返回到主调函数继续执行
         }
-        if(TextUtils.isEmpty(password)){
-            ToastUtils.show(this,R.string.toast_password_is_null, Toast.LENGTH_SHORT);
+        if (TextUtils.isEmpty(password)) {
+            ToastUtils.show(this, R.string.toast_password_is_null, Toast.LENGTH_SHORT);
             return;
-        }else {
-            if(!RegexpUtils.isRegexpValidate(password,RegexpUtils.LETTER_NUMBER_REGEXP_6_12)){
-                ToastUtils.show(this,R.string.toast_pwd_style_wrong, Toast.LENGTH_SHORT);
+        } else {
+            if (!RegexpUtils.isRegexpValidate(password, RegexpUtils.LETTER_NUMBER_REGEXP_6_12)) {
+                ToastUtils.show(this, R.string.toast_pwd_style_wrong, Toast.LENGTH_SHORT);
                 return;
             }
         }
-        if(TextUtils.isEmpty(pwd_Again)){
-            ToastUtils.show(this,R.string.toast_pwd_again_is_null, Toast.LENGTH_SHORT);
+        if (TextUtils.isEmpty(pwd_Again)) {
+            ToastUtils.show(this, R.string.toast_pwd_again_is_null, Toast.LENGTH_SHORT);
             return;
         }
-        if (!pwd_Again.equals(password)){
+        if (!pwd_Again.equals(password)) {
             ToastUtils.show(this, R.string.toast_pwd_again_is_wrong, Toast.LENGTH_LONG);
             etPasswordSecond.setText("");
             return;
         }
 
         //检查网络是否可用
-        boolean isNetConnected= CommonUtils.isNetworkAvailable(this);
-        if(!isNetConnected){
-            ToastUtils.show(this,R.string.toast_net_wrong,Toast.LENGTH_SHORT);
+        boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
+        if (!isNetConnected) {
+            ToastUtils.show(this, R.string.toast_net_wrong, Toast.LENGTH_SHORT);
             return;
         }
         //进度
-        final ProgressDialog mDialog=new ProgressDialog(this);
-        mDialog.setMessage(stringId(this,R.string.progress_dialog_text));
+        final ProgressDialog mDialog = new ProgressDialog(this);
+        mDialog.setMessage(stringId(this, R.string.progress_dialog_text));
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.show();
 
         //注册的时候需要注意两点：1、User表中绑定设备id和type，2、设备表中绑定username字段
-//        final MyUser user =new MyUser();
-//        user.setUsername(account);
-//        user.setPassword(MD5Util.getMD5String(pwd_Again));
+        final MyUser user = new MyUser();
+        user.setUsername(account);
+        user.setPassword(MD5Util.getMD5String(pwd_Again));
+
+        LogUtil.d("经过MD5加密的密码", MD5Util.getMD5String(pwd_Again));
+
+        user.signUp(this, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                mDialog.dismiss();
+                ToastUtils.show(ActivityRegister.this, stringId(ActivityRegister.this, R.string.register_success), Toast.LENGTH_SHORT);
+                finish();
+                LogUtil.d("注册成功");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                LogUtil.e(i + "");
+                LogUtil.e(s);
+                if (i == 202) {
+                    mDialog.dismiss();
+                    ToastUtils.show(ActivityRegister.this, stringId(ActivityRegister.this, R.string.user_is_already_exist), Toast.LENGTH_SHORT);
+                }
+            }
+        });
     }
 }

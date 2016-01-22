@@ -267,7 +267,7 @@ public class RegexpUtils {
      * 匹配由数字和6-12个英文字母、数字或下划线组成的字符串
      *
      */
-    public static final String LETTER_NUMBER_REGEXP_6_12 = "^(/w){6,12}$";
+    public static final String LETTER_NUMBER_REGEXP_6_12 = "^[A-Za-z0-9]{6,12}$";
 
     /**
      *

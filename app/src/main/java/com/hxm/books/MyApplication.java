@@ -3,6 +3,7 @@ package com.hxm.books;
 import android.app.Application;
 
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.utils.LogUtil;
 
 /**
  * 自定义全局类
@@ -17,6 +18,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        //设置是否打印log
+        LogUtil.isDebug=true;
     }
 
     public static MyApplication getInstance() {

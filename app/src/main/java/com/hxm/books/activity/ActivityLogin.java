@@ -3,10 +3,18 @@ package com.hxm.books.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.hxm.books.R;
+import com.hxm.books.bean.MyUser;
+import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.MD5Util;
+import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
 import com.hxm.books.view.HeaderLayout;
+
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.SaveListener;
 
 
 /**
@@ -45,7 +53,7 @@ public class ActivityLogin extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_login:
-
+                login();
                 break;
             case R.id.btn_forget_password:
 
@@ -55,4 +63,30 @@ public class ActivityLogin extends BaseActivity implements View.OnClickListener{
                 break;
         }
     }
+
+    //登录
+    private void login(){
+        String name=etLoginAccount.getText().toString().trim();
+        String pwd=etLoginPassword.getText().toString().trim();
+        MyUser user =new MyUser();
+        user.setUsername(name);
+        user.setPassword(MD5Util.getMD5String(pwd));
+        user.login(this, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                ToastUtils.show(ActivityLogin.this, stringId(ActivityLogin.this, R.string.login_success), Toast.LENGTH_SHORT);
+                //页面跳转
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                if(i==101){
+                    ToastUtils.show(ActivityLogin.this, stringId(ActivityLogin.this, R.string.login_failed), Toast.LENGTH_SHORT);
+                }
+                LogUtil.e("登录失败",s);
+                LogUtil.e("登录失败",i+"");
+            }
+        });
+    }
+
 }
