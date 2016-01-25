@@ -3,6 +3,7 @@ package com.hxm.books.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hxm.books.R;
@@ -28,7 +29,6 @@ public class ActivityLogin extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
-
     }
 
     public void initView(){
@@ -88,5 +88,4 @@ public class ActivityLogin extends BaseActivity implements View.OnClickListener{
             }
         });
     }
-
 }

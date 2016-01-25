@@ -3,10 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar" />
-
     <LinearLayout
         android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
@@ -45,14 +41,17 @@
                 android:text="@string/menu_mine" />
         </RadioGroup>
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/line_height"
+        android:background="@color/menu_above_line_color"
+        android:layout_above="@id/bottom_menu"/>
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/activity_back_color_gray"
-        android:layout_above="@id/bottom_menu"
-        android:layout_below="@id/common_actionbar">
+        android:layout_above="@id/bottom_menu">
 
     </FrameLayout>
 

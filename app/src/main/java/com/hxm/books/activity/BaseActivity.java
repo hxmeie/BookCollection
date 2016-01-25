@@ -1,27 +1,18 @@
 package com.hxm.books.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
+import android.support.v4.app.FragmentActivity;
 import com.hxm.books.MyApplication;
 import com.hxm.books.R;
-import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.HeaderLayout;
 
 /**
  * 基类
  * Created by hxm on 2015/12/1.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
     MyApplication mApplication;
     protected HeaderLayout mHeaderLayout;
@@ -57,7 +48,6 @@ public class BaseActivity extends Activity {
     public void initOnlyTitle(String titleName) {
         mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
         mHeaderLayout.initHeaderStytle(HeaderLayout.HeaderStyle.DEFAULT_TITLE);
-//        mHeaderLayout.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
         mHeaderLayout.setDefaultTitle(titleName);
     }
 

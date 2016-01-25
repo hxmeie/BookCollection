@@ -35,5 +35,5 @@
 
     <!-- bottom_menu-->
     <dimen name="menu_height">55dp</dimen>
-    <dimen name="line_height">2px</dimen>
+    <dimen name="line_height">1dp</dimen>
 </resources>
