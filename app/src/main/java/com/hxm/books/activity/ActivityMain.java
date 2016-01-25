@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.hxm.books.R;
+import com.hxm.books.view.HeaderLayout;
 
 /**
  * Created by hxm on 2016/1/13.
