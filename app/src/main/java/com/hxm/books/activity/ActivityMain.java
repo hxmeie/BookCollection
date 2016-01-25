@@ -1,6 +1,7 @@
 package com.hxm.books.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
@@ -11,7 +12,7 @@ import com.hxm.books.R;
 /**
  * Created by hxm on 2016/1/13.
  */
-public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
+public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheckedChangeListener{
 
     private RadioGroup menuGroup;
     private RadioButton btnBookshelf;
@@ -39,7 +40,7 @@ public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         FragmentTransaction fragmentTransaction=mFragmentManger.beginTransaction();
-       // hideAllFragment(fragmentTransaction);
+        hideAllFragment(fragmentTransaction);
         switch (checkedId){
             case R.id.btn_bookshelf:
                 if(fragmentBookshelf==null){
@@ -78,6 +79,7 @@ public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedCh
 
                 break;
         }
+        fragmentTransaction.commit();
     }
 
     //隐藏所有的fragment
