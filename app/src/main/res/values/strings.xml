@@ -2,7 +2,16 @@
     <string name="app_name">MyBooks</string>
     <!-- ActivityTitle-->
     <string name="activity_scan_title">条形码扫描</string>
-    <string name="activity_main_title">MyBooks</string>
+    <string name="title_bookshelf">书架</string>
+    <string name="title_classify">分类</string>
+    <string name="title_discovery">发现</string>
+    <string name="title_mine">我的</string>
+
+    <!-- ActivityMain-->
+    <string name="menu_bookshelf">书架</string>
+    <string name="menu_classify">分类</string>
+    <string name="menu_discovery">发现</string>
+    <string name="menu_mine">我的</string>
 
     <!-- ActivitySplash-->
     <string name="splash_text_1">Android开发艺术探索</string>

@@ -32,4 +32,8 @@
     <dimen name="text_size_15">15sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
+
+    <!-- bottom_menu-->
+    <dimen name="menu_height">55dp</dimen>
+    <dimen name="line_height">2px</dimen>
 </resources>

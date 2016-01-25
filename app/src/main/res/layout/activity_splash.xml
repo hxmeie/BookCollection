@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/mybooks"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/app_icon"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
         android:layout_marginTop="160dp"
         android:id="@+id/imageView" />
 
@@ -16,9 +17,9 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_18"
         android:textColor="@color/splash_text_color"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/base_margin_20"
         android:text="@string/splash_text_2"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="130dp" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

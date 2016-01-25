@@ -37,4 +37,17 @@
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">@dimen/base_padding_1</item>
     </style>
+    
+    <!-- menu radio_btn style-->
+    <style name="radio_btn_style">
+        <item name="android:width">@dimen/base_width_0</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:textSize">@dimen/text_size_15</item>
+        <item name="android:textColor">@drawable/menu_text_color</item>
+    </style>
 </resources>

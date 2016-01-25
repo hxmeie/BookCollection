@@ -1,13 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <include android:id="@+id/common_actionbar"
-        layout="@layout/include_action_bar"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="哈哈哈哈哈哈就"
-        android:layout_gravity="center_horizontal" />
-</LinearLayout>
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <LinearLayout
+        android:id="@+id/bottom_menu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu_height"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/menu_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_bookshelf"
+                style="@style/radio_btn_style"
+                android:drawableTop="@drawable/menu_bookshelf_btn"
+                android:text="@string/menu_bookshelf" />
+
+            <RadioButton
+                android:id="@+id/btn_classify"
+                style="@style/radio_btn_style"
+                android:drawableTop="@drawable/menu_classify_btn"
+                android:text="@string/menu_classify" />
+
+            <RadioButton
+                android:id="@+id/btn_discovery"
+                style="@style/radio_btn_style"
+                android:drawableTop="@drawable/menu_discovery_btn"
+                android:text="@string/menu_discovery" />
+
+            <RadioButton
+                android:id="@+id/btn_mine"
+                style="@style/radio_btn_style"
+                android:drawableTop="@drawable/menu_mine_btn"
+                android:text="@string/menu_mine" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/activity_back_color_gray"
+        android:layout_above="@id/bottom_menu"
+        android:layout_below="@id/common_actionbar">
+
+    </FrameLayout>
+
+</RelativeLayout>

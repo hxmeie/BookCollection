@@ -13,7 +13,7 @@
     <color name="splash_text_color">#0c7bce</color>
 
     <!-- activity background color-->
-    <color name="activity_back_color_gray">#F7F6F6</color>
+    <color name="activity_back_color_gray">#EDECEC</color>
 
     <!-- EditText color-->
     <color name="et_background_color">#ffffff</color>
@@ -25,4 +25,7 @@
     <color name="btn_login_focused">#C10003</color>
     <color name="btn_login_text_color">#ffffff</color>
 
+    <!-- menu_text color-->
+    <color name="menu_text_color_normal">#60000000</color>
+    <color name="menu_text_color_pressed">#0c7bce</color>
 </resources>
