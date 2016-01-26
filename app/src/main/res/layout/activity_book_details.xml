@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/common_actionbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/base_padding_15">
+            <!-- 图书信息-->
+            <LinearLayout
+                android:id="@+id/layout_book_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <!-- 图书封面-->
+                <ImageView
+                    android:id="@+id/iv_book_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:src="@mipmap/no_cover" />
+                <!-- 书名作者等信息-->
+                <RelativeLayout
+                    android:layout_width="@dimen/base_width_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/base_margin_10"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <!-- 书名-->
+                    <TextView
+                        android:id="@+id/tv_book_name_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_18"
+                        tools:text="Android网络编程" />
+
+                    <TextView
+                        android:id="@+id/tv_book_author"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_name_content"
+                        android:text="@string/book_author" />
+                    <!-- 作者-->
+                    <TextView
+                        android:id="@+id/tv_book_author_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_name_content"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_book_author"
+                        android:maxLines="1"
+                        tools:text="官爱民" />
+
+                    <TextView
+                        android:id="@+id/tv_book_pages"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_author"
+                        android:text="@string/book_pages" />
+                    <!-- 页数-->
+                    <TextView
+                        android:id="@+id/tv_book_pages_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_author"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_book_pages"
+                        android:maxLines="1"
+                        tools:text="1368" />
+
+                    <TextView
+                        android:id="@+id/tv_book_publisher"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_pages"
+                        android:text="@string/book_publisher" />
+                    <!-- 出版社-->
+                    <TextView
+                        android:id="@+id/tv_book_publisher_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_pages"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_book_publisher"
+                        android:maxLines="1"
+                        tools:text="机械工业出版社" />
+
+                    <TextView
+                        android:id="@+id/tv_book_price"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_publisher"
+                        android:text="@string/book_price" />
+                    <!-- 价格-->
+                    <TextView
+                        android:id="@+id/tv_book_price_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_publisher"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_book_price"
+                        android:maxLines="1"
+                        tools:text="59" />
+
+                </RelativeLayout>
+            </LinearLayout>
+            <!-- 加入书架-->
+            <Button
+                android:id="@+id/btn_add_to_bookshelf"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height_45"
+                android:layout_marginTop="@dimen/base_margin_20"
+                android:background="@drawable/btn_add_bookshelf"
+                android:text="@string/btn_add_to_shelf"
+                android:textColor="@drawable/btn_add_to_bookshelf_text_color"
+                android:textSize="@dimen/text_size_15" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_margin_15">
+
+                <TextView
+                    android:id="@+id/tv_book_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="@string/book_summary"/>
+
+                <TextView
+                    android:id="@+id/tv_book_summary_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_book_summary"/>
+                
+                <ImageView
+                    android:id="@+id/im_arrow_text_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_book_summary_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/arrow_textview_down"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

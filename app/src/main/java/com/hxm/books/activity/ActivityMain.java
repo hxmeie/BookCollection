@@ -7,12 +7,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import com.hxm.books.R;
+import com.hxm.books.utils.LogUtil;
 
 
 /**
  * Created by hxm on 2016/1/13.
  */
-public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheckedChangeListener{
+public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
 
     private RadioGroup menuGroup;
     private RadioButton btnBookshelf;
@@ -32,6 +33,7 @@ public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheck
 
     public void initView(){
         menuGroup= (RadioGroup) findViewById(R.id.menu_radio_group);
+        menuGroup.setOnCheckedChangeListener(this);
         btnBookshelf= (RadioButton) findViewById(R.id.btn_bookshelf);
         btnBookshelf.setChecked(true);
     }
@@ -43,6 +45,7 @@ public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheck
         hideAllFragment(fragmentTransaction);
         switch (checkedId){
             case R.id.btn_bookshelf:
+                LogUtil.d("点击书架");
                 if(fragmentBookshelf==null){
                     fragmentBookshelf=new FragmentBookshelf();
                     fragmentTransaction.add(R.id.fragment_container,fragmentBookshelf);
@@ -52,6 +55,7 @@ public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheck
 
                 break;
             case R.id.btn_classify:
+                LogUtil.d("点击分类");
                 if(fragmentClassify==null){
                     fragmentClassify=new FragmentClassify();
                     fragmentTransaction.add(R.id.fragment_container,fragmentClassify);
@@ -61,6 +65,7 @@ public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheck
 
                 break;
             case R.id.btn_discovery:
+                LogUtil.d("点击发现");
                 if(fragmentDiscovery==null){
                     fragmentDiscovery=new FragmentDiscovery();
                     fragmentTransaction.add(R.id.fragment_container,fragmentDiscovery);
@@ -70,6 +75,7 @@ public class ActivityMain extends FragmentActivity implements RadioGroup.OnCheck
 
                 break;
             case R.id.btn_mine:
+                LogUtil.d("点击我的");
                 if(fragmentMine==null){
                     fragmentMine=new FragmentMine();
                     fragmentTransaction.add(R.id.fragment_container,fragmentMine);

@@ -266,7 +266,7 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     }
 
     /**
-     * 跳转到上一个页面
+     * 跳转到图书信息界面
      *
      * @param resultString
      */
@@ -276,11 +276,12 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
             Toast.makeText(ActivityScan.this, stringId(this,R.string.scan_failed), Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent resultIntent = new Intent();
+        Intent resultIntent = new Intent(ActivityScan.this,ActivityBookDetails.class);
         Bundle bundle = new Bundle();
         bundle.putString("result", resultString);
         resultIntent.putExtras(bundle);
         this.setResult(RESULT_OK, resultIntent);
+        startAnimActivity(resultIntent);
         ActivityScan.this.finish();
     }
 

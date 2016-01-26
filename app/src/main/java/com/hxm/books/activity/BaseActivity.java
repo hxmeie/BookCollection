@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+
 import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.view.HeaderLayout;
@@ -12,7 +14,7 @@ import com.hxm.books.view.HeaderLayout;
  * 基类
  * Created by hxm on 2015/12/1.
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
     MyApplication mApplication;
     protected HeaderLayout mHeaderLayout;
