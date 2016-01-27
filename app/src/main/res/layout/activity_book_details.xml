@@ -117,7 +117,7 @@
                 android:background="@drawable/btn_add_bookshelf"
                 android:text="@string/btn_add_to_shelf"
                 android:textColor="@drawable/btn_add_to_bookshelf_text_color"
-                android:textSize="@dimen/text_size_15" />
+                android:textSize="@dimen/text_size_18" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -136,15 +136,63 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_book_summary"/>
-                
                 <ImageView
                     android:id="@+id/im_arrow_text_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/base_margin_5"
                     android:layout_below="@id/tv_book_summary_content"
                     android:layout_centerInParent="true"
                     android:src="@mipmap/arrow_textview_down"
                     android:visibility="gone"/>
+                <View
+                    android:id="@+id/content_divider_line_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/im_arrow_text_down"
+                    android:background="@color/viewfinder_mask"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_margin_15">
+
+                <TextView
+                    android:id="@+id/tv_book_catalog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="@string/book_catlog"/>
+
+                <TextView
+                    android:id="@+id/tv_book_catalog_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_book_catalog"/>
+
+                <ImageView
+                    android:id="@+id/im_arrow_text_down_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/tv_book_catalog_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/arrow_textview_down"
+                    android:visibility="gone"/>
+
+                <View
+                    android:id="@+id/content_divider_line_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/im_arrow_text_down_catalog"
+                    android:background="@color/viewfinder_mask"
+                    android:visibility="gone"/>
+
             </RelativeLayout>
 
         </LinearLayout>

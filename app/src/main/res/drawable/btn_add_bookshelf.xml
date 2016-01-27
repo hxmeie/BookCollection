@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape>
-            <stroke android:color="@color/colorBase"
-                android:width="1dp"/>
+            <stroke android:color="@color/add_bookshelf_pressed"
+                android:width="2dp"/>
             <solid android:color="@color/colorWhite"/>
             <corners android:radius="5dp"/>
         </shape>
@@ -11,8 +11,8 @@
 
     <item android:state_focused="true">
         <shape>
-            <stroke android:color="@color/colorBase"
-                android:width="1dp"/>
+            <stroke android:color="@color/add_bookshelf_pressed"
+                android:width="2dp"/>
             <solid android:color="@color/colorWhite"/>
             <corners android:radius="5dp"/>
         </shape>
@@ -20,8 +20,8 @@
 
     <item>
         <shape>
-            <stroke android:color="@color/colorPrimary"
-                android:width="1dp"/>
+            <stroke android:color="@color/add_bookshelf_default"
+                android:width="2dp"/>
             <solid android:color="@color/colorWhite"/>
             <corners android:radius="5dp"/>
         </shape>

@@ -1,7 +1,6 @@
 package com.hxm.books.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
@@ -13,14 +12,14 @@ import com.hxm.books.utils.LogUtil;
 /**
  * Created by hxm on 2016/1/13.
  */
-public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
 
     private RadioGroup menuGroup;
     private RadioButton btnBookshelf;
-    private FragmentBookshelf fragmentBookshelf;
-    private FragmentClassify fragmentClassify;
-    private FragmentDiscovery fragmentDiscovery;
-    private FragmentMine fragmentMine;
+    private BookshelfFragment bookshelfFragment;
+    private ClassifyFragment classifyFragment;
+    private DiscoveryFragment discoveryFragment;
+    private MineFragment mineFragment;
     private FragmentManager mFragmentManger;
 
     @Override
@@ -46,41 +45,41 @@ public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedCh
         switch (checkedId){
             case R.id.btn_bookshelf:
                 LogUtil.d("点击书架");
-                if(fragmentBookshelf==null){
-                    fragmentBookshelf=new FragmentBookshelf();
-                    fragmentTransaction.add(R.id.fragment_container,fragmentBookshelf);
+                if(bookshelfFragment ==null){
+                    bookshelfFragment =new BookshelfFragment();
+                    fragmentTransaction.add(R.id.fragment_container, bookshelfFragment);
                 }else {
-                    fragmentTransaction.show(fragmentBookshelf);
+                    fragmentTransaction.show(bookshelfFragment);
                 }
 
                 break;
             case R.id.btn_classify:
                 LogUtil.d("点击分类");
-                if(fragmentClassify==null){
-                    fragmentClassify=new FragmentClassify();
-                    fragmentTransaction.add(R.id.fragment_container,fragmentClassify);
+                if(classifyFragment ==null){
+                    classifyFragment =new ClassifyFragment();
+                    fragmentTransaction.add(R.id.fragment_container, classifyFragment);
                 }else {
-                    fragmentTransaction.show(fragmentClassify);
+                    fragmentTransaction.show(classifyFragment);
                 }
 
                 break;
             case R.id.btn_discovery:
                 LogUtil.d("点击发现");
-                if(fragmentDiscovery==null){
-                    fragmentDiscovery=new FragmentDiscovery();
-                    fragmentTransaction.add(R.id.fragment_container,fragmentDiscovery);
+                if(discoveryFragment ==null){
+                    discoveryFragment =new DiscoveryFragment();
+                    fragmentTransaction.add(R.id.fragment_container, discoveryFragment);
                 }else {
-                    fragmentTransaction.show(fragmentDiscovery);
+                    fragmentTransaction.show(discoveryFragment);
                 }
 
                 break;
             case R.id.btn_mine:
                 LogUtil.d("点击我的");
-                if(fragmentMine==null){
-                    fragmentMine=new FragmentMine();
-                    fragmentTransaction.add(R.id.fragment_container,fragmentMine);
+                if(mineFragment ==null){
+                    mineFragment =new MineFragment();
+                    fragmentTransaction.add(R.id.fragment_container, mineFragment);
                 }else {
-                    fragmentTransaction.show(fragmentMine);
+                    fragmentTransaction.show(mineFragment);
                 }
 
                 break;
@@ -90,13 +89,13 @@ public class ActivityMain extends BaseActivity implements RadioGroup.OnCheckedCh
 
     //隐藏所有的fragment
     private void hideAllFragment(FragmentTransaction fragmentTransaction){
-        if(fragmentBookshelf!=null)
-            fragmentTransaction.hide(fragmentBookshelf);
-        if(fragmentClassify!=null)
-            fragmentTransaction.hide(fragmentClassify);
-        if(fragmentDiscovery!=null)
-            fragmentTransaction.hide(fragmentDiscovery);
-        if(fragmentMine!=null)
-            fragmentTransaction.hide(fragmentMine);
+        if(bookshelfFragment !=null)
+            fragmentTransaction.hide(bookshelfFragment);
+        if(classifyFragment !=null)
+            fragmentTransaction.hide(classifyFragment);
+        if(discoveryFragment !=null)
+            fragmentTransaction.hide(discoveryFragment);
+        if(mineFragment !=null)
+            fragmentTransaction.hide(mineFragment);
     }
 }

@@ -1,10 +1,8 @@
 package com.hxm.books.activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,7 +11,6 @@ import android.widget.Toast;
 import com.hxm.books.R;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.CommonUtils;
-import com.hxm.books.utils.KeyBoardUtils;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.MD5Util;
 import com.hxm.books.utils.RegexpUtils;
@@ -25,7 +22,7 @@ import cn.bmob.v3.listener.SaveListener;
 /**
  * Created by hxm on 2016/1/9.
  */
-public class ActivityRegister extends BaseActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     private ClearEditText etRegisterAccount, etPasswordFirst, etPasswordSecond;
     private Button btnRegiserCommit;
     LinearLayout mLayout;
@@ -112,7 +109,7 @@ public class ActivityRegister extends BaseActivity implements View.OnClickListen
             @Override
             public void onSuccess() {
                 mDialog.dismiss();
-                ToastUtils.show(ActivityRegister.this, stringId(ActivityRegister.this, R.string.register_success), Toast.LENGTH_SHORT);
+                ToastUtils.show(RegisterActivity.this, stringId(RegisterActivity.this, R.string.register_success), Toast.LENGTH_SHORT);
                 finish();
                 LogUtil.d("注册成功");
             }
@@ -123,7 +120,7 @@ public class ActivityRegister extends BaseActivity implements View.OnClickListen
                 LogUtil.e(s);
                 if (i == 202) {
                     mDialog.dismiss();
-                    ToastUtils.show(ActivityRegister.this, stringId(ActivityRegister.this, R.string.user_is_already_exist), Toast.LENGTH_SHORT);
+                    ToastUtils.show(RegisterActivity.this, stringId(RegisterActivity.this, R.string.user_is_already_exist), Toast.LENGTH_SHORT);
                 }
             }
         });

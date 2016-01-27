@@ -276,7 +276,7 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
             Toast.makeText(ActivityScan.this, stringId(this,R.string.scan_failed), Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent resultIntent = new Intent(ActivityScan.this,ActivityBookDetails.class);
+        Intent resultIntent = new Intent(ActivityScan.this,BookDetailsActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("result", resultString);
         resultIntent.putExtras(bundle);

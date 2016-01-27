@@ -11,7 +11,7 @@ import com.hxm.books.R;
 /**
  * Created by hxm on 2016/1/25.
  */
-public class FragmentDiscovery extends Fragment {
+public class MineFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,7 @@ public class FragmentDiscovery extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_discovery,container,false);
+        View view = inflater.inflate(R.layout.fragment_mine,container,false);
 
         return view;
     }

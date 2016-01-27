@@ -7,13 +7,13 @@
     <string name="title_discovery">发现</string>
     <string name="title_mine">我的</string>
 
-    <!-- ActivityMain-->
+    <!-- MainActivity-->
     <string name="menu_bookshelf">书架</string>
     <string name="menu_classify">分类</string>
     <string name="menu_discovery">发现</string>
     <string name="menu_mine">我的</string>
 
-    <!-- ActivityBookDetails-->
+    <!-- BookDetailsActivity-->
     <string name="activity_book_details_title">图书信息</string>
     <string name="book_author">作者:</string>
     <string name="book_price">价格:</string>
@@ -27,11 +27,11 @@
     <string name="book_catlog">图书目录</string>
 
 
-    <!-- ActivitySplash-->
+    <!-- SplashActivity-->
     <string name="splash_text_1">Android开发艺术探索</string>
     <string name="splash_text_2">MyBook,不只是收藏</string>
 
-    <!-- ActivityLogin-->
+    <!-- LoginActivity-->
     <string name="login_title">登录</string>
     <string name="login_title_right_button_text">注册</string>
     <string name="btn_login">登录</string>
@@ -41,7 +41,7 @@
     <string name="login_success">登录成功</string>
     <string name="login_failed">用户名或密码错误</string>
 
-    <!-- ActivityRegister-->
+    <!-- RegisterActivity-->
     <string name="et_hint_register_account">请输入用户名</string>
     <string name="et_hint_password_first">请输入密码(6-12位英文和数字)</string>
     <string name="et_hint_password_second">请再次输入密码</string>
@@ -57,7 +57,7 @@
     <string name="register_success">注册成功</string>
     <string name="user_is_already_exist">用户名已存在</string>
 
-    <!-- ActivityScan-->
+    <!-- ScanActivity-->
     <string name="scan_text">将二维码/条形码放入框内, 即可自动扫描</string>
     <string name="scaning">正在扫描&#8230;</string>
     <string name="scan_failed">扫描失败，请重试</string>

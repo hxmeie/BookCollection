@@ -13,7 +13,7 @@ import cn.bmob.v3.Bmob;
  * 应用启动时的引导页
  * Created by hxm on 2015/12/1.
  */
-public class ActivitySplash extends BaseActivity{
+public class SplashActivity extends BaseActivity{
     private static final int GO_MAIN=100;
     private MyHandler handler =new MyHandler(this);
     /**
@@ -35,19 +35,19 @@ public class ActivitySplash extends BaseActivity{
     }
 
     static class MyHandler extends Handler{
-        WeakReference<ActivitySplash> mActivity;
-        public MyHandler(ActivitySplash activity){
+        WeakReference<SplashActivity> mActivity;
+        public MyHandler(SplashActivity activity){
             mActivity=new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ActivitySplash activitySplash=mActivity.get();
+            SplashActivity splashActivity =mActivity.get();
             switch (msg.what){
                 case GO_MAIN:
-                    activitySplash.startAnimActivity(ActivityLogin.class);
-                    activitySplash.finish();
+                    splashActivity.startAnimActivity(LoginActivity.class);
+                    splashActivity.finish();
                     break;
             }
         }

@@ -11,7 +11,7 @@ import com.hxm.books.R;
 /**
  * Created by hxm on 2016/1/25.
  */
-public class FragmentClassify extends Fragment {
+public class ClassifyFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

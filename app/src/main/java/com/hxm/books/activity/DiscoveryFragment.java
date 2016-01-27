@@ -11,15 +11,16 @@ import com.hxm.books.R;
 /**
  * Created by hxm on 2016/1/25.
  */
-public class FragmentBookshelf extends Fragment {
+public class DiscoveryFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bookshelf,container,false);
+        View view = inflater.inflate(R.layout.fragment_discovery,container,false);
 
         return view;
     }
