@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
     <include
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
@@ -26,8 +27,8 @@
                 <!-- 图书封面-->
                 <ImageView
                     android:id="@+id/iv_book_pic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="100dp"
+                    android:layout_height="130dp"
                     android:scaleType="centerCrop"
                     tools:src="@mipmap/no_cover" />
                 <!-- 书名作者等信息-->
