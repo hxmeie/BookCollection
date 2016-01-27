@@ -27,9 +27,9 @@
                 <!-- 图书封面-->
                 <ImageView
                     android:id="@+id/iv_book_pic"
-                    android:layout_width="100dp"
-                    android:layout_height="130dp"
-                    android:scaleType="centerCrop"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
                     tools:src="@mipmap/no_cover" />
                 <!-- 书名作者等信息-->
                 <RelativeLayout
@@ -77,34 +77,51 @@
                         tools:text="1368" />
 
                     <TextView
-                        android:id="@+id/tv_book_publisher"
-                        style="@style/book_details_textview_style"
-                        android:layout_below="@id/tv_book_pages"
-                        android:text="@string/book_publisher" />
-                    <!-- 出版社-->
-                    <TextView
-                        android:id="@+id/tv_book_publisher_content"
-                        style="@style/book_details_textview_style"
-                        android:layout_below="@id/tv_book_pages"
-                        android:layout_marginLeft="@dimen/base_margin_10"
-                        android:layout_toRightOf="@id/tv_book_publisher"
-                        android:maxLines="1"
-                        tools:text="机械工业出版社" />
-
-                    <TextView
                         android:id="@+id/tv_book_price"
                         style="@style/book_details_textview_style"
-                        android:layout_below="@id/tv_book_publisher"
+                        android:layout_below="@id/tv_book_pages_content"
                         android:text="@string/book_price" />
                     <!-- 价格-->
                     <TextView
                         android:id="@+id/tv_book_price_content"
                         style="@style/book_details_textview_style"
-                        android:layout_below="@id/tv_book_publisher"
+                        android:layout_below="@id/tv_book_pages_content"
                         android:layout_marginLeft="@dimen/base_margin_10"
                         android:layout_toRightOf="@id/tv_book_price"
                         android:maxLines="1"
                         tools:text="59" />
+
+                    <TextView
+                        android:id="@+id/tv_book_pubdate"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_price"
+                        android:text="@string/book_pubdate"/>
+                    <!-- 出版日期-->
+                    <TextView
+                        android:id="@+id/tv_book_pubdate_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_price"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_book_pubdate"
+                        android:maxLines="1"
+                        tools:text="2016-1-23" />
+
+                    <TextView
+                        android:id="@+id/tv_book_publisher"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_pubdate"
+                        android:text="@string/book_publisher" />
+                    <!-- 出版社-->
+                    <TextView
+                        android:id="@+id/tv_book_publisher_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_book_pubdate"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_book_publisher"
+                        android:maxLines="1"
+                        tools:text="机械工业出版社" />
+
+
 
                 </RelativeLayout>
             </LinearLayout>

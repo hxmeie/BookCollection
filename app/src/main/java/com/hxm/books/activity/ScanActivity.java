@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
@@ -26,11 +28,22 @@ import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.hxm.books.R;
+import com.hxm.books.bean.Book;
+import com.hxm.books.utils.HttpUtil;
+import com.hxm.books.utils.LogUtil;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.decoding.CaptureActivityHandler;
 import com.hxm.books.zxing.decoding.InactivityTimer;
 import com.hxm.books.zxing.decoding.RGBLuminanceSource;
 import com.hxm.books.zxing.view.ViewfinderView;
+import com.loopj.android.http.TextHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.kymjs.kjframe.KJBitmap;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
@@ -39,7 +52,7 @@ import java.util.Vector;
 /**
  * Created by hxm on 2016/1/13.
  */
-public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback, View.OnClickListener {
+public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback, View.OnClickListener {
 
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
@@ -51,7 +64,7 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     private boolean playBeep;
     private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
-
+    private Book  mBook= new Book();
 
     private static final int REQUEST_CODE = 100;
     private static final int PARSE_BARCODE_SUC = 300;
@@ -59,6 +72,8 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     private ProgressDialog mProgress;
     private String photo_path;
     private Bitmap scanBitmap;
+    private ImageView progressView;
+    private AnimationDrawable animDra;
 
     /**
      * Called when the activity is first created.
@@ -88,9 +103,9 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     private MyHandler mHandler =new MyHandler(this);
 
     static class MyHandler extends Handler {
-        WeakReference<ActivityScan> mActivity;
+        WeakReference<ScanActivity> mActivity;
 
-        public MyHandler(ActivityScan activity) {
+        public MyHandler(ScanActivity activity) {
             mActivity = new WeakReference<>(activity);
 
         }
@@ -98,116 +113,23 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            ActivityScan activityScan=mActivity.get();
-            activityScan.mProgress.dismiss();
+            final ScanActivity scanActivity =mActivity.get();
+            scanActivity.mProgress.dismiss();
             switch (msg.what) {
                 case PARSE_BARCODE_SUC:
-                    activityScan.onResultHandler((String) msg.obj);
+                    scanActivity.onResultHandler((String) msg.obj);
+                    scanActivity.progressView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scanActivity.animDra.start();
+                        }
+                    },100);
                     break;
                 case PARSE_BARCODE_FAIL:
-                    Toast.makeText(activityScan, (String) msg.obj, Toast.LENGTH_LONG).show();
+                    Toast.makeText(scanActivity, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
             }
         }
-    }
-
-//    private Handler mHandler = new Handler() {
-//
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//
-//            mProgress.dismiss();
-//            switch (msg.what) {
-//                case PARSE_BARCODE_SUC:
-//                    onResultHandler((String) msg.obj);
-//                    break;
-//                case PARSE_BARCODE_FAIL:
-//                    Toast.makeText(ActivityScan.this, (String) msg.obj, Toast.LENGTH_LONG).show();
-//                    break;
-//
-//            }
-//        }
-//
-//    };
-//从手机里获取二维码图片并扫描
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//            switch (requestCode) {
-//                case REQUEST_CODE:
-//                    //获取选中图片的路径
-//                    Cursor cursor = getContentResolver().query(data.getData(), null, null, null, null);
-//                    if (cursor.moveToFirst()) {
-//                        photo_path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
-//                    }
-//                    cursor.close();
-//
-//                    mProgress = new ProgressDialog(ActivityScan.this);
-//                    mProgress.setMessage(stringId(this, R.string.scaning));
-//                    mProgress.setCancelable(false);
-//                    mProgress.show();
-//
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Result result = scanningImage(photo_path);
-//                            if (result != null) {
-//                                Message m = mHandler.obtainMessage();
-//                                m.what = PARSE_BARCODE_SUC;
-//                                m.obj = result.getText();
-//                                mHandler.sendMessage(m);
-//                            } else {
-//                                Message m = mHandler.obtainMessage();
-//                                m.what = PARSE_BARCODE_FAIL;
-//                                m.obj = "Scan failed!";
-//                                mHandler.sendMessage(m);
-//                            }
-//                        }
-//                    }).start();
-//
-//                    break;
-//
-//            }
-//        }
-//    }
-
-    /**
-     * 扫描二维码图片的方法
-     *
-     * @param path
-     */
-    public Result scanningImage(String path) {
-        if (TextUtils.isEmpty(path)) {
-            return null;
-        }
-        Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
-        hints.put(DecodeHintType.CHARACTER_SET, "UTF8"); //设置二维码内容的编码
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true; // 先获取原大小
-        scanBitmap = BitmapFactory.decodeFile(path, options);
-        options.inJustDecodeBounds = false; // 获取新的大小
-        int sampleSize = (int) (options.outHeight / (float) 200);
-        if (sampleSize <= 0)
-            sampleSize = 1;
-        options.inSampleSize = sampleSize;
-        scanBitmap = BitmapFactory.decodeFile(path, options);
-        RGBLuminanceSource source = new RGBLuminanceSource(scanBitmap);
-        BinaryBitmap bitmap1 = new BinaryBitmap(new HybridBinarizer(source));
-        QRCodeReader reader = new QRCodeReader();
-        try {
-            return reader.decode(bitmap1, hints);
-
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (ChecksumException e) {
-            e.printStackTrace();
-        } catch (FormatException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 
@@ -266,26 +188,67 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     }
 
     /**
-     * 跳转到图书信息界面
+     * 处理扫描结果，跳转到图书信息界面
      *
      * @param resultString
      */
 
     private void onResultHandler(String resultString) {
         if (TextUtils.isEmpty(resultString)) {
-            Toast.makeText(ActivityScan.this, stringId(this,R.string.scan_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ScanActivity.this, stringId(this,R.string.scan_failed), Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent resultIntent = new Intent(ActivityScan.this,BookDetailsActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("result", resultString);
-        resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        startAnimActivity(resultIntent);
-        ActivityScan.this.finish();
+        getBookData(resultString);
     }
 
+    private void getBookData(String result){
+        String url="https://api.douban.com/v2/book/isbn/:"+result;
+        //String url="https://api.douban.com/v2/book/isbn/:9787508656823";
+        HttpUtil.get(url, new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                LogUtil.e("获取失败");
+            }
 
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                LogUtil.i(s);
+                setBookData(s);
+                Intent resultIntent = new Intent(ScanActivity.this,BookDetailsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("bookObject", mBook);
+                resultIntent.putExtras(bundle);
+                startAnimActivity(resultIntent);
+                ScanActivity.this.finish();
+            }
+
+
+        });
+    }
+    private void setBookData(String bookInfo){
+        String author="";
+        try {
+            JSONObject jsonObject =new JSONObject(bookInfo);
+            JSONArray jsonArray=jsonObject.getJSONArray("author");
+            mBook.setPages(jsonObject.getString("pages"));
+            mBook.setTitle(jsonObject.getString("title"));
+            mBook.setPrice(jsonObject.getString("price"));
+            mBook.setSummary(jsonObject.getString("summary"));
+            mBook.setPublisher(jsonObject.getString("publisher"));
+            mBook.setPubdate(jsonObject.getString("pubdate"));
+            mBook.setBookImage(jsonObject.optJSONObject("images").optString("large"));
+            mBook.setCatalog(jsonObject.getString("catalog"));
+            for (int index=0;index<jsonArray.length();index++){
+                author += jsonArray.optString(index)+" ";
+            }
+            mBook.setAuthor(author);
+
+            LogUtil.i(mBook.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder);
@@ -371,11 +334,12 @@ public class ActivityScan extends BaseActivity implements SurfaceHolder.Callback
     }
 
     /**
-     * When the beep has finished playing, rewind to queue up another one.
+     * When the beep has finished playing, release it.
      */
     private final MediaPlayer.OnCompletionListener beepListener = new MediaPlayer.OnCompletionListener() {
         public void onCompletion(MediaPlayer mediaPlayer) {
-            mediaPlayer.seekTo(0);
+            //mediaPlayer.seekTo(0);
+            mediaPlayer.release();
         }
     };
 }

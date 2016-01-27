@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.listener.TextAndArrowListener;
+import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
 import com.loopj.android.http.TextHttpResponseHandler;
@@ -25,29 +26,28 @@ import org.kymjs.kjframe.KJBitmap;
  */
 public class BookDetailsActivity extends BaseActivity {
 
-    private TextView mBookName,mBookPrice,mBookPublisher,mBookPages,mBookAuthor;
+    private TextView mBookName,mBookPrice,mBookPublisher,mBookPages,mBookAuthor,mBookPubdate;
     private ImageView mBookPic;
     private TextView mBookSummary,mBookCatalog;
     private ImageView mArrowTextDownSum,mArrowTextDownCata;
     private View mDividerLineSum,mDividerLineCata;
-    private String bookISBN;
+    private Book mBook;
     private int maxLineSum=5;
-    private int macLineCata=8;
+    private int maxLineCata=8;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
         Bundle bundle = this.getIntent().getExtras();
-        bookISBN=bundle.getString("result");
-        LogUtil.i("ISBN号", bookISBN);
+        mBook= (Book) bundle.getSerializable("bookObject");
+        LogUtil.i(mBook.toString());
         initView();
-        getBookInfo();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        setBookData(mBook);
     }
 
     //    初始化view
@@ -58,6 +58,7 @@ public class BookDetailsActivity extends BaseActivity {
         mBookPages= (TextView) findViewById(R.id.tv_book_pages_content);
         mBookPrice= (TextView) findViewById(R.id.tv_book_price_content);
         mBookPublisher= (TextView) findViewById(R.id.tv_book_publisher_content);
+        mBookPubdate= (TextView) findViewById(R.id.tv_book_pubdate_content);
         mBookSummary= (TextView) findViewById(R.id.tv_book_summary_content);
         mBookPic= (ImageView) findViewById(R.id.iv_book_pic);
         mArrowTextDownSum= (ImageView) findViewById(R.id.im_arrow_text_down);
@@ -68,94 +69,28 @@ public class BookDetailsActivity extends BaseActivity {
 
     }
 
-    private void setSummary(){
-        //设置默认显示高度
-        mBookSummary.setHeight(mBookSummary.getLineHeight()*maxLineSum);
-        //根据高度来控制是否展示翻转icon
-        mBookSummary.post(new Runnable() {
-            @Override
-            public void run() {
-                mArrowTextDownSum.setVisibility(mBookSummary.getLineCount()>maxLineSum? View.VISIBLE:View.GONE);
-                mDividerLineSum.setVisibility(mBookSummary.getLineCount()>maxLineSum? View.VISIBLE:View.GONE);
-            }
-        });
-        mBookSummary.setOnClickListener(new TextAndArrowListener(mBookSummary,mArrowTextDownSum,maxLineSum));
-    }
-
-    private void setCatalog(){
-        //设置默认显示高度
-        mBookCatalog.setHeight(mBookCatalog.getLineHeight()*macLineCata);
-        //根据高度来控制是否展示翻转icon
-        mBookCatalog.post(new Runnable() {
-            @Override
-            public void run() {
-                mArrowTextDownCata.setVisibility(mBookCatalog.getLineCount()>macLineCata? View.VISIBLE:View.GONE);
-                mDividerLineCata.setVisibility(mBookCatalog.getLineCount()>macLineCata? View.VISIBLE:View.GONE);
-            }
-        });
-        mBookCatalog.setOnClickListener(new TextAndArrowListener(mBookCatalog,mArrowTextDownCata,macLineCata));
-    }
-
-
     /**
-     * 根据ISBN获取图书信息
+     * 设置图书简介和目录的折叠效果
      */
-    private void getBookInfo(){
-        String url="https://api.douban.com/v2/book/isbn/:"+bookISBN;
-        HttpUtil.get(url, new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-                LogUtil.e("获取失败");
-                LogUtil.e(s);
-            }
-
-            @Override
-            public void onSuccess(int i, Header[] headers, String s) {
-                LogUtil.i(s);
-                setBookData(s);
-
-            }
-
-
-        });
-
+    private void setTextContent(){
+        CommonUtils.setTextAnim(mBookSummary,mArrowTextDownSum,mDividerLineSum,maxLineSum);
+        CommonUtils.setTextAnim(mBookCatalog,mArrowTextDownCata,mDividerLineCata,maxLineCata);
     }
 
-    private void setBookData(String bookInfo){
-        Book mBook= new Book();
-        String author="";
-        try {
-            JSONObject jsonObject =new JSONObject(bookInfo);
-            JSONArray jsonArray=jsonObject.getJSONArray("author");
-            mBook.setPages(jsonObject.getString("pages"));
-            mBook.setTitle(jsonObject.getString("title"));
-            mBook.setPrice(jsonObject.getString("price"));
-            mBook.setSummary(jsonObject.getString("summary"));
-            mBook.setPublisher(jsonObject.getString("publisher"));
-            mBook.setBookImage(jsonObject.optJSONObject("images").optString("large"));
-            mBook.setCatalog(jsonObject.getString("catalog"));
-            for (int index=0;index<jsonArray.length();index++){
-                author += jsonArray.optString(index)+" ";
-            }
-            mBook.setAuthor(author);
+    private void setBookData(Book obj){
 
-            LogUtil.i(mBook.toString());
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        mBookName.setText(mBook.getTitle());
-        mBookPages.setText(mBook.getPages());
-        mBookPrice.setText(mBook.getPrice());
-        mBookAuthor.setText(mBook.getAuthor());
-        mBookPublisher.setText(mBook.getPublisher());
-        mBookSummary.setText(mBook.getSummary());
-        setSummary();
-        mBookCatalog.setText(mBook.getCatalog());
-        setCatalog();
+        mBookName.setText(obj.getTitle());
+        LogUtil.i(mBookName.getText().toString());
+        mBookPages.setText(obj.getPages());
+        mBookPrice.setText(obj.getPrice());
+        mBookAuthor.setText(obj.getAuthor());
+        mBookPublisher.setText(obj.getPublisher());
+        mBookPubdate.setText(obj.getPubdate());
+        mBookSummary.setText(obj.getSummary());
+        mBookCatalog.setText(obj.getCatalog());
+        setTextContent();
         KJBitmap bookPic=new KJBitmap();
-        bookPic.display(mBookPic, mBook.getBookImage());
+        bookPic.display(mBookPic, obj.getBookImage());
 //        bookPic.displayCacheOrDefult(mBookPic,mBook.getBookImage(),R.mipmap.no_cover);
     }
 

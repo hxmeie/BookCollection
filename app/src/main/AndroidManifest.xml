@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.hxm.books.activity.ActivityScan"
+            android:name=".activity.ScanActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +49,7 @@
         </activity>
         <!-- 扫描页面-->
         <!--<activity-->
-            <!--android:name=".activity.ActivityScan"-->
+            <!--android:name=".activity.ScanActivity"-->
             <!--android:theme="@style/AnimActivityTheme">-->
 
         <!--</activity>-->

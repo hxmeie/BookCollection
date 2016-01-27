@@ -27,7 +27,7 @@ import android.util.Log;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.hxm.books.R;
-import com.hxm.books.activity.ActivityScan;
+import com.hxm.books.activity.ScanActivity;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.view.ViewfinderResultPointCallback;
 
@@ -38,7 +38,7 @@ public final class CaptureActivityHandler extends Handler {
 
   private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-  private final ActivityScan activity;
+  private final ScanActivity activity;
   private final DecodeThread decodeThread;
   private State state;
 
@@ -48,8 +48,8 @@ public final class CaptureActivityHandler extends Handler {
     DONE
   }
 
-  public CaptureActivityHandler(ActivityScan activity, Vector<BarcodeFormat> decodeFormats,
-      String characterSet) {
+  public CaptureActivityHandler(ScanActivity activity, Vector<BarcodeFormat> decodeFormats,
+                                String characterSet) {
     this.activity = activity;
     decodeThread = new DecodeThread(activity, decodeFormats, characterSet,
         new ViewfinderResultPointCallback(activity.getViewfinderView()));

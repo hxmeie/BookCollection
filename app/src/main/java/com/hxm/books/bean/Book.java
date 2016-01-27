@@ -14,7 +14,16 @@ public class Book extends BmobObject {
     private String summary;
     private String bookImage;
     private String publisher;
+    private String pubdate;
     private String catalog;
+
+    public String getPubdate() {
+        return pubdate;
+    }
+
+    public void setPubdate(String pubdate) {
+        this.pubdate = pubdate;
+    }
 
     public String getCatalog() {
         return catalog;
