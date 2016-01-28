@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.ScanActivity"
+            android:name=".activity.SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,12 +47,12 @@
             android:theme="@style/AnimActivityTheme">
 
         </activity>
-        <!-- 扫描页面-->
-        <!--<activity-->
-            <!--android:name=".activity.ScanActivity"-->
-            <!--android:theme="@style/AnimActivityTheme">-->
+         扫描页面
+        <activity
+            android:name=".activity.ScanActivity"
+            android:theme="@style/AnimActivityTheme">
 
-        <!--</activity>-->
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />

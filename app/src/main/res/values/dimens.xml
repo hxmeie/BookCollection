@@ -13,6 +13,8 @@
     <!-- Button login-->
     <dimen name="btn_background_corners">5dp</dimen>
     <dimen name="btn_height_45">45dp</dimen>
+    <dimen name="btn_height_40">40dp</dimen>
+    <dimen name="btn_height_35">35dp</dimen>
 
     <!-- margin-->
     <dimen name="base_margin_20">20dp</dimen>

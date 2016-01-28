@@ -46,7 +46,7 @@ public class SplashActivity extends BaseActivity{
             SplashActivity splashActivity =mActivity.get();
             switch (msg.what){
                 case GO_MAIN:
-                    splashActivity.startAnimActivity(LoginActivity.class);
+                    splashActivity.startAnimActivity(MainActivity.class);
                     splashActivity.finish();
                     break;
             }
