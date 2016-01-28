@@ -5,6 +5,8 @@ import android.app.Application;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
 
+import org.kymjs.kjframe.bitmap.BitmapConfig;
+
 /**
  * 自定义全局类
  * Created by hxm on 2016/1/12.
@@ -21,6 +23,7 @@ public class MyApplication extends Application {
         //设置是否打印log
         LogUtil.isDebug=true;
     }
+
 
     public static MyApplication getInstance() {
         return mInstance;
