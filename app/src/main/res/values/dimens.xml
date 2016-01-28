@@ -14,7 +14,7 @@
     <dimen name="btn_background_corners">5dp</dimen>
     <dimen name="btn_height_45">45dp</dimen>
     <dimen name="btn_height_40">40dp</dimen>
-    <dimen name="btn_height_35">35dp</dimen>
+    <dimen name="btn_height_30">30dp</dimen>
 
     <!-- margin-->
     <dimen name="base_margin_20">20dp</dimen>
@@ -25,11 +25,13 @@
 
     <!-- padding-->
     <dimen name="base_padding_1">1dp</dimen>
+    <dimen name="base_padding_3">3dp</dimen>
     <dimen name="base_padding_5">5dp</dimen>
     <dimen name="base_padding_15">15dp</dimen>
     <dimen name="base_padding_10">10dp</dimen>
 
     <!-- text_size-->
+    <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_15">15sp</dimen>
     <dimen name="text_size_18">18sp</dimen>

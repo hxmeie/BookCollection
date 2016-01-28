@@ -18,19 +18,25 @@
 
         <ImageButton
             android:id="@+id/im_btn_scan"
-            android:layout_width="@dimen/btn_height_35"
-            android:layout_height="@dimen/btn_height_35"
+            android:layout_width="@dimen/btn_height_30"
+            android:layout_height="@dimen/btn_height_30"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/base_margin_10"
             android:background="@mipmap/scan_pic"/>
     </RelativeLayout>
-    <!--<android.support.v4.widget.SwipeRefreshLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_below="@id/title_bookshelf_frag">-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/bookshelf_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bookshelf_frag">
 
+        <ListView
+            android:id="@+id/list_bookshelf"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </ListView>
 
-    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

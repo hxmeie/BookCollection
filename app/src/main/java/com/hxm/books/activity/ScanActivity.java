@@ -229,7 +229,10 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         String author="";
         try {
             JSONObject jsonObject =new JSONObject(bookInfo);
-            JSONArray jsonArray=jsonObject.getJSONArray("author");
+            JSONArray authorArray=jsonObject.getJSONArray("author");
+            JSONArray tagArray=jsonObject.getJSONArray("tags");
+            JSONObject tag1Obj=tagArray.getJSONObject(0);
+            JSONObject tag2Obj=tagArray.getJSONObject(1);
             mBook.setPages(jsonObject.getString("pages"));
             mBook.setTitle(jsonObject.getString("title"));
             mBook.setPrice(jsonObject.getString("price"));
@@ -238,12 +241,15 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             mBook.setPubdate(jsonObject.getString("pubdate"));
             mBook.setBookImage(jsonObject.optJSONObject("images").optString("large"));
             mBook.setCatalog(jsonObject.getString("catalog"));
-            for (int index=0;index<jsonArray.length();index++){
-                author += jsonArray.optString(index)+" ";
+            for (int index=0;index<authorArray.length();index++){
+                author += authorArray.optString(index)+" ";
             }
             mBook.setAuthor(author);
 
-            LogUtil.i(mBook.toString());
+            mBook.setTag1(tag1Obj.getString("name"));
+            mBook.setTag2(tag2Obj.getString("name"));
+
+            LogUtil.d(mBook.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
