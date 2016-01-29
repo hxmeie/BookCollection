@@ -1,6 +1,7 @@
 package com.hxm.books.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -51,7 +52,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_login:
-                login();
+                if (!TextUtils.isEmpty(etLoginAccount.getText().toString().trim())&!TextUtils.isEmpty(etLoginPassword.getText().toString().trim())){
+                    login();
+                }else {
+                    ToastUtils.show(this,stringId(R.string.login_content_is_empty));
+                }
+
                 break;
             case R.id.btn_forget_password:
 
@@ -72,14 +78,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         user.login(this, new SaveListener() {
             @Override
             public void onSuccess() {
-                ToastUtils.show(LoginActivity.this, stringId(LoginActivity.this, R.string.login_success), Toast.LENGTH_SHORT);
+                ToastUtils.show(LoginActivity.this, stringId( R.string.login_success), Toast.LENGTH_SHORT);
                 //页面跳转
+                startAnimActivity(MainActivity.class);
+                finish();
             }
 
             @Override
             public void onFailure(int i, String s) {
                 if(i==101){
-                    ToastUtils.show(LoginActivity.this, stringId(LoginActivity.this, R.string.login_failed), Toast.LENGTH_SHORT);
+                    ToastUtils.show(LoginActivity.this, stringId( R.string.login_failed), Toast.LENGTH_SHORT);
                 }
                 LogUtil.e("登录失败",s);
                 LogUtil.e("登录失败",i+"");

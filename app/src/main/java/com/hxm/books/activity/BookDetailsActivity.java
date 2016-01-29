@@ -5,11 +5,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
+import com.hxm.books.bean.BookToUser;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.ToastUtils;
+
 import org.kymjs.kjframe.KJBitmap;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.GetListener;
+import cn.bmob.v3.listener.SaveListener;
 
 
 /**
@@ -24,6 +32,7 @@ public class BookDetailsActivity extends BaseActivity {
     private Button btnAddToBookshelf;
     private View mDividerLineSum, mDividerLineCata;
     private Book mBook;
+    private BookToUser bookToUser;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
 
@@ -33,8 +42,10 @@ public class BookDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_book_details);
         Bundle bundle = this.getIntent().getExtras();
         mBook = (Book) bundle.getSerializable("bookObject");
+        bookToUser=new BookToUser();
         LogUtil.i(mBook.toString());
         initView();
+        isBookExist();
     }
 
     @Override
@@ -61,14 +72,35 @@ public class BookDetailsActivity extends BaseActivity {
         mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
         btnAddToBookshelf = (Button) findViewById(R.id.btn_add_to_bookshelf);
 
-        btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
+    /**
+     * 判断该书是否已经存在该用户书架中
+     */
+    private void isBookExist() {
+        BmobQuery<BookToUser> bookToUserBmobQuery =new BmobQuery<>();
+        bookToUserBmobQuery.getObject(this, mBook.getIsbn(), new GetListener<BookToUser>() {
+            @Override
+            public void onSuccess(BookToUser bookToUser) {
+                btnAddToBookshelf.setText("已加入书架");
+                btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
+                btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
+                btnAddToBookshelf.setClickable(false);
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
             }
         });
 
     }
+
 
     /**
      * 设置图书简介和目录的折叠效果

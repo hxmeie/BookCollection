@@ -3,11 +3,16 @@ package com.hxm.books.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import com.hxm.books.Constants;
+import com.hxm.books.MyApplication;
 import com.hxm.books.R;
+import com.hxm.books.bean.MyUser;
 
 import java.lang.ref.WeakReference;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 
 /**
  * 应用启动时的引导页
@@ -19,13 +24,14 @@ public class SplashActivity extends BaseActivity{
     /**
      * SDK初始化建议放在启动页
      */
-    public static String APP_ID = "2e03042ef581069f7d0e4ed380a273b6";
+    private static MyUser user = MyApplication.user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Bmob.initialize(getApplicationContext(),APP_ID);
+        Bmob.initialize(getApplicationContext(), Constants.APP_ID);
+
     }
 
     @Override
@@ -46,10 +52,18 @@ public class SplashActivity extends BaseActivity{
             SplashActivity splashActivity =mActivity.get();
             switch (msg.what){
                 case GO_MAIN:
-                    splashActivity.startAnimActivity(MainActivity.class);
+                    //判断用户是否登录过
+                    if (user != null){
+                        splashActivity.startAnimActivity(MainActivity.class);
+
+                    }else {
+                        splashActivity.startAnimActivity(LoginActivity.class);
+                    }
                     splashActivity.finish();
                     break;
             }
         }
     }
+
+
 }

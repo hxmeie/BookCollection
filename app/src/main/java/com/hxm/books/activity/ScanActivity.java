@@ -27,6 +27,8 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
+import com.hxm.books.Constants;
+import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.utils.HttpUtil;
@@ -49,6 +51,12 @@ import java.lang.ref.WeakReference;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobQueryResult;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.GetListener;
+import cn.bmob.v3.listener.SQLQueryListener;
+
 /**
  * Created by hxm on 2016/1/13.
  */
@@ -64,8 +72,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     private boolean playBeep;
     private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
-    private Book  mBook= new Book();
-
+    private Book  mBook;
     private static final int REQUEST_CODE = 100;
     private static final int PARSE_BARCODE_SUC = 300;
     private static final int PARSE_BARCODE_FAIL = 303;
@@ -86,6 +93,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
+        mBook= new Book();
         initView();
     }
 
@@ -202,8 +210,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     }
 
     private void getBookData(String result){
-        String url="https://api.douban.com/v2/book/isbn/:"+result;
-        //String url="https://api.douban.com/v2/book/isbn/:9787508656823";
+        String url= Constants.GET_BOOK_BASE_URL+result;
         HttpUtil.get(url, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
@@ -214,7 +221,8 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             public void onSuccess(int i, Header[] headers, String s) {
                 LogUtil.i(s);
                 setBookData(s);
-                Intent resultIntent = new Intent(ScanActivity.this,BookDetailsActivity.class);
+                updateBookInfoToServer();
+                Intent resultIntent = new Intent(ScanActivity.this, BookDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("bookObject", mBook);
                 resultIntent.putExtras(bundle);
@@ -241,6 +249,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             mBook.setPubdate(jsonObject.getString("pubdate"));
             mBook.setBookImage(jsonObject.optJSONObject("images").optString("large"));
             mBook.setCatalog(jsonObject.getString("catalog"));
+            mBook.setIsbn(jsonObject.getString("isbn13"));
             for (int index=0;index<authorArray.length();index++){
                 author += authorArray.optString(index)+" ";
             }
@@ -255,6 +264,24 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             e.printStackTrace();
         }
     }
+
+    /**
+     * 将书籍信息上传到服务器
+     */
+    private void updateBookInfoToServer(){
+        String sql = Constants.CHECK_ISBN_EXIST_OR_NOT+mBook.getIsbn();
+        new BmobQuery<Book>().doSQLQuery(this, sql, new SQLQueryListener<Book>() {
+            @Override
+            public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
+
+                    LogUtil.i("上传",e.getMessage());
+
+
+            }
+        });
+
+    }
+
     private void initCamera(SurfaceHolder surfaceHolder) {
         try {
             CameraManager.get().openDriver(surfaceHolder);

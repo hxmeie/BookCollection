@@ -43,6 +43,14 @@ public class BaseActivity extends FragmentActivity {
     }
 
     /**
+     * 获取string。xml字符串
+     * @param id 字符串id
+     */
+    public String stringId(int id){
+        return getResources().getString(id);
+    }
+
+    /**
      * 只有标题title
      *
      * @param titleName 标题名称

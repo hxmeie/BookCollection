@@ -3,6 +3,7 @@ package com.hxm.books.bean;
 import cn.bmob.v3.BmobObject;
 
 /**
+ * 书籍表
  * Created by hxm on 2016/1/26.
  */
 public class Book extends BmobObject {
@@ -15,6 +16,16 @@ public class Book extends BmobObject {
     private String bookImage;
     private String publisher;
     private String pubdate;
+    private String isbn;
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     private String catalog;
     private String tag1;
     private String tag2;

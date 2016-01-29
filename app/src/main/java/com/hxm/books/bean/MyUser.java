@@ -3,6 +3,7 @@ package com.hxm.books.bean;
 import cn.bmob.v3.BmobUser;
 
 /**
+ * 用户表
  * Created by hxm on 2016/1/13.
  */
 public class MyUser extends BmobUser {
