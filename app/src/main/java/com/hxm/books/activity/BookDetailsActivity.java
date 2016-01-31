@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
@@ -15,7 +16,10 @@ import com.hxm.books.utils.ToastUtils;
 
 import org.kymjs.kjframe.KJBitmap;
 
+import java.util.List;
+
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -32,7 +36,6 @@ public class BookDetailsActivity extends BaseActivity {
     private Button btnAddToBookshelf;
     private View mDividerLineSum, mDividerLineCata;
     private Book mBook;
-    private BookToUser bookToUser;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
 
@@ -42,16 +45,15 @@ public class BookDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_book_details);
         Bundle bundle = this.getIntent().getExtras();
         mBook = (Book) bundle.getSerializable("bookObject");
-        bookToUser=new BookToUser();
         LogUtil.i(mBook.toString());
         initView();
-        isBookExist();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setBookData(mBook);
+        isBookExist();
     }
 
     //    初始化view
@@ -71,34 +73,77 @@ public class BookDetailsActivity extends BaseActivity {
         mArrowTextDownCata = (ImageView) findViewById(R.id.im_arrow_text_down_catalog);
         mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
         btnAddToBookshelf = (Button) findViewById(R.id.btn_add_to_bookshelf);
-
-    }
-
-    /**
-     * 判断该书是否已经存在该用户书架中
-     */
-    private void isBookExist() {
-        BmobQuery<BookToUser> bookToUserBmobQuery =new BmobQuery<>();
-        bookToUserBmobQuery.getObject(this, mBook.getIsbn(), new GetListener<BookToUser>() {
+  /*      btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(BookToUser bookToUser) {
-                btnAddToBookshelf.setText("已加入书架");
-                btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
-                btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
-                btnAddToBookshelf.setClickable(false);
-            }
-
-            @Override
-            public void onFailure(int i, String s) {
-                btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                BookToUser bookToUser = new BookToUser();
+                bookToUser.setIsbn(mBook.getIsbn());
+                bookToUser.setUerObjectId(MyApplication.user.getObjectId());
+                bookToUser.save(BookDetailsActivity.this, new SaveListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onSuccess() {
+                        LogUtil.i("book_and_user","添加成功");
+                    }
+
+                    @Override
+                    public void onFailure(int i, String s) {
 
                     }
                 });
             }
-        });
+        });*/
 
+    }
+
+    /**
+     * 判断该书是否已经存在该用户书架中，不存在则添加
+     */
+    private void isBookExist() {
+        final BookToUser bookToUser = new BookToUser();
+        bookToUser.setIsbn(mBook.getIsbn());
+        bookToUser.setUerObjectId(MyApplication.user.getObjectId());
+        BmobQuery<BookToUser> bookToUserBmobQuery = new BmobQuery<>();
+        bookToUserBmobQuery.addWhereEqualTo("isbn", bookToUser.getIsbn());
+        bookToUserBmobQuery.findObjects(this, new FindListener<BookToUser>() {
+            @Override
+            public void onSuccess(List<BookToUser> list) {
+                LogUtil.i("book_and_user",list.size()+"");
+                if (list.size() == 0) {
+                    btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                           bookToUser.save(BookDetailsActivity.this, new SaveListener() {
+                               @Override
+                               public void onSuccess() {
+                                   LogUtil.i("book_and_user","添加成功");
+                                   btnAddToBookshelf.setText("已加入书架");
+                                   btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
+                                   btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
+                                   btnAddToBookshelf.setClickable(false);
+                               }
+
+                               @Override
+                               public void onFailure(int i, String s) {
+
+                               }
+                           });
+                        }
+                    });
+
+                } else {
+                    LogUtil.i("book_and_user","已经添加过");
+                    btnAddToBookshelf.setText("已加入书架");
+                    btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
+                    btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
+                    btnAddToBookshelf.setClickable(false);
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
     }
 
 

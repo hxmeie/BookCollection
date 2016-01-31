@@ -33,6 +33,7 @@ import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.decoding.CaptureActivityHandler;
 import com.hxm.books.zxing.decoding.InactivityTimer;
@@ -49,11 +50,13 @@ import org.kymjs.kjframe.KJBitmap;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 
@@ -269,14 +272,20 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
      * 将书籍信息上传到服务器
      */
     private void updateBookInfoToServer(){
-        String sql = Constants.CHECK_ISBN_EXIST_OR_NOT+mBook.getIsbn();
-        new BmobQuery<Book>().doSQLQuery(this, sql, new SQLQueryListener<Book>() {
+        BmobQuery<Book> query = new BmobQuery<>();
+        query.addWhereEqualTo("isbn",mBook.getIsbn());
+        query.findObjects(this, new FindListener<Book>() {
             @Override
-            public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
+            public void onSuccess(List<Book> list) {
+                LogUtil.i("上传","查询成功返回结果数" +list.size());
+                if (list.size()==0) {
+                    mBook.save(ScanActivity.this);
+                }
+            }
 
-                    LogUtil.i("上传",e.getMessage());
-
-
+            @Override
+            public void onError(int i, String s) {
+                LogUtil.i("上传",s );
             }
         });
 

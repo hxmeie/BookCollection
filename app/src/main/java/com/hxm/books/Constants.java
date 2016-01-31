@@ -10,7 +10,5 @@ public class Constants {
 
     //-----------------------------------------SQL语句---------------------------------------
 
-    //查询扫描到的书是否已存在在服务器上
-    public static final String CHECK_ISBN_EXIST_OR_NOT="select isbn from Book where isbn=";
 
 }
