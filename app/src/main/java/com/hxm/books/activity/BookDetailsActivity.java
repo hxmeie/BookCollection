@@ -73,25 +73,6 @@ public class BookDetailsActivity extends BaseActivity {
         mArrowTextDownCata = (ImageView) findViewById(R.id.im_arrow_text_down_catalog);
         mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
         btnAddToBookshelf = (Button) findViewById(R.id.btn_add_to_bookshelf);
-  /*      btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BookToUser bookToUser = new BookToUser();
-                bookToUser.setIsbn(mBook.getIsbn());
-                bookToUser.setUerObjectId(MyApplication.user.getObjectId());
-                bookToUser.save(BookDetailsActivity.this, new SaveListener() {
-                    @Override
-                    public void onSuccess() {
-                        LogUtil.i("book_and_user","添加成功");
-                    }
-
-                    @Override
-                    public void onFailure(int i, String s) {
-
-                    }
-                });
-            }
-        });*/
 
     }
 
@@ -169,7 +150,6 @@ public class BookDetailsActivity extends BaseActivity {
         setTextContent();
         KJBitmap bookPic = new KJBitmap();
         bookPic.display(mBookPic, obj.getBookImage());
-//        bookPic.displayCacheOrDefult(mBookPic,mBook.getBookImage(),R.mipmap.no_cover);
     }
 
 }

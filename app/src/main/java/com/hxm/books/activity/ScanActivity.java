@@ -79,12 +79,6 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     private static final int REQUEST_CODE = 100;
     private static final int PARSE_BARCODE_SUC = 300;
     private static final int PARSE_BARCODE_FAIL = 303;
-    private ProgressDialog mProgress;
-    private String photo_path;
-    private Bitmap scanBitmap;
-    private ImageView progressView;
-    private AnimationDrawable animDra;
-
     /**
      * Called when the activity is first created.
      */
@@ -125,16 +119,9 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             final ScanActivity scanActivity =mActivity.get();
-            scanActivity.mProgress.dismiss();
             switch (msg.what) {
                 case PARSE_BARCODE_SUC:
                     scanActivity.onResultHandler((String) msg.obj);
-                    scanActivity.progressView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            scanActivity.animDra.start();
-                        }
-                    },100);
                     break;
                 case PARSE_BARCODE_FAIL:
                     Toast.makeText(scanActivity, (String) msg.obj, Toast.LENGTH_LONG).show();

@@ -2,6 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:paddingLeft="@dimen/base_padding_15"
+    android:paddingRight="@dimen/base_padding_15"
+    android:paddingTop="@dimen/base_padding_5"
+    android:paddingBottom="@dimen/base_padding_5"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
     <ImageView
@@ -12,7 +17,7 @@
         android:scaleType="fitCenter"/>
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/base_margin_10"
         android:layout_weight="1"
         android:paddingTop="@dimen/base_padding_10"
@@ -23,14 +28,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Android开发艺术探索"
-            android:textSize="@dimen/text_size_20"/>
+            android:textSize="@dimen/text_size_15"/>
         <TextView
             android:id="@+id/tv_bookshelf_item_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:textSize="@dimen/text_size_15"
-            android:layout_marginTop="@dimen/base_margin_10"
+            android:maxLines="3"
+            android:textSize="@dimen/text_size_13"
+            android:layout_marginTop="@dimen/base_margin_5"
             android:textColor="@color/bookshelf_item_text_color_1"
             tools:text="《Android开发艺术探索》是一本Android进阶类书籍，采用理论、源码和实践相结合的方式来阐述高水准的Android应用开发要点。"/>
 
@@ -42,31 +47,32 @@
                 android:id="@+id/tv_bookshelf_item_bookauthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:textColor="@color/bookshelf_item_text_color_1"
-                android:textSize="@dimen/base_margin_15"
+                android:textSize="@dimen/text_size_13"
                 tools:text="任玉刚"/>
 
             <TextView
-                android:id="@+id/tv_book_type_1"
+                android:id="@+id/tv_bookshelf_item_type_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/base_padding_3"
+                android:padding="@dimen/base_padding_2"
                 android:textColor="@color/bookshelf_item_text_color_1"
                 android:layout_alignParentRight="true"
-                android:textSize="@dimen/text_size_12"
+                android:textSize="@dimen/text_size_10"
                 android:background="@drawable/tag_textview_background"
                 tools:text="android"/>
 
             <TextView
-                android:id="@+id/tv_book_type_2"
+                android:id="@+id/tv_bookshelf_item_type_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/bookshelf_item_text_color_1"
-                android:layout_toLeftOf="@id/tv_book_type_1"
-                android:layout_marginRight="@dimen/base_margin_10"
+                android:layout_toLeftOf="@id/tv_bookshelf_item_type_1"
+                android:layout_marginRight="@dimen/base_margin_5"
                 android:background="@drawable/tag_textview_background"
-                android:padding="@dimen/base_padding_3"
-                android:textSize="@dimen/text_size_12"
+                android:padding="@dimen/base_padding_2"
+                android:textSize="@dimen/text_size_10"
                 tools:text="计算机"/>
 
         </RelativeLayout>

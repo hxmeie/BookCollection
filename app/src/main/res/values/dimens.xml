@@ -25,6 +25,7 @@
 
     <!-- padding-->
     <dimen name="base_padding_1">1dp</dimen>
+    <dimen name="base_padding_2">2dp</dimen>
     <dimen name="base_padding_3">3dp</dimen>
     <dimen name="base_padding_5">5dp</dimen>
     <dimen name="base_padding_15">15dp</dimen>
@@ -33,6 +34,8 @@
     <!-- text_size-->
     <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
     <dimen name="text_size_15">15sp</dimen>
     <dimen name="text_size_18">18sp</dimen>
     <dimen name="text_size_20">20sp</dimen>

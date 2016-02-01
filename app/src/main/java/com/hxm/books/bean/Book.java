@@ -120,6 +120,6 @@ public class Book extends BmobObject {
 
     @Override
     public String toString() {
-        return "title=" + title + "\n" + "price=" + price + "\n" + "pages=" + pages + "\n" + "author=" + author + "\n" + "summary=" + summary + "\n" + "bookImage=" + bookImage + "\n" + "publisher=" + publisher+ "\n" + "tag1=" + tag1+ "\n" + "tag2=" + tag2;
+        return "bookName=" + title + "\n" + "price=" + price + "\n" + "pages=" + pages + "\n" + "author=" + author + "\n" + "summary=" + summary + "\n" + "bookImage=" + bookImage + "\n" + "publisher=" + publisher+ "\n" + "tag1=" + tag1+ "\n" + "tag2=" + tag2;
     }
 }

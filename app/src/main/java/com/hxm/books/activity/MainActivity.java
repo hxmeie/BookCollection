@@ -5,8 +5,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.hxm.books.MyApplication;
 import com.hxm.books.R;
+import com.hxm.books.bean.Book;
+import com.hxm.books.bean.BookToUser;
+import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
 
 
 /**
@@ -98,4 +108,5 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if(mineFragment !=null)
             fragmentTransaction.hide(mineFragment);
     }
+
 }
