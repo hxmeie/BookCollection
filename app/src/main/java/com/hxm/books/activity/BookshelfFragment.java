@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import com.ab.view.pullview.AbPullToRefreshView;
 import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.adapter.BookShelfAdapter;
@@ -16,8 +15,6 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
-import com.hxm.books.utils.ToastUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
