@@ -35,9 +35,9 @@
             android:theme="@style/AnimActivityTheme">
 
         </activity>
-        <!-- 书籍详细信息-->
+        <!-- 扫描书籍详细信息-->
         <activity
-            android:name=".activity.BookDetailsActivity"
+            android:name=".activity.ScanBookDetailsActivity"
             android:theme="@style/AnimActivityTheme">
 
         </activity>
@@ -47,7 +47,13 @@
             android:theme="@style/AnimActivityTheme">
 
         </activity>
-         扫描页面
+        <!--书架书籍详细信息页面-->
+        <activity
+            android:name=".activity.BookActivity"
+            android:theme="@style/AnimActivityTheme">
+
+        </activity>
+         <!--扫描页面-->
         <activity
             android:name=".activity.ScanActivity"
             android:theme="@style/AnimActivityTheme">

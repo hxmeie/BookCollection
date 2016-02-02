@@ -23,7 +23,7 @@ import cn.bmob.v3.listener.SaveListener;
 /**
  * Created by hxm on 2016/1/13.
  */
-public class BookDetailsActivity extends BaseActivity {
+public class ScanBookDetailsActivity extends BaseActivity {
 
     private TextView mBookName, mBookPrice, mBookPublisher, mBookPages, mBookAuthor, mBookPubdate;
     private ImageView mBookPic;
@@ -89,7 +89,7 @@ public class BookDetailsActivity extends BaseActivity {
                     btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           bookToUser.save(BookDetailsActivity.this, new SaveListener() {
+                           bookToUser.save(ScanBookDetailsActivity.this, new SaveListener() {
                                @Override
                                public void onSuccess() {
                                    LogUtil.i("book_and_user","添加成功");

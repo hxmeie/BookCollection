@@ -13,7 +13,7 @@
     <string name="menu_discovery">发现</string>
     <string name="menu_mine">我的</string>
 
-    <!-- BookDetailsActivity-->
+    <!-- ScanBookDetailsActivity-->
     <string name="activity_book_details_title">图书信息</string>
     <string name="book_author">作者:</string>
     <string name="book_price">价格:</string>

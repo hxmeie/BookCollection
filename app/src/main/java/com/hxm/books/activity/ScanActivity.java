@@ -189,7 +189,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
                 LogUtil.i(s);
                 setBookData(s);
                 updateBookInfoToServer();
-                Intent resultIntent = new Intent(ScanActivity.this, BookDetailsActivity.class);
+                Intent resultIntent = new Intent(ScanActivity.this, ScanBookDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("bookObject", mBook);
                 resultIntent.putExtras(bundle);
