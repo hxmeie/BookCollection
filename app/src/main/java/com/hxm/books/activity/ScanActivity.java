@@ -1,11 +1,7 @@
 package com.hxm.books.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimationDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -16,49 +12,30 @@ import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.DecodeHintType;
-import com.google.zxing.FormatException;
-import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
-import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.qrcode.QRCodeReader;
 import com.hxm.books.Constants;
-import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
-import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.decoding.CaptureActivityHandler;
 import com.hxm.books.zxing.decoding.InactivityTimer;
-import com.hxm.books.zxing.decoding.RGBLuminanceSource;
 import com.hxm.books.zxing.view.ViewfinderView;
 import com.loopj.android.http.TextHttpResponseHandler;
-
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kymjs.kjframe.KJBitmap;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
-
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.datatype.BmobQueryResult;
-import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.GetListener;
-import cn.bmob.v3.listener.SQLQueryListener;
+
 
 /**
  * Created by hxm on 2016/1/13.

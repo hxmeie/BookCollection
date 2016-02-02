@@ -12,15 +12,11 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
-import com.hxm.books.utils.ToastUtils;
-
-import org.kymjs.kjframe.KJBitmap;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
-
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.SaveListener;
 
 
@@ -148,8 +144,7 @@ public class BookDetailsActivity extends BaseActivity {
         mBookSummary.setText(obj.getSummary());
         mBookCatalog.setText(obj.getCatalog());
         setTextContent();
-        KJBitmap bookPic = new KJBitmap();
-        bookPic.display(mBookPic, obj.getBookImage());
+        ImageLoader.getInstance().displayImage(obj.getBookImage(),mBookPic);
     }
 
 }

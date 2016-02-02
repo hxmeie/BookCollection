@@ -74,12 +74,12 @@ public final class StorageUtils {
 			externalStorageState = "";
 		}
 		if (preferExternal && MEDIA_MOUNTED.equals(externalStorageState) && hasExternalStoragePermission(context)) {
-			String cacheDir="/MyBooks/cache/image/";
+//			String cacheDir="/MyBooks/cache/image/";
 			//System Dir
-//			appCacheDir = getExternalCacheDir(context);
+			appCacheDir = getExternalCacheDir(context);
 			//My own Dir
-			appCacheDir = getOwnCacheDirectory(context,cacheDir);
-			L.w("存储地址",cacheDir);
+//			appCacheDir = getOwnCacheDirectory(context,cacheDir);
+			L.w("存储地址",appCacheDir);
 		}
 		if (appCacheDir == null) {
 			appCacheDir = context.getCacheDir();

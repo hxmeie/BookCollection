@@ -12,6 +12,7 @@
     <color name="title_verticle_line">#FF12629E</color>
     <color name="splash_text_color">#0c7bce</color>
     <color name="bookshelf_item_text_color_1">#B0AFADAD</color>
+    <color name="book_tag_color">#FF0ED20B</color>
     <!-- activity background color-->
     <color name="activity_back_color_gray">#EDECEC</color>
 

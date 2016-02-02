@@ -57,20 +57,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/base_padding_2"
-                android:textColor="@color/bookshelf_item_text_color_1"
+                android:textColor="@color/book_tag_color"
                 android:layout_alignParentRight="true"
                 android:textSize="@dimen/text_size_10"
-                android:background="@drawable/tag_textview_background"
+                android:background="@drawable/book_tag_background"
                 tools:text="android"/>
 
             <TextView
                 android:id="@+id/tv_bookshelf_item_type_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/bookshelf_item_text_color_1"
+                android:textColor="@color/book_tag_color"
                 android:layout_toLeftOf="@id/tv_bookshelf_item_type_1"
                 android:layout_marginRight="@dimen/base_margin_5"
-                android:background="@drawable/tag_textview_background"
+                android:background="@drawable/book_tag_background"
                 android:padding="@dimen/base_padding_2"
                 android:textSize="@dimen/text_size_10"
                 tools:text="计算机"/>
