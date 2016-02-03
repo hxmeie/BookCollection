@@ -10,14 +10,20 @@ import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
+import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
+
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 
 /**
@@ -49,7 +55,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         setBookData(mBook);
-        isBookExist();
+        queryStarBook(mBook);
     }
 
     //    初始化view
@@ -70,57 +76,73 @@ public class ScanBookDetailsActivity extends BaseActivity {
         mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
         btnAddToBookshelf = (Button) findViewById(R.id.btn_add_to_bookshelf);
 
+//        btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                addStarBook(mBook);
+//            }
+//        });
+
     }
 
     /**
-     * 判断该书是否已经存在该用户书架中，不存在则添加
+     * 查询当前用户是否收藏该书
      */
-    private void isBookExist() {
-        final BookToUser bookToUser = new BookToUser();
-        bookToUser.setIsbn(mBook.getIsbn());
-        bookToUser.setUerObjectId(MyApplication.user.getObjectId());
-        BmobQuery<BookToUser> bookToUserBmobQuery = new BmobQuery<>();
-        bookToUserBmobQuery.addWhereEqualTo("isbn", bookToUser.getIsbn());
-        bookToUserBmobQuery.findObjects(this, new FindListener<BookToUser>() {
+    private void queryStarBook(final Book book) {
+        //查询当前用户收藏的所有图书,因此查询book表
+        BmobQuery<Book> query = new BmobQuery<>();
+        MyUser user = BmobUser.getCurrentUser(this,MyUser.class);
+        user.setObjectId(user.getObjectId());
+        //starBooks是MyUser表中的字段，用来存储用户收藏的所有图书
+        query.addWhereRelatedTo("starBooks", new BmobPointer(user));
+        query.findObjects(this, new FindListener<Book>() {
             @Override
-            public void onSuccess(List<BookToUser> list) {
-                LogUtil.i("book_and_user",list.size()+"");
-                if (list.size() == 0) {
+            public void onSuccess(List<Book> list) {
+                if (list.size() > 0) {
+                    LogUtil.i("relation", "查询成功");
+                    setBtnState();
+                } else {
+                    LogUtil.i("relation", "查询成功,未收藏");
                     btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                           bookToUser.save(ScanBookDetailsActivity.this, new SaveListener() {
-                               @Override
-                               public void onSuccess() {
-                                   LogUtil.i("book_and_user","添加成功");
-                                   btnAddToBookshelf.setText("已加入书架");
-                                   btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
-                                   btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
-                                   btnAddToBookshelf.setClickable(false);
-                               }
-
-                               @Override
-                               public void onFailure(int i, String s) {
-
-                               }
-                           });
+                            LogUtil.i("relation", book.toString());
+                            addStarBook(book);
+                            setBtnState();
                         }
                     });
-
-                } else {
-                    LogUtil.i("book_and_user","已经添加过");
-                    btnAddToBookshelf.setText("已加入书架");
-                    btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
-                    btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
-                    btnAddToBookshelf.setClickable(false);
                 }
             }
 
             @Override
             public void onError(int i, String s) {
-
+                LogUtil.i("relation", "查询失败,错误代码:" + i + "错误描述:" + s);
             }
         });
+    }
+
+    /**
+     * 添加收藏
+     */
+    private void addStarBook(Book book) {
+        LogUtil.i("relationbook", book.toString());
+        MyUser user = BmobUser.getCurrentUser(this,MyUser.class);
+        user.setObjectId(user.getObjectId());
+        BmobRelation relation = new BmobRelation();
+        relation.add(book);
+        user.setStarBooks(relation);
+        user.update(this, new UpdateListener() {
+            @Override
+            public void onSuccess() {
+                LogUtil.i("relation", "多对多关系添加成功");
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                LogUtil.i("relation", "多对多关系添加失败" + s);
+            }
+        });
+
     }
 
 
@@ -144,7 +166,13 @@ public class ScanBookDetailsActivity extends BaseActivity {
         mBookSummary.setText(obj.getSummary());
         mBookCatalog.setText(obj.getCatalog());
         setTextContent();
-        ImageLoader.getInstance().displayImage(obj.getBookImage(),mBookPic);
+        ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
     }
 
+    private void setBtnState() {
+        btnAddToBookshelf.setText("已加入书架");
+        btnAddToBookshelf.setBackgroundDrawable(getResources().getDrawable(R.drawable.btn_add_bookshelf_exist));
+        btnAddToBookshelf.setTextColor(getResources().getColor(R.color.colorWhite));
+        btnAddToBookshelf.setClickable(false);
+    }
 }

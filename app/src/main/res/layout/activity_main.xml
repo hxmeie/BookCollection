@@ -41,18 +41,19 @@
                 android:text="@string/menu_mine" />
         </RadioGroup>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_above="@id/bottom_menu">
+
+    </FrameLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/line_height"
         android:background="@color/menu_above_line_color"
         android:layout_above="@id/bottom_menu"/>
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/activity_back_color_gray"
-        android:layout_above="@id/bottom_menu">
 
-    </FrameLayout>
 
 </RelativeLayout>

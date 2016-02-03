@@ -1,5 +1,6 @@
 package com.hxm.books.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -59,6 +60,11 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
         getBookList();
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+}
 
     @Override
     public void onDestroy() {

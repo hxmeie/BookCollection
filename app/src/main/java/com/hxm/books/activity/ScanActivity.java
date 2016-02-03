@@ -1,5 +1,6 @@
 package com.hxm.books.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
@@ -56,6 +58,8 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     private static final int REQUEST_CODE = 100;
     private static final int PARSE_BARCODE_SUC = 300;
     private static final int PARSE_BARCODE_FAIL = 303;
+    private ImageButton btnFlashlight;
+    private int tag=0;
     /**
      * Called when the activity is first created.
      */
@@ -73,11 +77,29 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     public void initView(){
         initOnlyTitleAndLeftBar(stringId(this, R.string.activity_scan_title));
+        btnFlashlight = (ImageButton) findViewById(R.id.btn_flashlight);
+
+        btnFlashlight.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.btn_flashlight:
+                switch (tag){
+                    case 0:
+                        CameraManager.get().openLight();
+                        btnFlashlight.setImageResource(R.mipmap.flashlight_on);
+                        tag=1;
+                        break;
+                    case 1:
+                        CameraManager.get().offLight();
+                        btnFlashlight.setImageResource(R.mipmap.flashlight_off);
+                        tag=0;
+                        break;
+                }
+                break;
+        }
 
     }
 
@@ -177,11 +199,18 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     }
 
     private void getBookData(String result){
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("查询中...");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
         String url= Constants.GET_BOOK_BASE_URL+result;
         HttpUtil.get(url, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
                 LogUtil.e("获取失败");
+                dialog.dismiss();
+                finish();
             }
 
             @Override
@@ -189,12 +218,13 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
                 LogUtil.i(s);
                 setBookData(s);
                 updateBookInfoToServer();
+                dialog.dismiss();
                 Intent resultIntent = new Intent(ScanActivity.this, ScanBookDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("bookObject", mBook);
                 resultIntent.putExtras(bundle);
                 startAnimActivity(resultIntent);
-                ScanActivity.this.finish();
+                finish();
             }
 
 

@@ -8,6 +8,7 @@ import com.hxm.books.Constants;
 import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
 
@@ -24,7 +25,7 @@ public class SplashActivity extends BaseActivity{
     /**
      * SDK初始化建议放在启动页
      */
-    private static MyUser user = MyApplication.user;
+    private static MyUser user = BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

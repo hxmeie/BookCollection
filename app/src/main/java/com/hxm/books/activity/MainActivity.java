@@ -3,9 +3,11 @@ package com.hxm.books.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.hxm.books.AppManager;
 import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
@@ -31,6 +33,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private DiscoveryFragment discoveryFragment;
     private MineFragment mineFragment;
     private FragmentManager mFragmentManger;
+    private DoubleClickExitHelper mDoubleClickExit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,11 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         setContentView(R.layout.activity_main);
         mFragmentManger=getSupportFragmentManager();
         initView();
+        AppManager.getAppManager().addActivity(this);
     }
 
     public void initView(){
+        mDoubleClickExit = new DoubleClickExitHelper(this);
         menuGroup= (RadioGroup) findViewById(R.id.menu_radio_group);
         menuGroup.setOnCheckedChangeListener(this);
         btnBookshelf= (RadioButton) findViewById(R.id.btn_bookshelf);
@@ -108,5 +113,14 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if(mineFragment !=null)
             fragmentTransaction.hide(mineFragment);
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // 是否退出应用
 
+                return mDoubleClickExit.onKeyDown(keyCode, event);
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

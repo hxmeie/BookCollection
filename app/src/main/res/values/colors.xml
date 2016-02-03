@@ -6,13 +6,16 @@
     <color name="colorBase">#0c7bce</color>
     <color name="colorWhite">#ffffff</color>
     <color name="transparent">#00000000</color>
-    <color name="result_view">#b0000000</color>
+    <color name="colorBlack">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#c0ffff00</color>
     <color name="title_verticle_line">#FF12629E</color>
     <color name="splash_text_color">#0c7bce</color>
     <color name="bookshelf_item_text_color_1">#B0AFADAD</color>
+    <color name="bookshelf_item_divider">#B0DAD9D9</color>
     <color name="book_tag_color">#FF0ED20B</color>
+    <color name="colorBrowm">#ae7433</color>
+    <color name="bookshelf_item_background">#b0f2eeee</color>
     <!-- activity background color-->
     <color name="activity_back_color_gray">#EDECEC</color>
 
@@ -33,6 +36,6 @@
     <!-- menu_text color-->
     <color name="menu_text_color_normal">#60000000</color>
     <color name="menu_text_color_pressed">#0c7bce</color>
-    <color name="menu_above_line_color">#60403f3f</color>
+    <color name="menu_above_line_color">#60868484</color>
 
 </resources>

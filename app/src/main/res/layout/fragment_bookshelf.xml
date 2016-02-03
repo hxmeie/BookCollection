@@ -24,13 +24,14 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/base_margin_10"
-            android:background="@mipmap/scan_pic"/>
+            android:background="@drawable/btn_scan_pic"/>
     </RelativeLayout>
 
     <ListView
         android:id="@+id/list_bookshelf"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:divider="@null"
         android:layout_weight="1" />
 
 </LinearLayout>

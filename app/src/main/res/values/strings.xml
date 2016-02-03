@@ -12,6 +12,7 @@
     <string name="menu_classify">分类</string>
     <string name="menu_discovery">发现</string>
     <string name="menu_mine">我的</string>
+    <string name="doubleclick_exit">双击退出</string>
 
     <!-- ScanBookDetailsActivity-->
     <string name="activity_book_details_title">图书信息</string>

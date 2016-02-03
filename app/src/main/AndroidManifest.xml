@@ -44,6 +44,7 @@
         <!-- 主页面-->
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AnimActivityTheme">
 
         </activity>

@@ -45,6 +45,7 @@ public final class CameraManager {
   private static final int MAX_FRAME_HEIGHT = 360;
 
   private static CameraManager cameraManager;
+  private Camera.Parameters parameter;
 
   static final int SDK_INT; // Later we can use Build.VERSION.SDK_INT
   static {
@@ -108,6 +109,28 @@ public final class CameraManager {
 
     previewCallback = new PreviewCallback(configManager, useOneShotPreviewCallback);
     autoFocusCallback = new AutoFocusCallback();
+  }
+
+  /**
+   * 打开闪光灯
+   */
+  public void openLight(){
+    if (camera != null) {
+      parameter = camera.getParameters();
+      parameter.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+      camera.setParameters(parameter);
+    }
+  }
+
+  /**
+   * 关闭闪光灯
+   */
+  public void offLight(){
+    if (camera != null) {
+      parameter = camera.getParameters();
+      parameter.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+      camera.setParameters(parameter);
+    }
   }
 
   /**
