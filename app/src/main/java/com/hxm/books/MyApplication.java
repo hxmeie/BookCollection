@@ -24,6 +24,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        user = BmobUser.getCurrentUser(getInstance(),MyUser.class);
         //设置是否打印log
         LogUtil.isDebug=true;
         initImamgeLoader(getApplicationContext());

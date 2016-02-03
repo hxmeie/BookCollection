@@ -25,7 +25,7 @@ public class SplashActivity extends BaseActivity{
     /**
      * SDK初始化建议放在启动页
      */
-    private static MyUser user = BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
+    private static MyUser user = MyApplication.user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
