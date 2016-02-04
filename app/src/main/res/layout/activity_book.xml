@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_below="@id/common_actionbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- 图书信息-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_margin="@dimen/base_margin_10"
+                android:orientation="horizontal">
+                <!-- 图书封面-->
+                <ImageView
+                    android:id="@+id/iv_activity_book_pic"
+                    android:layout_width="90dp"
+                    android:layout_height="120dp"
+                    android:scaleType="fitCenter"
+                    tools:src="@mipmap/no_cover" />
+                <!-- 书名作者等信息-->
+                <RelativeLayout
+                    android:layout_width="@dimen/base_width_0"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/base_margin_10"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_activity_book_author"
+                        style="@style/book_details_textview_style"
+                        android:text="@string/book_author" />
+                    <!-- 作者-->
+                    <TextView
+                        android:id="@+id/tv_activity_book_author_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_activity_book_author"
+                        android:maxLines="1"
+                        tools:text="官爱民" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_book_pages"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_author"
+                        android:text="@string/book_pages" />
+                    <!-- 页数-->
+                    <TextView
+                        android:id="@+id/tv_activity_book_pages_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_author"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_activity_book_pages"
+                        android:maxLines="1"
+                        tools:text="1368" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_book_price"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_pages_content"
+                        android:text="@string/book_price" />
+                    <!-- 价格-->
+                    <TextView
+                        android:id="@+id/tv_activity_book_price_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_pages_content"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_activity_book_price"
+                        android:maxLines="1"
+                        tools:text="59" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_book_pubdate"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_price"
+                        android:text="@string/book_pubdate"/>
+                    <!-- 出版日期-->
+                    <TextView
+                        android:id="@+id/tv_activity_book_pubdate_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_price"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_activity_book_pubdate"
+                        android:maxLines="1"
+                        tools:text="2016-1-23" />
+
+                    <TextView
+                        android:id="@+id/tv_activity_book_publisher"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_pubdate"
+                        android:text="@string/book_publisher" />
+                    <!-- 出版社-->
+                    <TextView
+                        android:id="@+id/tv_activity_book_publisher_content"
+                        style="@style/book_details_textview_style"
+                        android:layout_below="@id/tv_activity_book_pubdate"
+                        android:layout_marginLeft="@dimen/base_margin_10"
+                        android:layout_toRightOf="@id/tv_activity_book_publisher"
+                        android:maxLines="1"
+                        tools:text="机械工业出版社" />
+
+
+
+                </RelativeLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/base_margin_10"
+                android:background="@color/bookshelf_item_divider"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/base_margin_10">
+
+                <TextView
+                    android:id="@+id/tv_activity_book_summary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_18"
+                    android:textColor="@color/splash_text_color"
+                    android:text="@string/book_summary"/>
+
+                <TextView
+                    android:id="@+id/tv_activity_book_summary_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_heheda"
+                    android:layout_marginTop="@dimen/base_margin_15"
+                    android:layout_below="@id/tv_activity_book_summary"/>
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:layout_marginTop="@dimen/base_margin_5"-->
+                    <!--android:orientation="horizontal">-->
+                    <!--<ImageView-->
+                        <!--android:id="@+id/iv_arrow_text_down"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_below="@id/tv_activity_book_summary_content"-->
+                        <!--android:src="@mipmap/arrow_textview_down"-->
+                        <!--android:visibility="gone"/>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/divider_line_summary"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/spread"-->
+                        <!--android:background="@color/viewfinder_mask"-->
+                        <!--android:visibility="gone"/>-->
+                <!--</LinearLayout>-->
+                <ImageView
+                    android:id="@+id/iv_arrow_text_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/tv_activity_book_summary_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/arrow_textview_down"
+                    android:visibility="gone"/>
+                <View
+                    android:id="@+id/divider_line_summary"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/iv_arrow_text_down"
+                    android:background="@color/viewfinder_mask"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/base_margin_10"
+                android:background="@color/bookshelf_item_divider"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/base_margin_10"
+                android:layout_marginTop="@dimen/base_margin_15">
+
+                <TextView
+                    android:id="@+id/tv_activity_book_catalog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/splash_text_color"
+                    android:textSize="@dimen/text_size_18"
+                    android:text="@string/book_catlog"/>
+
+                <TextView
+                    android:id="@+id/tv_activity_book_catalog_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_heheda"
+                    android:layout_marginTop="@dimen/base_margin_15"
+                    android:layout_below="@id/tv_activity_book_catalog"/>
+
+                <ImageView
+                    android:id="@+id/iv_arrow_text_down_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/tv_activity_book_catalog_content"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/arrow_textview_down"
+                    android:visibility="gone"/>
+
+                <View
+                    android:id="@+id/divider_line_catalog"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/base_margin_5"
+                    android:layout_below="@id/iv_arrow_text_down_catalog"
+                    android:background="@color/viewfinder_mask"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

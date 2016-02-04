@@ -3,11 +3,15 @@ package com.hxm.books.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -18,6 +22,10 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.view.SwipeMenu;
+import com.hxm.books.view.SwipeMenuCreator;
+import com.hxm.books.view.SwipeMenuItem;
+import com.hxm.books.view.SwipeMenuListView;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -38,7 +46,7 @@ import cn.bmob.v3.listener.SQLQueryListener;
 public class BookshelfFragment extends Fragment implements View.OnClickListener{
     private ImageButton mScanBtn;
     private View view;
-    private ListView listBookshelf;
+    private SwipeMenuListView listBookshelf;
     private MyUser user = MyApplication.user;
     private List<Book> bookList;
     private List<BookToUser> bookToUserList = new ArrayList<>();
@@ -57,6 +65,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
         initView();
+        setSwipeMenuListView();
         getBookList();
         return view;
     }
@@ -74,9 +83,64 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
 
     private void initView() {
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
-        listBookshelf = (ListView) view.findViewById(R.id.list_bookshelf);
+        listBookshelf = (SwipeMenuListView) view.findViewById(R.id.list_bookshelf);
         mScanBtn.setOnClickListener(this);
     }
+
+    /**
+     * 设置左滑从书架中删除藏书
+     */
+    private void setSwipeMenuListView(){
+        SwipeMenuCreator creator =new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem menuItem = new SwipeMenuItem(getContext());
+                menuItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                menuItem.setWidth(dp2px(100));
+                menuItem.setTitle("从书架移除");
+                menuItem.setTitleSize(15);
+                menuItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(menuItem);
+
+            }
+        };
+
+        listBookshelf.setMenuCreator(creator);
+
+        listBookshelf.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+                Book item = bookList.get(position);
+                bookList.remove(position);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        listBookshelf.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+            @Override
+            public void onSwipeStart(int position) {
+
+            }
+
+            @Override
+            public void onSwipeEnd(int position) {
+
+            }
+        });
+
+        listBookshelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), BookActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("bookinfo", bookList.get(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -89,22 +153,24 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-
     private void getBookList(){
         bookList=new ArrayList<>();
         String sql="select * from Book";
-        new BmobQuery<Book>().doSQLQuery(getContext(), sql, new SQLQueryListener<Book>() {
+        BmobQuery<Book> query = new BmobQuery<>();
+        query.setSQL(sql);
+
+        query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
             @Override
             public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
-                if (e==null){
-                    List<Book> books=bmobQueryResult.getResults();
-                    for (int i= 0;i<books.size();i++){
+                if (e == null) {
+                    List<Book> books = bmobQueryResult.getResults();
+                    for (int i = 0; i < books.size(); i++) {
                         bookList.add(books.get(i));
-                        LogUtil.i("infoM",books.get(i).toString());
+                        LogUtil.i("infoM", books.get(i).toString());
                     }
 
                 }
-                mAdapter=new BookShelfAdapter(getContext(),bookList);
+                mAdapter = new BookShelfAdapter(getContext(), bookList);
                 listBookshelf.setAdapter(mAdapter);
             }
         });
@@ -125,5 +191,10 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
                 }
             }
         }
+    }
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
     }
 }

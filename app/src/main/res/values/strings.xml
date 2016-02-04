@@ -67,4 +67,8 @@
     <string name="scan_text">将二维码/条形码放入框内, 即可自动扫描</string>
     <string name="scaning">正在扫描&#8230;</string>
     <string name="scan_failed">扫描失败，请重试</string>
+
+    <!-- BookActivity-->
+    <string name="spread">展开</string>
+    <string name="merge">合并</string>
 </resources>

@@ -27,11 +27,12 @@
             android:background="@drawable/btn_scan_pic"/>
     </RelativeLayout>
 
-    <ListView
+    <com.hxm.books.view.SwipeMenuListView
         android:id="@+id/list_bookshelf"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:divider="@null"
+        android:divider="@color/bookshelf_item_divider"
+        android:dividerHeight="@dimen/base_margin_5"
         android:layout_weight="1" />
 
 </LinearLayout>
