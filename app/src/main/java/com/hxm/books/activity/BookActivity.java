@@ -19,7 +19,7 @@ public class BookActivity extends BaseActivity {
     private ImageView mBookPic;
     private TextView mBookSummary, mBookCatalog;
     private ImageView mArrowTextDownSum, mArrowTextDownCata;
-    private View mDividerLineSum, mDividerLineCata;
+//    private View mDividerLineSum, mDividerLineCata;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
     private Book book;
@@ -44,10 +44,10 @@ public class BookActivity extends BaseActivity {
         mBookSummary = (TextView) findViewById(R.id.tv_activity_book_summary_content);
         mBookPic = (ImageView) findViewById(R.id.iv_activity_book_pic);
         mArrowTextDownSum = (ImageView) findViewById(R.id.iv_arrow_text_down);
-        mDividerLineSum = findViewById(R.id.divider_line_summary);
+//        mDividerLineSum = findViewById(R.id.divider_line_summary);
         mBookCatalog = (TextView) findViewById(R.id.tv_activity_book_catalog_content);
         mArrowTextDownCata = (ImageView) findViewById(R.id.iv_arrow_text_down_catalog);
-        mDividerLineCata = findViewById(R.id.divider_line_catalog);
+//        mDividerLineCata = findViewById(R.id.divider_line_catalog);
 
         setBookData(book);
     }
@@ -68,7 +68,7 @@ public class BookActivity extends BaseActivity {
      * 设置图书简介和目录的折叠效果
      */
     private void setTextContent() {
-        CommonUtils.setTextAnim(mBookSummary, mArrowTextDownSum, mDividerLineSum, maxLineSum);
-        CommonUtils.setTextAnim(mBookCatalog, mArrowTextDownCata, mDividerLineCata, maxLineCata);
+        CommonUtils.setTextAnim(mBookSummary, mArrowTextDownSum, maxLineSum);
+        CommonUtils.setTextAnim(mBookCatalog, mArrowTextDownCata,  maxLineCata);
     }
 }

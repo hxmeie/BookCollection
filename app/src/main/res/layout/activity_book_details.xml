@@ -201,14 +201,14 @@
                     android:src="@mipmap/arrow_textview_down"
                     android:visibility="gone"/>
 
-                <View
-                    android:id="@+id/content_divider_line_catalog"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/base_margin_5"
-                    android:layout_below="@id/im_arrow_text_down_catalog"
-                    android:background="@color/viewfinder_mask"
-                    android:visibility="gone"/>
+                <!--<View-->
+                    <!--android:id="@+id/content_divider_line_catalog"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="1dp"-->
+                    <!--android:layout_marginTop="@dimen/base_margin_5"-->
+                    <!--android:layout_below="@id/im_arrow_text_down_catalog"-->
+                    <!--android:background="@color/viewfinder_mask"-->
+                    <!--android:visibility="gone"/>-->
 
             </RelativeLayout>
 

@@ -36,7 +36,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
     private TextView mBookSummary, mBookCatalog;
     private ImageView mArrowTextDownSum, mArrowTextDownCata;
     private Button btnAddToBookshelf;
-    private View mDividerLineSum, mDividerLineCata;
+//    private View mDividerLineSum, mDividerLineCata;
     private Book mBook;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
@@ -70,10 +70,10 @@ public class ScanBookDetailsActivity extends BaseActivity {
         mBookSummary = (TextView) findViewById(R.id.tv_book_summary_content);
         mBookPic = (ImageView) findViewById(R.id.iv_book_pic);
         mArrowTextDownSum = (ImageView) findViewById(R.id.im_arrow_text_down);
-        mDividerLineSum = findViewById(R.id.content_divider_line_summary);
+//        mDividerLineSum = findViewById(R.id.content_divider_line_summary);
         mBookCatalog = (TextView) findViewById(R.id.tv_book_catalog_content);
         mArrowTextDownCata = (ImageView) findViewById(R.id.im_arrow_text_down_catalog);
-        mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
+//        mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
         btnAddToBookshelf = (Button) findViewById(R.id.btn_add_to_bookshelf);
 
 //        btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +150,8 @@ public class ScanBookDetailsActivity extends BaseActivity {
      * 设置图书简介和目录的折叠效果
      */
     private void setTextContent() {
-        CommonUtils.setTextAnim(mBookSummary, mArrowTextDownSum, mDividerLineSum, maxLineSum);
-        CommonUtils.setTextAnim(mBookCatalog, mArrowTextDownCata, mDividerLineCata, maxLineCata);
+        CommonUtils.setTextAnim(mBookSummary, mArrowTextDownSum, maxLineSum);
+        CommonUtils.setTextAnim(mBookCatalog, mArrowTextDownCata, maxLineCata);
     }
 
     private void setBookData(Book obj) {

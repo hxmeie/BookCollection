@@ -63,7 +63,7 @@ public class CommonUtils {
     /**
      * 设置TextView折叠效果
      */
-    public static void setTextAnim(final TextView textView, final ImageView imageView, final View view, final int maxLine){
+    public static void setTextAnim(final TextView textView, final ImageView imageView, final int maxLine){
         //设置默认显示高度
         textView.setHeight(textView.getLineHeight()*maxLine);
         //根据高度来控制是否展示翻转icon
@@ -71,7 +71,6 @@ public class CommonUtils {
             @Override
             public void run() {
                 imageView.setVisibility(textView.getLineCount()>maxLine? View.VISIBLE:View.GONE);
-                view.setVisibility(textView.getLineCount()>maxLine? View.VISIBLE:View.GONE);
             }
         });
 
