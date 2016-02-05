@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyBooks</string>
+    <string name="app_name">扫书</string>
     <!-- ActivityTitle-->
     <string name="activity_scan_title">条形码扫描</string>
     <string name="title_bookshelf">书架</string>
