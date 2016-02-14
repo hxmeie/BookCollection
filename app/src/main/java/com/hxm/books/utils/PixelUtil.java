@@ -2,7 +2,7 @@ package com.hxm.books.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
-import com.hxm.books.MyApplication;
+import com.hxm.books.config.MyApplication;
 
 /** 像素转换工具
  * @author MarkMjw

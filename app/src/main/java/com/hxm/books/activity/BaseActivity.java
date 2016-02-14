@@ -1,13 +1,11 @@
 package com.hxm.books.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.hxm.books.AppManager;
-import com.hxm.books.MyApplication;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.view.HeaderLayout;
 

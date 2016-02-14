@@ -6,10 +6,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hxm.books.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
-import com.hxm.books.bean.BookToUser;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
@@ -22,7 +20,6 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 

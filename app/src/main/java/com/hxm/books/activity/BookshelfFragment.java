@@ -1,6 +1,5 @@
 package com.hxm.books.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
-import com.hxm.books.MyApplication;
+
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.adapter.BookShelfAdapter;
 import com.hxm.books.bean.Book;
@@ -37,7 +36,6 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 
 /**

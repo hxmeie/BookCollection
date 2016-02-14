@@ -4,16 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import com.hxm.books.Constants;
-import com.hxm.books.MyApplication;
+import com.hxm.books.config.Constants;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.bean.MyUser;
-import com.hxm.books.utils.LogUtil;
 
 import java.lang.ref.WeakReference;
 
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobUser;
 
 /**
  * 应用启动时的引导页

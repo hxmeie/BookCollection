@@ -1,4 +1,4 @@
-package com.hxm.books;
+package com.hxm.books.config;
 
 import android.app.Application;
 import android.content.Context;

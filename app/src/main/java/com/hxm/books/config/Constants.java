@@ -1,4 +1,4 @@
-package com.hxm.books;
+package com.hxm.books.config;
 
 /**
  * Created by hxm on 2016/1/29.

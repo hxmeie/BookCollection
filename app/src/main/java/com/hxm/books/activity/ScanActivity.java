@@ -17,7 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
-import com.hxm.books.Constants;
+import com.hxm.books.config.Constants;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.utils.HttpUtil;

@@ -6,7 +6,7 @@ import android.os.Looper;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.hxm.books.AppManager;
+import com.hxm.books.config.AppManager;
 import com.hxm.books.R;
 
 /***
