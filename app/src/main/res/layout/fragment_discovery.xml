@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/layout_background_color"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,4 +16,57 @@
             android:layout_centerInParent="true"
             android:textColor="@color/colorWhite"/>
     </RelativeLayout>
+
+    <!-- 搜索-->
+    <RelativeLayout
+        android:id="@+id/fg_discovery_search"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_clickable_background"
+        android:layout_marginTop="@dimen/base_margin_15"
+        android:padding="@dimen/base_padding_10">
+
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/icon_search"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_search"
+            android:layout_marginLeft="@dimen/base_margin_15"
+            android:textSize="@dimen/text_size_18"
+            android:text="@string/search"/>
+    </RelativeLayout>
+
+    <!-- 推荐-->
+    <RelativeLayout
+        android:id="@+id/fg_discovery_recommend"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_clickable_background"
+        android:layout_marginTop="@dimen/base_margin_15"
+        android:padding="@dimen/base_padding_10">
+
+        <ImageView
+            android:id="@+id/iv_recommend"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/icon_recommend"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_recommend"
+            android:layout_marginLeft="@dimen/base_margin_15"
+            android:textSize="@dimen/text_size_18"
+            android:text="@string/recommend"/>
+    </RelativeLayout>
+
 </LinearLayout>

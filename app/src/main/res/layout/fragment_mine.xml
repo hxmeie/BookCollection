@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/layout_background_color"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,4 +17,83 @@
             android:layout_centerInParent="true"
             android:textColor="@color/colorWhite"/>
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/fg_mine_personal_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="@drawable/white_clickable_background"
+        android:padding="@dimen/base_padding_10"
+        android:layout_marginTop="@dimen/base_margin_15"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <!-- 用户头像-->
+        <ImageView
+            android:id="@+id/iv_user_header"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:clickable="true"
+            android:src="@mipmap/default_head" />
+        <!-- 用户基本信息-->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base_margin_10">
+
+            <TextView
+                android:id="@+id/tv_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_18"
+                tools:text="快乐徘徊"/>
+
+            <TextView
+                android:id="@+id/tv_user_login_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_margin_5"
+                android:textSize="@dimen/base_margin_15"
+                android:layout_below="@id/tv_nick_name"
+                android:text="用户名:"/>
+
+            <TextView
+                android:id="@+id/tv_login_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_margin_5"
+                android:layout_marginLeft="@dimen/base_margin_5"
+                android:layout_toRightOf="@id/tv_user_login_name"
+                android:layout_below="@id/tv_nick_name"
+                android:textSize="@dimen/base_margin_15"
+                tools:text="kuailepaihuai"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- 设置-->
+    <RelativeLayout
+        android:id="@+id/fg_mine_setting"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_clickable_background"
+        android:layout_marginTop="@dimen/base_margin_15"
+        android:padding="@dimen/base_padding_10">
+        <ImageView
+            android:id="@+id/iv_setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/icon_setting"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_setting"
+            android:layout_marginLeft="@dimen/base_margin_15"
+            android:textSize="@dimen/text_size_18"
+            android:text="@string/setting"/>
+    </RelativeLayout>
+
 </LinearLayout>

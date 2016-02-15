@@ -25,6 +25,7 @@ import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by hxm on 2016/1/13.
+ * 扫描后的书籍信息界面
  */
 public class ScanBookDetailsActivity extends BaseActivity {
 

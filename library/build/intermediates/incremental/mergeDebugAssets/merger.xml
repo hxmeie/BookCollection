@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\AndroidStudio\BookCollection\library\src\main\assets"/></dataSet><dataSet config="debug"><source path="D:\AndroidStudio\BookCollection\library\src\debug\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="E:\AndoridGit\BookCollection\library\src\main\assets"/></dataSet><dataSet config="debug"><source path="E:\AndoridGit\BookCollection\library\src\debug\assets"/></dataSet></merger>

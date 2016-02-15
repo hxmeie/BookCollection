@@ -15,7 +15,8 @@
     <color name="bookshelf_item_divider">#B0DAD9D9</color>
     <color name="book_tag_color">#FF0ED20B</color>
     <color name="colorBrowm">#ae7433</color>
-    <color name="bookshelf_item_background">#b0f2eeee</color>
+    <color name="layout_background_color">#f7f5f5</color>
+    <color name="bookshelf_item_background">#efeeee</color>
     <color name="text_color_heheda">#FF9F8F7D</color>
     <!-- activity background color-->
     <color name="activity_back_color_gray">#EDECEC</color>

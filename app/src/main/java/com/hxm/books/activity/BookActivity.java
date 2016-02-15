@@ -1,7 +1,6 @@
 package com.hxm.books.activity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by hxm on 2016/2/2.
+ * 书籍信息界面
  */
 public class BookActivity extends BaseActivity {
     private TextView  mBookPrice, mBookPublisher, mBookPages, mBookAuthor, mBookPubdate;

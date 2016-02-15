@@ -1,7 +1,6 @@
 package com.hxm.books.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +13,23 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.utils.ViewHolder;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.List;
 
 /**
  * Created by hxm on 2016/2/1.
+ * 书架ListView的适配
  */
 public class BookShelfAdapter extends BaseAdapter {
     private Context context;
     private List<Book> mBook;
     private DisplayImageOptions options;
-    private ImageLoadingListener imageLoadingListener = new BookshelfFragment.FirstDisplayListener();
+    private ImageLoadingListener imageLoadingListener;
 
     public BookShelfAdapter(Context context,List<Book> mBook){
         this.context=context;
         this.mBook=mBook;
+        imageLoadingListener = new BookshelfFragment.FirstDisplayListener();
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.mipmap.no_cover)
                 .showImageForEmptyUri(R.mipmap.no_cover)

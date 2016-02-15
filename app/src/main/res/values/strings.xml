@@ -49,7 +49,7 @@
 
     <!-- RegisterActivity-->
     <string name="et_hint_register_account">请输入用户名</string>
-    <string name="et_hint_password_first">请输入密码(6-12位英文和数字)</string>
+    <string name="et_hint_password_first">请输入密码(6&#8211;12位英文和数字)</string>
     <string name="et_hint_password_second">请再次输入密码</string>
     <string name="btn_register_commit">注册</string>
     <string name="register_title">注册</string>
@@ -57,7 +57,7 @@
     <string name="toast_password_is_null">密码不能为空</string>
     <string name="toast_pwd_again_is_null">请再次输入密码</string>
     <string name="toast_pwd_again_is_wrong">两次密码输入不一致,请重新输入</string>
-    <string name="toast_pwd_style_wrong">密码为6-12位英文和数字</string>
+    <string name="toast_pwd_style_wrong">密码为6&#8211;12位英文和数字</string>
     <string name="toast_net_wrong">网络不可用</string>
     <string name="progress_dialog_text">正在注册&#8230;</string>
     <string name="register_success">注册成功</string>
@@ -71,4 +71,12 @@
     <!-- BookActivity-->
     <string name="spread">展开</string>
     <string name="merge">合并</string>
+
+    <!-- fragment_mine-->
+    <string name="setting">设置</string>
+
+    <!-- fragment_discovery-->
+    <string name="search">搜索</string>
+    <string name="recommend">推荐</string>
+
 </resources>
