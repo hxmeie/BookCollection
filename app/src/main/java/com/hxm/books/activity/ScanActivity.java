@@ -200,7 +200,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     private void getBookData(String result){
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("查询中...");
+        dialog.setMessage("已扫描,查询中...");
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
