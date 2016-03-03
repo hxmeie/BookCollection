@@ -27,7 +27,7 @@
             android:background="@drawable/btn_scan_pic"/>
     </RelativeLayout>
 
-    <com.hxm.books.view.SwipeMenuListView
+    <com.hxm.books.view.listview.SwipeMenuRefreshListView
         android:id="@+id/list_bookshelf"
         android:layout_width="match_parent"
         android:layout_height="0dp"

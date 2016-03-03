@@ -21,10 +21,10 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
-import com.hxm.books.view.SwipeMenu;
-import com.hxm.books.view.SwipeMenuCreator;
-import com.hxm.books.view.SwipeMenuItem;
-import com.hxm.books.view.SwipeMenuListView;
+import com.hxm.books.view.listview.SwipeMenu;
+import com.hxm.books.view.listview.SwipeMenuCreator;
+import com.hxm.books.view.listview.SwipeMenuItem;
+import com.hxm.books.view.listview.SwipeMenuRefreshListView;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -41,18 +41,14 @@ import cn.bmob.v3.listener.SQLQueryListener;
 /**
  * Created by hxm on 2016/1/25.
  */
-public class BookshelfFragment extends Fragment implements View.OnClickListener{
+public class BookshelfFragment extends Fragment implements View.OnClickListener,SwipeMenuRefreshListView.IXListViewListener{
     private ImageButton mScanBtn;
     private View view;
-    private SwipeMenuListView listBookshelf;
+    private SwipeMenuRefreshListView listBookshelf;
     private MyUser user = MyApplication.user;
     private List<Book> bookList;
     private List<BookToUser> bookToUserList = new ArrayList<>();
     private BookShelfAdapter mAdapter;
-    private int count = 15;		// 每页的数据是10条
-    private int curPage = 0;		// 当前页的编号，从0开始
-    private static final int STATE_REFRESH = 0;// 下拉刷新
-    private static final int STATE_MORE = 1;// 加载更多
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +77,10 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
 
     private void initView() {
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
-        listBookshelf = (SwipeMenuListView) view.findViewById(R.id.list_bookshelf);
+        listBookshelf = (SwipeMenuRefreshListView) view.findViewById(R.id.list_bookshelf);
+        listBookshelf.setPullLoadEnable(true);
+        listBookshelf.setPullRefreshEnable(true);
+        listBookshelf.setXListViewListener(this);
         mScanBtn.setOnClickListener(this);
     }
 
@@ -106,7 +105,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
 
         listBookshelf.setMenuCreator(creator);
 
-        listBookshelf.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+        listBookshelf.setOnMenuItemClickListener(new SwipeMenuRefreshListView.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(int position, SwipeMenu menu, int index) {
                 Book item = bookList.get(position);
@@ -115,7 +114,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        listBookshelf.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
+        listBookshelf.setOnSwipeListener(new SwipeMenuRefreshListView.OnSwipeListener() {
             @Override
             public void onSwipeStart(int position) {
 
@@ -172,6 +171,16 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener{
                 listBookshelf.setAdapter(mAdapter);
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+
+    }
+
+    @Override
+    public void onLoadMore() {
+
     }
 
     public static class FirstDisplayListener extends SimpleImageLoadingListener {
