@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -28,8 +30,10 @@ import com.hxm.books.view.listview.SwipeMenuRefreshListView;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,6 +53,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private List<Book> bookList;
     private List<BookToUser> bookToUserList = new ArrayList<>();
     private BookShelfAdapter mAdapter;
+    private Handler mHandler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
+        mHandler=new Handler();
         initView();
         setSwipeMenuListView();
         getBookList();
@@ -131,7 +137,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), BookActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("bookinfo", bookList.get(position));
+                bundle.putSerializable("bookinfo", bookList.get(position-1));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -155,7 +161,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         String sql="select * from Book";
         BmobQuery<Book> query = new BmobQuery<>();
         query.setSQL(sql);
-
         query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
             @Override
             public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
@@ -175,7 +180,16 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onRefresh() {
-
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listBookshelf.stopRefresh();
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
+                Date curDate=new Date(System.currentTimeMillis());
+                String time=format.format(curDate);
+                listBookshelf.setRefreshTime(time);
+            }
+        },2000);
     }
 
     @Override
