@@ -74,11 +74,7 @@ public final class StorageUtils {
 			externalStorageState = "";
 		}
 		if (preferExternal && MEDIA_MOUNTED.equals(externalStorageState) && hasExternalStoragePermission(context)) {
-//			String cacheDir="/MyBooks/cache/image/";
-			//System Dir
 			appCacheDir = getExternalCacheDir(context);
-			//My own Dir
-//			appCacheDir = getOwnCacheDirectory(context,cacheDir);
 			L.w("存储地址",appCacheDir);
 		}
 		if (appCacheDir == null) {
@@ -86,7 +82,6 @@ public final class StorageUtils {
 		}
 		if (appCacheDir == null) {
 			String cacheDirPath = "/data/data/" + context.getPackageName() + "/cache/";
-//			String cacheDirPath="/storage/sdcard0/" + context.getPackageName() +"/image/";
 			L.w("Can't define system cache directory! '%s' will be used.", cacheDirPath);
 			appCacheDir = new File(cacheDirPath);
 		}

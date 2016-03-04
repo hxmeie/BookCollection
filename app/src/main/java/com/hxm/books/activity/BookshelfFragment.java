@@ -207,7 +207,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 ImageView imageView = (ImageView) view;
                 boolean firstDisplay = !displayedImages.contains(imageUri);
                 if (firstDisplay) {
-                    FadeInBitmapDisplayer.animate(imageView, 500);
+                    FadeInBitmapDisplayer.animate(imageView, 1000);
                     displayedImages.add(imageUri);
                 }
             }
