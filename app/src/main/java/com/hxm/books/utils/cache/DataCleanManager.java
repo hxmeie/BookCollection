@@ -1,8 +1,7 @@
-package com.hxm.books.cache;
+package com.hxm.books.utils.cache;
 
 import android.content.Context;
 import android.os.Environment;
-
 import java.io.File;
 
 /**
