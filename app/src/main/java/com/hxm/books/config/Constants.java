@@ -1,14 +1,21 @@
 package com.hxm.books.config;
 
+import com.nostra13.universalimageloader.utils.StorageUtils;
+
+import java.io.File;
+
 /**
  * Created by hxm on 2016/1/29.
  */
 public class Constants {
-    //图书接口
-    public static final String GET_BOOK_BASE_URL="https://api.douban.com/v2/book/isbn/:";
+    //AppId
     public static final String APP_ID="aeb5c4b32145065bb54ea83c40734e88";
 
-    //-----------------------------------------SQL语句---------------------------------------
+    //接口
+    public static final String GET_BOOK_BASE_URL="https://api.douban.com/v2/book/isbn/:";
 
+    //缓存目录
+    public static final File cacheDir= StorageUtils.getOwnCacheDirectory(MyApplication.getInstance(), "MyBook/cache");
+    public static final File imageCacheDir=StorageUtils.getOwnCacheDirectory(MyApplication.getInstance(),"MyBook/image");
 
 }

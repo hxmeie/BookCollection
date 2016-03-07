@@ -162,7 +162,7 @@ public class FileCacheManger {
     /**
      * 判断缓存是否存在
      *
-     * @param cachefile 缓存绝对路径
+     * @param cachefile
      * @return
      */
     public static boolean isExistDataCache(Context context, String cachefile) {

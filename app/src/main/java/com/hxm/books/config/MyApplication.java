@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.cache.FileCache;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -24,6 +25,7 @@ public class MyApplication extends Application {
 
     public static MyApplication mInstance;
     public static MyUser user;
+    public static FileCache cache;
 
     @Override
     public void onCreate() {
@@ -32,6 +34,7 @@ public class MyApplication extends Application {
         user = BmobUser.getCurrentUser(getInstance(),MyUser.class);
         //设置是否打印log
         LogUtil.isDebug=true;
+        cache=FileCache.get(Constants.cacheDir);
         initImamgeLoader(getApplicationContext());
     }
 
@@ -45,7 +48,7 @@ public class MyApplication extends Application {
      * @param context
      */
     public static void initImamgeLoader(Context context){
-        File cacheDir= StorageUtils.getOwnCacheDirectory(context,"MyBook/image_cache");
+//        File cacheDir= StorageUtils.getOwnCacheDirectory(context,"MyBook/image");
         ImageLoaderConfiguration.Builder config=new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY - 2)
         .denyCacheImageMultipleSizesInMemory()
@@ -53,7 +56,7 @@ public class MyApplication extends Application {
         .diskCacheSize(20 * 1024 * 1024) // 20 MiB
         .tasksProcessingOrder(QueueProcessingType.LIFO)
         .writeDebugLogs() //打印log信息, APP发布时删除这句
-        .diskCache(new UnlimitedDiskCache(cacheDir));//自定义图片缓存路径
+        .diskCache(new UnlimitedDiskCache(Constants.imageCacheDir));//自定义图片缓存路径
         //用配置信息初始化ImageLoader
         ImageLoader.getInstance().init(config.build());
     }
