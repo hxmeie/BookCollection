@@ -1,6 +1,5 @@
 package com.hxm.books.bean;
 
-import java.util.List;
 
 import cn.bmob.v3.BmobObject;
 
@@ -19,7 +18,6 @@ public class Book extends BmobObject {
     private String publisher;
     private String pubdate;
     private String isbn;
-    private List<Book> userBook;
     public String getIsbn() {
         return isbn;
     }

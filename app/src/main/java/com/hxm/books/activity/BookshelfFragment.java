@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSON;
 import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
@@ -48,7 +49,7 @@ import cn.bmob.v3.listener.SQLQueryListener;
 /**
  * Created by hxm on 2016/1/25.
  */
-public class BookshelfFragment extends Fragment implements View.OnClickListener,SwipeMenuRefreshListView.IXListViewListener{
+public class BookshelfFragment extends Fragment implements View.OnClickListener, SwipeMenuRefreshListView.IXListViewListener {
     private ImageButton mScanBtn;
     private View view;
     private SwipeMenuRefreshListView listBookshelf;
@@ -62,13 +63,13 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCache=MyApplication.cache;
+        mCache = MyApplication.cache;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
-        mHandler=new Handler();
+        mHandler = new Handler();
         initView();
         setSwipeMenuListView();
         getBookList();
@@ -78,7 +79,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-}
+    }
 
     @Override
     public void onDestroy() {
@@ -98,8 +99,8 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     /**
      * 设置左滑从书架中删除藏书
      */
-    private void setSwipeMenuListView(){
-        SwipeMenuCreator creator =new SwipeMenuCreator() {
+    private void setSwipeMenuListView() {
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
                 SwipeMenuItem menuItem = new SwipeMenuItem(getContext());
@@ -161,28 +162,35 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    private void getBookList(){
-        bookList=new ArrayList<>();
-        if (!FileCacheManger.isExistDataCache(getContext(), "book_list")){
-            LogUtil.i("filecache","false");
-        }
-        String sql="select * from Book";
-        BmobQuery<Book> query = new BmobQuery<>();
-        query.setSQL(sql);
-        query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
-            @Override
-            public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
-                if (e == null) {
-                    List<Book> books = bmobQueryResult.getResults();
-                    for (int i = 0; i < books.size(); i++) {
-                        bookList.add(books.get(i));
-                    }
+    private void getBookList() {
+        bookList = new ArrayList<>();
+        if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode()+"")) {
+            String jsonString = mCache.getAsString("book_list");
+            bookList=JSON.parseArray(jsonString,Book.class);
+            LogUtil.i("getBookData","从缓存中获取");
+        } else {
+            LogUtil.i("getBookData","从网络中获取");
+            String sql = "select * from Book";
+            BmobQuery<Book> query = new BmobQuery<>();
+            query.setSQL(sql);
+            query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
+                @Override
+                public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
+                    if (e == null) {
+                        List<Book> books = bmobQueryResult.getResults();
+                        for (int i = 0; i < books.size(); i++) {
+                            bookList.add(books.get(i));
+                        }
 
+                    }
+                    String bookJson=JSON.toJSONString(bookList,true);
+                    LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode()+"");
+                    mCache.put("book_list",bookJson);
                 }
-                mAdapter = new BookShelfAdapter(getContext(), bookList);
-                listBookshelf.setAdapter(mAdapter);
-            }
-        });
+            });
+        }
+        mAdapter = new BookShelfAdapter(getContext(), bookList);
+        listBookshelf.setAdapter(mAdapter);
     }
 
     @Override

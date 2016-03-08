@@ -15,7 +15,9 @@ public class Constants {
     public static final String GET_BOOK_BASE_URL="https://api.douban.com/v2/book/isbn/:";
 
     //缓存目录
-    public static final File cacheDir= StorageUtils.getOwnCacheDirectory(MyApplication.getInstance(), "MyBook/cache");
+    public static final File cacheDir= MyApplication.getInstance().getFilesDir();
     public static final File imageCacheDir=StorageUtils.getOwnCacheDirectory(MyApplication.getInstance(),"MyBook/image");
 
+    //缓存文件名
+    public static final String CACHE_BOOK_LIST="book_list";
 }
