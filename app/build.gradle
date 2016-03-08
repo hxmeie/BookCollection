@@ -42,10 +42,4 @@ dependencies {
     compile files('libs/jakarta-oro-2.0.8.jar')
     compile files('libs/kjframe-2.5.5.jar')
     compile project(':library')
-    compile files('libs/json-lib-2.4-jdk15.jar')
-    compile files('libs/commons-beanutils-1.8.0.jar')
-    compile files('libs/commons-collections-3.2.1.jar')
-    compile files('libs/commons-lang-2.5.jar')
-    compile files('libs/commons-logging-1.1.1.jar')
-    compile files('libs/ezmorph-1.0.6.jar')
 }

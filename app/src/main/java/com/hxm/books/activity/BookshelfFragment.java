@@ -163,8 +163,8 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     private void getBookList(){
         bookList=new ArrayList<>();
-        if (FileCacheManger.isExistDataCache(getContext(), "book_list")){
-
+        if (!FileCacheManger.isExistDataCache(getContext(), "book_list")){
+            LogUtil.i("filecache","false");
         }
         String sql="select * from Book";
         BmobQuery<Book> query = new BmobQuery<>();
