@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
+ * expandableTextView
  * Created by hxm on 2016/1/27.
  */
 public class TextAndArrowListener implements View.OnClickListener {

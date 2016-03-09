@@ -33,6 +33,8 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.flyco.dialog:FlycoDialog_Lib:1.2.6@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile files('libs/BmobSDK_V3.4.5_1111.jar')
