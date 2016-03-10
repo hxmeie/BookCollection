@@ -24,9 +24,12 @@ import com.hxm.books.adapter.BookShelfAdapter;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookToUser;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.listener.DiakogEvent;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
 import com.hxm.books.utils.cache.FileCacheManger;
+import com.hxm.books.view.MyDialog;
 import com.hxm.books.view.listview.SwipeMenu;
 import com.hxm.books.view.listview.SwipeMenuCreator;
 import com.hxm.books.view.listview.SwipeMenuItem;
@@ -47,6 +50,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SQLQueryListener;
 
 /**
+ * 书架
  * Created by hxm on 2016/1/25.
  */
 public class BookshelfFragment extends Fragment implements View.OnClickListener, SwipeMenuRefreshListView.IXListViewListener {
@@ -148,6 +152,25 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 startActivity(intent);
             }
         });
+
+        listBookshelf.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                MyDialog dialog = new MyDialog(getContext());
+                dialog.DialogWithTwoBtn("是否删除", "提示", new DiakogEvent() {
+                    @Override
+                    public void leftOnClick() {
+                        ToastUtils.show(getContext(), "点击左边");
+                    }
+
+                    @Override
+                    public void rightOnClick() {
+                        ToastUtils.show(getContext(), "点击右边");
+                    }
+                });
+                return true;
+            }
+        });
     }
 
 
@@ -164,12 +187,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     private void getBookList() {
         bookList = new ArrayList<>();
-        if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode()+"")) {
+        if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode() + "")) {
             String jsonString = mCache.getAsString("book_list");
-            bookList=JSON.parseArray(jsonString,Book.class);
-            LogUtil.i("getBookData","从缓存中获取");
+            bookList = JSON.parseArray(jsonString, Book.class);
+            LogUtil.i("getBookData", "从缓存中获取");
         } else {
-            LogUtil.i("getBookData","从网络中获取");
+            LogUtil.i("getBookData", "从网络中获取");
             String sql = "select * from Book";
             BmobQuery<Book> query = new BmobQuery<>();
             query.setSQL(sql);
@@ -183,9 +206,9 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                         }
 
                     }
-                    String bookJson=JSON.toJSONString(bookList,true);
-                    LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode()+"");
-                    mCache.put("book_list",bookJson);
+                    String bookJson = JSON.toJSONString(bookList, true);
+                    LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode() + "");
+                    mCache.put("book_list", bookJson);
                 }
             });
         }
