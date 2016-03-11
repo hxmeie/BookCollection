@@ -131,13 +131,11 @@ public class ScanBookDetailsActivity extends BaseActivity {
      * 添加收藏
      */
     private void addStarBook(Book book) {
-        Book mBook=book;
         MyUser user = new MyUser();
-        user.setObjectId(MyApplication.user.getObjectId());
         BmobRelation relation = new BmobRelation();
         relation.add(book);
         user.setStarBooks(relation);
-        user.update(this, new UpdateListener() {
+        user.update(this,MyApplication.user.getObjectId(), new UpdateListener() {
             @Override
             public void onSuccess() {
                 LogUtil.i("relation", "多对多关系添加成功");
