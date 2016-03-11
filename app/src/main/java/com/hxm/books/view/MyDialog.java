@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
-import com.hxm.books.listener.DiakogEvent;
+import com.hxm.books.listener.DiakogTwoBtnEvent;
 
 /**
  * 弹出窗口
@@ -27,7 +27,7 @@ public class MyDialog {
      * @param content 内容
      * @param event 按钮点击事件
      */
-    public void DialogNormal(String content,final DiakogEvent event) {
+    public void DialogNormal(String content,final DiakogTwoBtnEvent event) {
         dialog.content(content)
                 .showAnim(null)
                 .dismissAnim(null)
@@ -55,7 +55,7 @@ public class MyDialog {
      * @param title 标题
      * @param event 点击事件
      */
-    public void DialogWithTwoBtn(String content,String title,final DiakogEvent event) {
+    public void DialogWithTwoBtn(String content,String title,final DiakogTwoBtnEvent event) {
         dialog.autoDismissDelay(10);
         dialog.content(content)
                 .title(title)

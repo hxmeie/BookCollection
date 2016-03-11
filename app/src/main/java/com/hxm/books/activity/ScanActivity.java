@@ -15,6 +15,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.hxm.books.config.Constants;
@@ -211,7 +214,19 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
                 LogUtil.e("获取失败");
                 dialog.dismiss();
-                finish();
+                NormalDialog dialog =new NormalDialog(ScanActivity.this);
+                dialog.style(NormalDialog.STYLE_ONE)
+                        .showAnim(null)
+                        .dismissAnim(null)
+                        .content("查询失败！")
+                        .btnText("确定")
+                        .show();
+                dialog.setOnBtnClickL(new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        finish();
+                    }
+                });
             }
 
             @Override

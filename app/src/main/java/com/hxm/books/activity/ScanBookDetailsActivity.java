@@ -6,13 +6,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -53,7 +57,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         setBookData(mBook);
-        queryStarBook(mBook);
+       // queryStarBook(mBook);
     }
 
     //    初始化view
@@ -74,12 +78,12 @@ public class ScanBookDetailsActivity extends BaseActivity {
 //        mDividerLineCata = findViewById(R.id.content_divider_line_catalog);
         btnAddToBookshelf = (Button) findViewById(R.id.btn_add_to_bookshelf);
 
-//        btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addStarBook(mBook);
-//            }
-//        });
+        btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStarBook(mBook);
+            }
+        });
 
     }
 
@@ -89,43 +93,47 @@ public class ScanBookDetailsActivity extends BaseActivity {
     private void queryStarBook(final Book book) {
         //查询当前用户收藏的所有图书,因此查询book表
         BmobQuery<Book> query = new BmobQuery<>();
-        MyUser user = BmobUser.getCurrentUser(this,MyUser.class);
-        user.setObjectId(user.getObjectId());
+        MyUser user= new MyUser();
+        user.setObjectId(MyApplication.user.getObjectId());
         //starBooks是MyUser表中的字段，用来存储用户收藏的所有图书
-        query.addWhereRelatedTo("starBooks", new BmobPointer(user));
+        query.addWhereRelatedTo("starBooks",new BmobPointer(user));
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                if (list.size() > 0) {
-                    LogUtil.i("relation", "查询成功");
-                    setBtnState();
-                } else {
-                    LogUtil.i("relation", "查询成功,未收藏");
-                    btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            LogUtil.i("relation", book.toString());
-                            addStarBook(book);
+                if (list.size()!=0){
+                    for (int i=0;i<list.size();i++){
+                        if (book.getIsbn().equals(list.get(i).getIsbn())){
                             setBtnState();
                         }
-                    });
+                    }
                 }
             }
 
             @Override
             public void onError(int i, String s) {
-                LogUtil.i("relation", "查询失败,错误代码:" + i + "错误描述:" + s);
+                NormalDialog dialog =new NormalDialog(ScanBookDetailsActivity.this);
+                dialog.style(NormalDialog.STYLE_ONE)
+                        .showAnim(null)
+                        .dismissAnim(null)
+                        .content("查询失败！")
+                        .btnText("确定")
+                        .show();
+                dialog.setOnBtnClickL(new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        finish();
+                    }
+                });
             }
         });
     }
-
     /**
      * 添加收藏
      */
     private void addStarBook(Book book) {
-        LogUtil.i("relationbook", book.toString());
-        MyUser user = BmobUser.getCurrentUser(this,MyUser.class);
-        user.setObjectId(user.getObjectId());
+        Book mBook=book;
+        MyUser user = new MyUser();
+        user.setObjectId(MyApplication.user.getObjectId());
         BmobRelation relation = new BmobRelation();
         relation.add(book);
         user.setStarBooks(relation);
@@ -133,6 +141,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
             @Override
             public void onSuccess() {
                 LogUtil.i("relation", "多对多关系添加成功");
+                setBtnState();
             }
 
             @Override

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,9 +21,8 @@ import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.adapter.BookShelfAdapter;
 import com.hxm.books.bean.Book;
-import com.hxm.books.bean.BookToUser;
 import com.hxm.books.bean.MyUser;
-import com.hxm.books.listener.DiakogEvent;
+import com.hxm.books.listener.DiakogTwoBtnEvent;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
@@ -59,7 +57,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private SwipeMenuRefreshListView listBookshelf;
     private MyUser user = MyApplication.user;
     private List<Book> bookList;
-    private List<BookToUser> bookToUserList = new ArrayList<>();
     private BookShelfAdapter mAdapter;
     private Handler mHandler;
     private FileCache mCache;
@@ -157,7 +154,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 MyDialog dialog = new MyDialog(getContext());
-                dialog.DialogWithTwoBtn("是否删除", "提示", new DiakogEvent() {
+                dialog.DialogWithTwoBtn("是否删除", "提示", new DiakogTwoBtnEvent() {
                     @Override
                     public void leftOnClick() {
                         ToastUtils.show(getContext(), "点击左边");
@@ -185,6 +182,9 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+    /**
+     * 获取图书收藏列表
+     */
     private void getBookList() {
         bookList = new ArrayList<>();
         if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode() + "")) {

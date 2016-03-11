@@ -34,7 +34,7 @@
 
     <!-- SplashActivity-->
     <string name="splash_text_1">Android开发艺术探索</string>
-    <string name="splash_text_2">MyBook,不只是收藏</string>
+    <string name="splash_text_2">扫书，收藏</string>
 
     <!-- LoginActivity-->
     <string name="login_title">登录</string>
