@@ -132,10 +132,11 @@ public class ScanBookDetailsActivity extends BaseActivity {
      */
     private void addStarBook(Book book) {
         MyUser user = new MyUser();
+        user.setObjectId(MyApplication.user.getObjectId());
         BmobRelation relation = new BmobRelation();
         relation.add(book);
         user.setStarBooks(relation);
-        user.update(this,MyApplication.user.getObjectId(), new UpdateListener() {
+        user.update(this, new UpdateListener() {
             @Override
             public void onSuccess() {
                 LogUtil.i("relation", "多对多关系添加成功");
