@@ -175,10 +175,11 @@ public class SwipeMenuRefreshListView extends ListView implements AbsListView.On
             setFooterDividersEnabled(false);
         } else {
             mPullLoading = false;
+            //do not need footerView
             mFooterView.show();
             mFooterView.setState(SwipeMenuRefreshListViewFooter.STATE_NORMAL);
             //make sure "pull up" don't show a line in bottom when listview with one page
-            setFooterDividersEnabled(true);
+            setFooterDividersEnabled(false);
             // both "pull up" and "click" will invoke load more.
             mFooterView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -228,7 +229,7 @@ public class SwipeMenuRefreshListView extends ListView implements AbsListView.On
     private void updateHeaderHeight(float delta) {
         mHeaderView.setVisiableHeight((int) delta
                 + mHeaderView.getVisiableHeight());
-        if (mEnablePullRefresh && !mPullRefreshing) { // 鏈浜庡埛鏂扮姸鎬侊紝鏇存柊绠ご
+        if (mEnablePullRefresh && !mPullRefreshing) {
             if (mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
                 mHeaderView.setState(SwipeMenuRefreshListViewHeader.STATE_READY);
             } else {

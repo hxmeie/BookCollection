@@ -56,7 +56,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private View view;
     private SwipeMenuRefreshListView listBookshelf;
     private MyUser user = MyApplication.user;
-    private List<Book> bookList;
+    private List<Book> bookList = new ArrayList<>();
     private BookShelfAdapter mAdapter;
     private Handler mHandler;
     private FileCache mCache;
@@ -73,13 +73,13 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         mHandler = new Handler();
         initView();
         setSwipeMenuListView();
-        getBookList();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getBookList();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private void initView() {
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
         listBookshelf = (SwipeMenuRefreshListView) view.findViewById(R.id.list_bookshelf);
-        listBookshelf.setPullLoadEnable(true);
+        listBookshelf.setPullLoadEnable(false);
         listBookshelf.setPullRefreshEnable(true);
         listBookshelf.setXListViewListener(this);
         mScanBtn.setOnClickListener(this);
@@ -186,10 +186,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
      * 获取图书收藏列表
      */
     private void getBookList() {
-        bookList = new ArrayList<>();
         if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode() + "")) {
             String jsonString = mCache.getAsString("book_list");
             bookList = JSON.parseArray(jsonString, Book.class);
+            mAdapter = new BookShelfAdapter(getContext(), bookList);
+            LogUtil.i("hxmeie",bookList.size()+"");
+            listBookshelf.setAdapter(mAdapter);
             LogUtil.i("getBookData", "从缓存中获取");
         } else {
             LogUtil.i("getBookData", "从网络中获取");
@@ -206,14 +208,16 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                         }
 
                     }
+                    LogUtil.i("hxmeie","网络获取"+bookList.size());
                     String bookJson = JSON.toJSONString(bookList, true);
+                    mAdapter = new BookShelfAdapter(getContext(), bookList);
+                    LogUtil.i("hxmeie",bookList.size()+"");
+                    listBookshelf.setAdapter(mAdapter);
                     LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode() + "");
                     mCache.put("book_list", bookJson);
                 }
             });
         }
-        mAdapter = new BookShelfAdapter(getContext(), bookList);
-        listBookshelf.setAdapter(mAdapter);
     }
 
     @Override
@@ -232,7 +236,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onLoadMore() {
-
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                listBookshelf.stopLoadMore();
+            }
+        }, 2000);
     }
 
     public static class FirstDisplayListener extends SimpleImageLoadingListener {
