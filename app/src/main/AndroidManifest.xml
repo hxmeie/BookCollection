@@ -60,6 +60,14 @@
             android:theme="@style/AnimActivityTheme">
 
         </activity>
+
+        <!-- 个人资料界面-->
+        <activity
+            android:name=".activity.UserProfileActivity"
+            android:theme="@style/AnimActivityTheme">
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />

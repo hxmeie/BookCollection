@@ -72,6 +72,15 @@
     <string name="spread">展开</string>
     <string name="merge">合并</string>
 
+    <!-- UserProfileActivity-->
+    <string name="my_profile">个人资料</string>
+    <string name="profile_header">头像</string>
+    <string name="profile_username">用户名</string>
+    <string name="profile_nickname">昵称</string>
+    <string name="profile_sex">性别</string>
+    <string name="proflie_age">头像</string>
+    <string name="profile_sign_up_time">注册时间</string>
+
     <!-- fragment_mine-->
     <string name="setting">设置</string>
 

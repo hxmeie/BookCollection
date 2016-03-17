@@ -11,8 +11,7 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class MyUser extends BmobUser {
     private Integer age;
     private Boolean sex;
-    private String name;//自定义名称
-    private String nickName;//注册名称
+    private String nickName;
     private BmobFile userAvatar;//用户头像
     private BmobRelation starBooks;//多对多关系:用户收藏的图书
 
@@ -24,13 +23,6 @@ public class MyUser extends BmobUser {
         this.userAvatar = userAvatar;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public BmobRelation getStarBooks() {
         return starBooks;
