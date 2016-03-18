@@ -24,6 +24,7 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
@@ -39,25 +40,19 @@ public class ScanBookDetailsActivity extends BaseActivity {
     private ImageView mArrowTextDownSum, mArrowTextDownCata;
     private Button btnAddToBookshelf;
 //    private View mDividerLineSum, mDividerLineCata;
-    private Book mBook;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
+    private String bookISBN;
+    private Book mBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
-        Bundle bundle = this.getIntent().getExtras();
-        mBook = (Book) bundle.getSerializable("bookObject");
-        LogUtil.i(mBook.toString());
+        bookISBN=getIntent().getStringExtra("book_isbn");
+        LogUtil.i("图书ISBN号:"+bookISBN);
         initView();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setBookData(mBook);
-       // queryStarBook(mBook);
+        queryBook();
     }
 
     //    初始化view
@@ -81,7 +76,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
         btnAddToBookshelf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addStarBook(mBook);
+                addStarBook();
             }
         });
 
@@ -91,64 +86,49 @@ public class ScanBookDetailsActivity extends BaseActivity {
      * 查询当前用户是否收藏该书
      */
     private void queryStarBook(final Book book) {
-        //查询当前用户收藏的所有图书,因此查询book表
-        BmobQuery<Book> query = new BmobQuery<>();
-        MyUser user= new MyUser();
-        user.setObjectId(MyApplication.user.getObjectId());
-        //starBooks是MyUser表中的字段，用来存储用户收藏的所有图书
-        query.addWhereRelatedTo("starBooks",new BmobPointer(user));
+
+    }
+
+    /**
+     * 查询图书信息
+     */
+    private void queryBook(){
+        BmobQuery<Book> query=new BmobQuery<>();
+        query.addWhereEqualTo("isbn",bookISBN);
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                if (list.size()!=0){
-                    for (int i=0;i<list.size();i++){
-                        if (book.getIsbn().equals(list.get(i).getIsbn())){
-                            setBtnState();
-                        }
-                    }
-                }
+                mBook=list.get(0);
+                setBookData(mBook);
             }
 
             @Override
             public void onError(int i, String s) {
-                NormalDialog dialog =new NormalDialog(ScanBookDetailsActivity.this);
-                dialog.style(NormalDialog.STYLE_ONE)
-                        .showAnim(null)
-                        .dismissAnim(null)
-                        .content("查询失败！")
-                        .btnText("确定")
-                        .show();
-                dialog.setOnBtnClickL(new OnBtnClickL() {
-                    @Override
-                    public void onBtnClick() {
-                        finish();
-                    }
-                });
+
             }
         });
     }
+
     /**
      * 添加收藏
      */
-    private void addStarBook(Book book) {
-        MyUser user = new MyUser();
-        user.setObjectId(MyApplication.user.getObjectId());
-        BmobRelation relation = new BmobRelation();
-        relation.add(book);
-        user.setStarBooks(relation);
+    private void addStarBook() {
+        MyUser user= MyApplication.user;
+        BmobRelation relation=new BmobRelation();
+        relation.add(mBook);
+        user.setLikes(relation);
         user.update(this, new UpdateListener() {
             @Override
             public void onSuccess() {
-                LogUtil.i("relation", "多对多关系添加成功");
+                LogUtil.i("relation","多对多关系添加成功");
                 setBtnState();
             }
 
             @Override
             public void onFailure(int i, String s) {
-                LogUtil.i("relation", "多对多关系添加失败" + s);
+                LogUtil.i("relation","多对多关系添加失败"+s);
             }
         });
-
     }
 
 

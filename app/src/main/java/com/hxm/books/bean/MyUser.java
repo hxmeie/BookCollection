@@ -13,7 +13,7 @@ public class MyUser extends BmobUser {
     private Boolean sex;
     private String nickName;
     private BmobFile userAvatar;//用户头像
-    private BmobRelation starBooks;//多对多关系:用户收藏的图书
+    private BmobRelation likes;//多对多关系:用户收藏的图书
 
     public BmobFile getUserAvatar() {
         return userAvatar;
@@ -23,13 +23,12 @@ public class MyUser extends BmobUser {
         this.userAvatar = userAvatar;
     }
 
-
-    public BmobRelation getStarBooks() {
-        return starBooks;
+    public BmobRelation getLikes() {
+        return likes;
     }
 
-    public void setStarBooks(BmobRelation starBooks) {
-        this.starBooks = starBooks;
+    public void setLikes(BmobRelation likes) {
+        this.likes = likes;
     }
 
     public Integer getAge() {

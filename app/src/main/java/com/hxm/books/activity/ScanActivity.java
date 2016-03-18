@@ -23,6 +23,7 @@ import com.google.zxing.Result;
 import com.hxm.books.config.Constants;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
+import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.zxing.camera.CameraManager;
@@ -30,14 +31,17 @@ import com.hxm.books.zxing.decoding.CaptureActivityHandler;
 import com.hxm.books.zxing.decoding.InactivityTimer;
 import com.hxm.books.zxing.view.ViewfinderView;
 import com.loopj.android.http.TextHttpResponseHandler;
+
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Vector;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
 
@@ -57,12 +61,13 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     private boolean playBeep;
     private static final float BEEP_VOLUME = 0.10f;
     private boolean vibrate;
-    private Book  mBook;
+    private Book mBook;
     private static final int REQUEST_CODE = 100;
     private static final int PARSE_BARCODE_SUC = 300;
     private static final int PARSE_BARCODE_FAIL = 303;
     private ImageButton btnFlashlight;
-    private int tag=0;
+    private int tag = 0;
+
     /**
      * Called when the activity is first created.
      */
@@ -74,11 +79,11 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
         hasSurface = false;
         inactivityTimer = new InactivityTimer(this);
-        mBook= new Book();
+        mBook = new Book();
         initView();
     }
 
-    public void initView(){
+    public void initView() {
         initOnlyTitleAndLeftBar(stringId(this, R.string.activity_scan_title));
         btnFlashlight = (ImageButton) findViewById(R.id.btn_flashlight);
 
@@ -87,18 +92,18 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_flashlight:
-                switch (tag){
+                switch (tag) {
                     case 0:
                         CameraManager.get().openLight();
                         btnFlashlight.setImageResource(R.mipmap.flashlight_on);
-                        tag=1;
+                        tag = 1;
                         break;
                     case 1:
                         CameraManager.get().offLight();
                         btnFlashlight.setImageResource(R.mipmap.flashlight_off);
-                        tag=0;
+                        tag = 0;
                         break;
                 }
                 break;
@@ -106,8 +111,8 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     }
 
-//    弱引用
-    private MyHandler mHandler =new MyHandler(this);
+    //    弱引用
+    private MyHandler mHandler = new MyHandler(this);
 
     static class MyHandler extends Handler {
         WeakReference<ScanActivity> mActivity;
@@ -120,7 +125,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            final ScanActivity scanActivity =mActivity.get();
+            final ScanActivity scanActivity = mActivity.get();
             switch (msg.what) {
                 case PARSE_BARCODE_SUC:
                     scanActivity.onResultHandler((String) msg.obj);
@@ -170,6 +175,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     @Override
     protected void onDestroy() {
+        mediaPlayer.release();
         inactivityTimer.shutdown();
         super.onDestroy();
     }
@@ -195,36 +201,44 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     private void onResultHandler(String resultString) {
         if (TextUtils.isEmpty(resultString)) {
-            Toast.makeText(ScanActivity.this, stringId(this,R.string.scan_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ScanActivity.this, stringId(this, R.string.scan_failed), Toast.LENGTH_SHORT).show();
             return;
         }
         getBookData(resultString);
     }
 
-    private void getBookData(String result){
+    private void getBookData(final String result) {
+        CameraManager.get().stopPreview();
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setMessage("已扫描,查询中...");
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
-        String url= Constants.GET_BOOK_BASE_URL+result;
+        String url = Constants.GET_BOOK_BASE_URL + result;
         HttpUtil.get(url, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-                LogUtil.e("获取失败");
+                String failureMsg = null;
+                if (CommonUtils.isNetworkAvailable(ScanActivity.this)) {
+                    failureMsg = s;
+                } else {
+                    failureMsg = "网络未连接";
+                }
+                LogUtil.e("获取失败" + s);
                 dialog.dismiss();
-                NormalDialog dialog =new NormalDialog(ScanActivity.this);
-                dialog.style(NormalDialog.STYLE_ONE)
+                final NormalDialog mDialog = new NormalDialog(ScanActivity.this);
+                mDialog.btnNum(1)
                         .showAnim(null)
                         .dismissAnim(null)
-                        .content("查询失败！")
+                        .content(failureMsg)
                         .btnText("确定")
                         .show();
-                dialog.setOnBtnClickL(new OnBtnClickL() {
+                mDialog.setOnBtnClickL(new OnBtnClickL() {
                     @Override
                     public void onBtnClick() {
-                        finish();
+                        ScanActivity.this.finish();
+                        mDialog.dismiss();
                     }
                 });
             }
@@ -236,9 +250,9 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
                 updateBookInfoToServer();
                 dialog.dismiss();
                 Intent resultIntent = new Intent(ScanActivity.this, ScanBookDetailsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("bookObject", mBook);
-                resultIntent.putExtras(bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("bookObject", mBook);
+                resultIntent.putExtra("book_isbn", mBook.getIsbn());
                 startAnimActivity(resultIntent);
                 finish();
             }
@@ -246,14 +260,15 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
         });
     }
-    private void setBookData(String bookInfo){
-        String author="";
+
+    private void setBookData(String bookInfo) {
+        String author = "";
         try {
-            JSONObject jsonObject =new JSONObject(bookInfo);
-            JSONArray authorArray=jsonObject.getJSONArray("author");
-            JSONArray tagArray=jsonObject.getJSONArray("tags");
-            JSONObject tag1Obj=tagArray.getJSONObject(0);
-            JSONObject tag2Obj=tagArray.getJSONObject(1);
+            JSONObject jsonObject = new JSONObject(bookInfo);
+            JSONArray authorArray = jsonObject.getJSONArray("author");
+            JSONArray tagArray = jsonObject.getJSONArray("tags");
+            JSONObject tag1Obj = tagArray.getJSONObject(0);
+            JSONObject tag2Obj = tagArray.getJSONObject(1);
             mBook.setPages(jsonObject.getString("pages"));
             mBook.setTitle(jsonObject.getString("title"));
             mBook.setPrice(jsonObject.getString("price"));
@@ -263,8 +278,8 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             mBook.setBookImage(jsonObject.optJSONObject("images").optString("large"));
             mBook.setCatalog(jsonObject.getString("catalog"));
             mBook.setIsbn(jsonObject.getString("isbn13"));
-            for (int index=0;index<authorArray.length();index++){
-                author += authorArray.optString(index)+" ";
+            for (int index = 0; index < authorArray.length(); index++) {
+                author += authorArray.optString(index) + " ";
             }
             mBook.setAuthor(author);
 
@@ -281,21 +296,21 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
     /**
      * 将书籍信息上传到服务器
      */
-    private void updateBookInfoToServer(){
+    private void updateBookInfoToServer() {
         BmobQuery<Book> query = new BmobQuery<>();
-        query.addWhereEqualTo("isbn",mBook.getIsbn());
+        query.addWhereEqualTo("isbn", mBook.getIsbn());
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                LogUtil.i("上传","查询成功返回结果数" +list.size());
-                if (list.size()==0) {
+                LogUtil.i("上传", "查询成功返回结果数" + list.size());
+                if (list.size() == 0) {
                     mBook.save(ScanActivity.this);
                 }
             }
 
             @Override
             public void onError(int i, String s) {
-                LogUtil.i("上传",s );
+                LogUtil.i("上传", s);
             }
         });
 
