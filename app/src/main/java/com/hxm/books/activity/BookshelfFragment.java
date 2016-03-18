@@ -33,6 +33,7 @@ import com.hxm.books.view.listview.SwipeMenu;
 import com.hxm.books.view.listview.SwipeMenuCreator;
 import com.hxm.books.view.listview.SwipeMenuItem;
 import com.hxm.books.view.listview.SwipeMenuRefreshListView;
+import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
@@ -61,6 +62,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private BookShelfAdapter mAdapter;
     private Handler mHandler;
     private FileCache mCache;
+    private AVLoadingIndicatorView loading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,13 +76,13 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         mHandler = new Handler();
         initView();
         setSwipeMenuListView();
+        getBookList();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getBookList();
     }
 
     @Override
@@ -91,6 +93,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     private void initView() {
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
+        loading= (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
         listBookshelf = (SwipeMenuRefreshListView) view.findViewById(R.id.list_bookshelf);
         listBookshelf.setPullLoadEnable(false);
         listBookshelf.setPullRefreshEnable(true);
@@ -197,6 +200,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             new DataSetAsync().execute();
 
         } else {
+            loading.setVisibility(View.VISIBLE);
             LogUtil.i("getBookData", "从网络中获取");
             String sql = "select * from Book";
             BmobQuery<Book> query = new BmobQuery<>();
@@ -216,6 +220,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                     mAdapter = new BookShelfAdapter(getContext(), bookList);
                     LogUtil.i("hxmeie",bookList.size()+"");
                     listBookshelf.setAdapter(mAdapter);
+                    loading.setVisibility(View.GONE);
                     LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode() + "");
                     mCache.put("book_list", bookJson);
                 }
@@ -269,6 +274,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
      */
     private class DataSetAsync extends AsyncTask<Void,Void,String>{
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected String doInBackground(Void... params) {
             String jsonString = mCache.getAsString("book_list");
             return jsonString;
@@ -281,6 +292,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             mAdapter = new BookShelfAdapter(getContext(), bookList);
             LogUtil.i("hxmeie",bookList.size()+"");
             listBookshelf.setAdapter(mAdapter);
+            loading.setVisibility(View.GONE);
             LogUtil.i("getBookData", "从缓存中获取");
         }
     }
