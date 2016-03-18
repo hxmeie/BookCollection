@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -187,12 +188,14 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
      */
     private void getBookList() {
         if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode() + "")) {
-            String jsonString = mCache.getAsString("book_list");
-            bookList = JSON.parseArray(jsonString, Book.class);
-            mAdapter = new BookShelfAdapter(getContext(), bookList);
-            LogUtil.i("hxmeie",bookList.size()+"");
-            listBookshelf.setAdapter(mAdapter);
-            LogUtil.i("getBookData", "从缓存中获取");
+//            String jsonString = mCache.getAsString("book_list");
+//            bookList = JSON.parseArray(jsonString, Book.class);
+//            mAdapter = new BookShelfAdapter(getContext(), bookList);
+//            LogUtil.i("hxmeie",bookList.size()+"");
+//            listBookshelf.setAdapter(mAdapter);
+//            LogUtil.i("getBookData", "从缓存中获取");
+            new DataSetAsync().execute();
+
         } else {
             LogUtil.i("getBookData", "从网络中获取");
             String sql = "select * from Book";
@@ -258,6 +261,27 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                     displayedImages.add(imageUri);
                 }
             }
+        }
+    }
+
+    /**
+     * 异步加载缓存
+     */
+    private class DataSetAsync extends AsyncTask<Void,Void,String>{
+        @Override
+        protected String doInBackground(Void... params) {
+            String jsonString = mCache.getAsString("book_list");
+            return jsonString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            bookList = JSON.parseArray(s, Book.class);
+            mAdapter = new BookShelfAdapter(getContext(), bookList);
+            LogUtil.i("hxmeie",bookList.size()+"");
+            listBookshelf.setAdapter(mAdapter);
+            LogUtil.i("getBookData", "从缓存中获取");
         }
     }
 
