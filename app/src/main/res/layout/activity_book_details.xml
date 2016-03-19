@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,8 +24,8 @@
                 android:id="@+id/layout_book_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/base_padding_10"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/base_padding_10">
                 <!-- 图书封面-->
                 <ImageView
                     android:id="@+id/iv_book_pic"
@@ -245,4 +246,12 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <com.hxm.books.view.loadingindicator.AVLoadingIndicatorView
+        android:id="@+id/book_details_loading_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:indicator="BallSpinFadeLoader" />
 </RelativeLayout>

@@ -14,6 +14,8 @@ import com.hxm.books.bean.MyUser;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.ToastUtils;
+import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
     private TextView mBookSummary, mBookCatalog;
     private ImageView mArrowTextDownSum, mArrowTextDownCata;
     private Button btnAddToBookshelf;
+    private AVLoadingIndicatorView loadingView;
 //    private View mDividerLineSum, mDividerLineCata;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
@@ -67,6 +70,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
         mBookSummary = (TextView) findViewById(R.id.tv_book_summary_content);
         mBookPic = (ImageView) findViewById(R.id.iv_book_pic);
         mArrowTextDownSum = (ImageView) findViewById(R.id.im_arrow_text_down);
+        loadingView= (AVLoadingIndicatorView) findViewById(R.id.book_details_loading_view);
 //        mDividerLineSum = findViewById(R.id.content_divider_line_summary);
         mBookCatalog = (TextView) findViewById(R.id.tv_book_catalog_content);
         mArrowTextDownCata = (ImageView) findViewById(R.id.im_arrow_text_down_catalog);
@@ -93,6 +97,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
      * 查询图书信息
      */
     private void queryBook(){
+        loadingView.setVisibility(View.VISIBLE);
         BmobQuery<Book> query=new BmobQuery<>();
         query.addWhereEqualTo("isbn",bookISBN);
         query.findObjects(this, new FindListener<Book>() {
@@ -100,11 +105,12 @@ public class ScanBookDetailsActivity extends BaseActivity {
             public void onSuccess(List<Book> list) {
                 mBook=list.get(0);
                 setBookData(mBook);
+                loadingView.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(int i, String s) {
-
+                ToastUtils.show(ScanBookDetailsActivity.this,"获取图书信息失败");
             }
         });
     }
