@@ -175,7 +175,6 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
 
     @Override
     protected void onDestroy() {
-        mediaPlayer.release();
         inactivityTimer.shutdown();
         super.onDestroy();
     }

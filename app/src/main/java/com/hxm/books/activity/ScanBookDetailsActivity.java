@@ -11,6 +11,7 @@ import com.flyco.dialog.widget.NormalDialog;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
@@ -92,14 +93,14 @@ public class ScanBookDetailsActivity extends BaseActivity {
      */
     private void queryStarBook() {
         BmobQuery<Book> query=new BmobQuery<>();
-        MyUser user=MyApplication.user;
+        MyUser user=BmobUser.getCurrentUser(MyApplication.getInstance(), MyUser.class);
         query.addWhereRelatedTo("likes",new BmobPointer(user));
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                LogUtil.i("relation","query_result_from_bookshelf list size is:"+list.size());
-                for(int i=0;i<list.size();i++){
-                    if (bookISBN.equals(list.get(i).getIsbn())){
+                LogUtil.i("relation", "query_result_from_bookshelf list size is:" + list.size());
+                for (int i = 0; i < list.size(); i++) {
+                    if (bookISBN.equals(list.get(i).getIsbn())) {
                         setBtnState();
                     }
                 }
@@ -110,6 +111,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
 
             }
         });
+        loadingView.setVisibility(View.GONE);
     }
 
     /**
@@ -124,7 +126,6 @@ public class ScanBookDetailsActivity extends BaseActivity {
             public void onSuccess(List<Book> list) {
                 mBook=list.get(0);
                 setBookData(mBook);
-                loadingView.setVisibility(View.GONE);
             }
 
             @Override
@@ -138,7 +139,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
      * 添加收藏
      */
     private void addStarBook() {
-        MyUser user= MyApplication.user;
+        MyUser user= BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
         BmobRelation relation=new BmobRelation();
         relation.add(mBook);
         user.setLikes(relation);

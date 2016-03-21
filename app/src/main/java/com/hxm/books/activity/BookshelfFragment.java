@@ -45,8 +45,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobQueryResult;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SQLQueryListener;
 
 /**
@@ -57,7 +60,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private ImageButton mScanBtn;
     private View view;
     private SwipeMenuRefreshListView listBookshelf;
-    private MyUser user = MyApplication.user;
     private List<Book> bookList = new ArrayList<>();
     private BookShelfAdapter mAdapter;
     private Handler mHandler;
@@ -93,7 +95,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     private void initView() {
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
-        loading= (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
+        loading = (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
         listBookshelf = (SwipeMenuRefreshListView) view.findViewById(R.id.list_bookshelf);
         listBookshelf.setPullLoadEnable(false);
         listBookshelf.setPullRefreshEnable(true);
@@ -202,27 +204,54 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         } else {
             loading.setVisibility(View.VISIBLE);
             LogUtil.i("getBookData", "从网络中获取");
-            String sql = "select * from Book";
-            BmobQuery<Book> query = new BmobQuery<>();
-            query.setSQL(sql);
-            query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
-                @Override
-                public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
-                    if (e == null) {
-                        List<Book> books = bmobQueryResult.getResults();
-                        for (int i = 0; i < books.size(); i++) {
-                            bookList.add(books.get(i));
-                        }
+//            String sql = "select * from Book";
+//            BmobQuery<Book> query = new BmobQuery<>();
+//            query.setSQL(sql);
+//            query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
+//                @Override
+//                public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
+//                    if (e == null) {
+//                        List<Book> books = bmobQueryResult.getResults();
+//                        for (int i = 0; i < books.size(); i++) {
+//                            bookList.add(books.get(i));
+//                        }
+//
+//                    }
+//                    LogUtil.i("hxmeie", "网络获取" + bookList.size());
+//                    String bookJson = JSON.toJSONString(bookList, true);
+//                    mAdapter = new BookShelfAdapter(getContext(), bookList);
+//                    LogUtil.i("hxmeie", bookList.size() + "");
+//                    listBookshelf.setAdapter(mAdapter);
+//                    loading.setVisibility(View.GONE);
+//                    LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode() + "");
+//                    mCache.put("book_list", bookJson);
+//                }
+//            });
 
+            BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
+            MyUser user= BmobUser.getCurrentUser(getActivity(),MyUser.class);
+            queryBookFromStar.addWhereRelatedTo("likes",new BmobPointer(user));
+            queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
+                @Override
+                public void onSuccess(List<Book> list) {
+                    for (int i = 0; i < list.size(); i++) {
+                        LogUtil.i("bookshelf_list_size",list.size()+"");
+                        bookList.add(list.get(i));
                     }
-                    LogUtil.i("hxmeie","网络获取"+bookList.size());
-                    String bookJson = JSON.toJSONString(bookList, true);
+
                     mAdapter = new BookShelfAdapter(getContext(), bookList);
-                    LogUtil.i("hxmeie",bookList.size()+"");
+                    LogUtil.i("bookshelf_list_size:", bookList.size() + "");
                     listBookshelf.setAdapter(mAdapter);
                     loading.setVisibility(View.GONE);
-                    LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode() + "");
-                    mCache.put("book_list", bookJson);
+                    if (list.size()!=0){
+                        String bookJson = JSON.toJSONString(bookList, true);
+                        mCache.put("book_list", bookJson);
+                    }
+                }
+
+                @Override
+                public void onError(int i, String s) {
+                    ToastUtils.show(getActivity(),"获取数据失败");
                 }
             });
         }
@@ -272,7 +301,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     /**
      * 异步加载缓存
      */
-    private class DataSetAsync extends AsyncTask<Void,Void,String>{
+    private class DataSetAsync extends AsyncTask<Void, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -290,7 +319,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             super.onPostExecute(s);
             bookList = JSON.parseArray(s, Book.class);
             mAdapter = new BookShelfAdapter(getContext(), bookList);
-            LogUtil.i("hxmeie",bookList.size()+"");
+            LogUtil.i("hxmeie", bookList.size() + "");
             listBookshelf.setAdapter(mAdapter);
             loading.setVisibility(View.GONE);
             LogUtil.i("getBookData", "从缓存中获取");

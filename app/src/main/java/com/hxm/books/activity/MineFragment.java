@@ -12,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hxm.books.R;
+import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
 
 import cn.bmob.v3.BmobUser;
@@ -25,6 +27,7 @@ public class MineFragment extends Fragment implements View.OnClickListener{
     private LinearLayout personalInfo;
     private RelativeLayout setting;
     private TextView tvNickName,tvUserName;
+    private MyUser user=BmobUser.getCurrentUser(MyApplication.getInstance(), MyUser.class);
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine,container,false);
@@ -45,8 +48,8 @@ public class MineFragment extends Fragment implements View.OnClickListener{
     }
 
     private void initData(){
-        tvUserName.setText(MyApplication.user.getUsername());
-        tvNickName.setText(MyApplication.user.getNickName());
+        tvUserName.setText(user.getUsername());
+        tvNickName.setText(user.getNickName());
     }
 
     @Override

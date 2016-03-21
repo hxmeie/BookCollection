@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.hxm.books.R;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
+
+import cn.bmob.v3.BmobUser;
 
 /**
  * user profile
@@ -19,7 +22,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     private TextView tvNickName,tvUserName,tvSex,tvSignUpTime;
     private ImageView ivHeader;
     private RelativeLayout layoutHeader,layoutNickname,layoutSex;
-    private MyUser user= MyApplication.user;
+    private MyUser user= BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

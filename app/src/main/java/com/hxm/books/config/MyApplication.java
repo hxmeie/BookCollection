@@ -24,14 +24,12 @@ import cn.bmob.v3.BmobUser;
 public class MyApplication extends Application {
 
     public static MyApplication mInstance;
-    public static MyUser user;
     public static FileCache cache;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        user = BmobUser.getCurrentUser(getInstance(),MyUser.class);
         //设置是否打印log
         LogUtil.isDebug=true;
         cache=FileCache.get(Constants.cacheDir);
