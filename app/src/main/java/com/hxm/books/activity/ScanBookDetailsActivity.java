@@ -56,6 +56,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
         LogUtil.i("图书ISBN号:"+bookISBN);
         initView();
         queryBook();
+        queryStarBook();
     }
 
     //    初始化view
@@ -89,8 +90,26 @@ public class ScanBookDetailsActivity extends BaseActivity {
     /**
      * 查询当前用户是否收藏该书
      */
-    private void queryStarBook(final Book book) {
+    private void queryStarBook() {
+        BmobQuery<Book> query=new BmobQuery<>();
+        MyUser user=MyApplication.user;
+        query.addWhereRelatedTo("likes",new BmobPointer(user));
+        query.findObjects(this, new FindListener<Book>() {
+            @Override
+            public void onSuccess(List<Book> list) {
+                LogUtil.i("relation","query_result_from_bookshelf list size is:"+list.size());
+                for(int i=0;i<list.size();i++){
+                    if (bookISBN.equals(list.get(i).getIsbn())){
+                        setBtnState();
+                    }
+                }
+            }
 
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
     }
 
     /**

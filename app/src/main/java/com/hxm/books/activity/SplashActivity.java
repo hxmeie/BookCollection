@@ -3,6 +3,7 @@ package com.hxm.books.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.WindowManager;
 
 import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
@@ -29,6 +30,7 @@ public class SplashActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Bmob.initialize(getApplicationContext(), Constants.APP_ID);
 
     }
