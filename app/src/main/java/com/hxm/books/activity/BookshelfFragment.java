@@ -1,7 +1,6 @@
 package com.hxm.books.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -14,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.hxm.books.config.Constants;
@@ -24,6 +23,7 @@ import com.hxm.books.adapter.BookShelfAdapter;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.listener.DiakogTwoBtnEvent;
+import com.hxm.books.listener.FirstDisplayListener;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
@@ -34,23 +34,16 @@ import com.hxm.books.view.listview.SwipeMenuCreator;
 import com.hxm.books.view.listview.SwipeMenuItem;
 import com.hxm.books.view.listview.SwipeMenuRefreshListView;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
-import cn.bmob.v3.datatype.BmobQueryResult;
-import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SQLQueryListener;
 
 /**
  * 书架
@@ -65,17 +58,20 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private Handler mHandler;
     private FileCache mCache;
     private AVLoadingIndicatorView loading;
+    private LinearLayout btnAddBooks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCache = MyApplication.cache;
+        mHandler = new Handler();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
-        mHandler = new Handler();
+
         initView();
         setSwipeMenuListView();
         getBookList();
@@ -97,9 +93,21 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
         loading = (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
         listBookshelf = (SwipeMenuRefreshListView) view.findViewById(R.id.list_bookshelf);
-        listBookshelf.setPullLoadEnable(false);
+        listBookshelf.setPullLoadEnable(true);
         listBookshelf.setPullRefreshEnable(true);
         listBookshelf.setXListViewListener(this);
+        View emptyView=View.inflate(getActivity(),R.layout.empty_listview,null);
+        btnAddBooks= (LinearLayout) emptyView.findViewById(R.id.bookshelf_add_books);
+        btnAddBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intent);
+            }
+        });
+        ViewGroup viewGroup= (ViewGroup) listBookshelf.getParent();
+        viewGroup.addView(emptyView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        listBookshelf.setEmptyView(emptyView);
         mScanBtn.setOnClickListener(this);
     }
 
@@ -193,42 +201,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
      */
     private void getBookList() {
         if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode() + "")) {
-//            String jsonString = mCache.getAsString("book_list");
-//            bookList = JSON.parseArray(jsonString, Book.class);
-//            mAdapter = new BookShelfAdapter(getContext(), bookList);
-//            LogUtil.i("hxmeie",bookList.size()+"");
-//            listBookshelf.setAdapter(mAdapter);
-//            LogUtil.i("getBookData", "从缓存中获取");
             new DataSetAsync().execute();
-
         } else {
             loading.setVisibility(View.VISIBLE);
             LogUtil.i("getBookData", "从网络中获取");
-//            String sql = "select * from Book";
-//            BmobQuery<Book> query = new BmobQuery<>();
-//            query.setSQL(sql);
-//            query.doSQLQuery(getContext(), new SQLQueryListener<Book>() {
-//                @Override
-//                public void done(BmobQueryResult<Book> bmobQueryResult, BmobException e) {
-//                    if (e == null) {
-//                        List<Book> books = bmobQueryResult.getResults();
-//                        for (int i = 0; i < books.size(); i++) {
-//                            bookList.add(books.get(i));
-//                        }
-//
-//                    }
-//                    LogUtil.i("hxmeie", "网络获取" + bookList.size());
-//                    String bookJson = JSON.toJSONString(bookList, true);
-//                    mAdapter = new BookShelfAdapter(getContext(), bookList);
-//                    LogUtil.i("hxmeie", bookList.size() + "");
-//                    listBookshelf.setAdapter(mAdapter);
-//                    loading.setVisibility(View.GONE);
-//                    LogUtil.i("getBookData", Constants.CACHE_BOOK_LIST.hashCode() + "");
-//                    mCache.put("book_list", bookJson);
-//                }
-//            });
-
             BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
+            queryBookFromStar.setLimit(5);
             MyUser user= BmobUser.getCurrentUser(getActivity(),MyUser.class);
             queryBookFromStar.addWhereRelatedTo("likes",new BmobPointer(user));
             queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
@@ -245,7 +223,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                     loading.setVisibility(View.GONE);
                     if (list.size()!=0){
                         String bookJson = JSON.toJSONString(bookList, true);
-                        mCache.put("book_list", bookJson);
+                        mCache.put(Constants.CACHE_BOOK_LIST, bookJson);
                     }
                 }
 
@@ -263,7 +241,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             @Override
             public void run() {
                 listBookshelf.stopRefresh();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd    hh:mm:ss");
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 Date curDate = new Date(System.currentTimeMillis());
                 String time = format.format(curDate);
                 listBookshelf.setRefreshTime(time);
@@ -279,23 +257,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 listBookshelf.stopLoadMore();
             }
         }, 2000);
-    }
-
-    public static class FirstDisplayListener extends SimpleImageLoadingListener {
-
-        static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
-
-        @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            if (loadedImage != null) {
-                ImageView imageView = (ImageView) view;
-                boolean firstDisplay = !displayedImages.contains(imageUri);
-                if (firstDisplay) {
-                    FadeInBitmapDisplayer.animate(imageView, 1000);
-                    displayedImages.add(imageUri);
-                }
-            }
-        }
     }
 
     /**

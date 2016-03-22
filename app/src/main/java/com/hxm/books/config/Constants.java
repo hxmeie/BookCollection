@@ -14,6 +14,9 @@ public class Constants {
     //AppId
     public static final String APP_ID="aeb5c4b32145065bb54ea83c40734e88";
 
+    //time day
+    public static final int TIME_DAY=60*60*24;
+
     //接口
     public static final String GET_BOOK_BASE_URL="https://api.douban.com/v2/book/isbn/:";
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.hxm.books.R;
 import com.hxm.books.activity.BookshelfFragment;
 import com.hxm.books.bean.Book;
+import com.hxm.books.listener.FirstDisplayListener;
 import com.hxm.books.utils.ViewHolder;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,7 +30,7 @@ public class BookShelfAdapter extends BaseAdapter {
     public BookShelfAdapter(Context context,List<Book> mBook){
         this.context=context;
         this.mBook=mBook;
-        imageLoadingListener = new BookshelfFragment.FirstDisplayListener();
+        imageLoadingListener = new FirstDisplayListener();
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.mipmap.no_cover)
                 .showImageForEmptyUri(R.mipmap.no_cover)

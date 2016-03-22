@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:src="@mipmap/empty_books"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="@string/bookshelf_is_empty"
+        android:textColor="@color/bookshelf_item_text_color_1"
+        android:textSize="@dimen/text_size_18"/>
+
+    <LinearLayout
+        android:id="@+id/bookshelf_add_books"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:padding="@dimen/base_padding_5"
+        android:background="@color/colorBase">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/scan_pic_pressed"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/base_margin_5"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/text_size_18"
+            android:text="@string/bookshelf_add_book"/>
+
+    </LinearLayout>
+
+</LinearLayout>

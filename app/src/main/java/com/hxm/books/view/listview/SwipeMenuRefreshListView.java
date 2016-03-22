@@ -60,8 +60,8 @@ public class SwipeMenuRefreshListView extends ListView implements AbsListView.On
     private final static int SCROLLBACK_HEADER = 0;
     private final static int SCROLLBACK_FOOTER = 1;
 
-    private final static int SCROLL_DURATION = 400; // scroll back duration
-    private final static int PULL_LOAD_MORE_DELTA = 50; // when pull up >= 50px
+    private final static int SCROLL_DURATION = 200; // scroll back duration
+    private final static int PULL_LOAD_MORE_DELTA = 5; // when pull up >= 50px
     // at bottom, trigger
     // load more.
     private final static float OFFSET_RADIO = 1.8f; // support iOS like pull
@@ -172,14 +172,14 @@ public class SwipeMenuRefreshListView extends ListView implements AbsListView.On
             mFooterView.hide();
             mFooterView.setOnClickListener(null);
             //make sure "pull up" don't show a line in bottom when listview with one page
-            setFooterDividersEnabled(false);
+//            setFooterDividersEnabled(true);
         } else {
             mPullLoading = false;
             //do not need footerView
             mFooterView.show();
             mFooterView.setState(SwipeMenuRefreshListViewFooter.STATE_NORMAL);
             //make sure "pull up" don't show a line in bottom when listview with one page
-            setFooterDividersEnabled(false);
+//            setFooterDividersEnabled(false);
             // both "pull up" and "click" will invoke load more.
             mFooterView.setOnClickListener(new OnClickListener() {
                 @Override
