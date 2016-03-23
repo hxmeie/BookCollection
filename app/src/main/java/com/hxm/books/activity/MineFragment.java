@@ -67,4 +67,5 @@ public class MineFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
+
 }

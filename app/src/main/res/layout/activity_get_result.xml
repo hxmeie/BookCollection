@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/layout_background_color"
     android:orientation="vertical">
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
 <com.hxm.books.view.ClearEditText
     android:id="@+id/et_get_result"
     android:layout_width="match_parent"
     android:layout_height="45dp"
+    android:paddingLeft="@dimen/base_padding_15"
+    android:paddingRight="@dimen/base_padding_15"
+    android:hint="请输入昵称"
     android:layout_marginTop="@dimen/base_margin_15"
     android:background="@color/colorWhite"/>
 </LinearLayout>

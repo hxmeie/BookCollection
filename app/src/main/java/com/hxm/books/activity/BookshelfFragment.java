@@ -59,6 +59,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private FileCache mCache;
     private AVLoadingIndicatorView loading;
     private LinearLayout btnAddBooks;
+    private  View emptyView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,18 +97,15 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         listBookshelf.setPullLoadEnable(true);
         listBookshelf.setPullRefreshEnable(true);
         listBookshelf.setXListViewListener(this);
-        View emptyView=View.inflate(getActivity(),R.layout.empty_listview,null);
+        emptyView=View.inflate(getActivity(),R.layout.empty_listview,null);
         btnAddBooks= (LinearLayout) emptyView.findViewById(R.id.bookshelf_add_books);
         btnAddBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(getActivity(), ScanActivity.class);
+                Intent intent = new Intent(getActivity(), ScanActivity.class);
                 startActivity(intent);
             }
         });
-        ViewGroup viewGroup= (ViewGroup) listBookshelf.getParent();
-        viewGroup.addView(emptyView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        listBookshelf.setEmptyView(emptyView);
         mScanBtn.setOnClickListener(this);
     }
 
@@ -221,7 +219,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                     LogUtil.i("bookshelf_list_size:", bookList.size() + "");
                     listBookshelf.setAdapter(mAdapter);
                     loading.setVisibility(View.GONE);
-                    if (list.size()!=0){
+                    if (list.size()==0){
+                        ViewGroup viewGroup= (ViewGroup) listBookshelf.getParent();
+                        viewGroup.addView(emptyView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                        listBookshelf.setEmptyView(emptyView);
+
+                    }else {
                         String bookJson = JSON.toJSONString(bookList, true);
                         mCache.put(Constants.CACHE_BOOK_LIST, bookJson);
                     }

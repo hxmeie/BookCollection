@@ -1,5 +1,6 @@
 package com.hxm.books.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -56,16 +57,28 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()){
             case R.id.profile_header_layout:
 
                 break;
             case R.id.profile_nickname_layout:
-
+                intent=new Intent(this,GetResultActivity.class);
+                startActivityForResult(intent,0);
                 break;
             case R.id.profile_sex_layout:
 
                 break;
         }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 0:
+                String nickname=data.getStringExtra("nickname");
+                tvNickName.setText(nickname);
+                break;
+        }
+
     }
 }

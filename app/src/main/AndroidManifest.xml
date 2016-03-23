@@ -68,6 +68,13 @@
 
         </activity>
 
+        <!-- 获取EditText结果-->
+        <activity
+            android:name=".activity.GetResultActivity"
+            android:theme="@style/AnimActivityTheme">
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />
