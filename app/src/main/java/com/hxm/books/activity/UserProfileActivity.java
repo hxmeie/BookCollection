@@ -73,10 +73,13 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (resultCode){
             case 0:
                 String nickname=data.getStringExtra("nickname");
                 tvNickName.setText(nickname);
+                break;
+            case 1:
+
                 break;
         }
 

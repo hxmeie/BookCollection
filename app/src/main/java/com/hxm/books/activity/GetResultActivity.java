@@ -30,6 +30,8 @@ public class GetResultActivity extends BaseActivity {
             }
         });
         editText= (ClearEditText) findViewById(R.id.et_get_result);
+        this.setResult(1);
 
     }
+
 }

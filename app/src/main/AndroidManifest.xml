@@ -75,6 +75,13 @@
 
         </activity>
 
+        <!-- 设置界面-->
+        <activity
+            android:name=".activity.SettingActivity"
+            android:theme="@style/AnimActivityTheme">
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />
