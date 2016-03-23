@@ -45,6 +45,7 @@ public class MineFragment extends Fragment implements View.OnClickListener{
 
         personalInfo.setOnClickListener(this);
         ivHeader.setOnClickListener(this);
+        setting.setOnClickListener(this);
     }
 
     private void initData(){
@@ -63,7 +64,8 @@ public class MineFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.fg_mine_setting:
-
+                intent=new Intent(getActivity(),SettingActivity.class);
+                startActivity(intent);
                 break;
         }
     }
