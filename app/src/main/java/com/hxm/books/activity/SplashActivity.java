@@ -1,5 +1,7 @@
 package com.hxm.books.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,7 +21,7 @@ import cn.bmob.v3.BmobUser;
  * 应用启动时的引导页
  * Created by hxm on 2015/12/1.
  */
-public class SplashActivity extends BaseActivity{
+public class SplashActivity extends Activity{
     private static final int GO_MAIN=100;
     private MyHandler handler =new MyHandler(this);
     /**
@@ -52,14 +54,17 @@ public class SplashActivity extends BaseActivity{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             SplashActivity splashActivity =mActivity.get();
+            Intent intent;
             switch (msg.what){
                 case GO_MAIN:
                     //判断用户是否登录过
                     if (user != null){
-                        splashActivity.startAnimActivity(MainActivity.class);
+                        intent=new Intent(MyApplication.getInstance(),MainActivity.class);
+                        splashActivity.startActivity(intent);
 
                     }else {
-                        splashActivity.startAnimActivity(LoginActivity.class);
+                        intent=new Intent(MyApplication.getInstance(),LoginActivity.class);
+                        splashActivity.startActivity(intent);
                     }
                     splashActivity.finish();
                     break;

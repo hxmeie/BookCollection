@@ -1,13 +1,18 @@
 package com.hxm.books.activity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.TypedValue;
+import android.view.WindowManager;
 
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.view.HeaderLayout;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 /**
  * 基类
@@ -22,8 +27,18 @@ public class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = MyApplication.getInstance();
+        initWindow();
     }
-
+    @TargetApi(19)
+    private void initWindow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            tintManager.setStatusBarTintColor(getResources().getColor(R.color.colorBase));
+            tintManager.setStatusBarTintEnabled(true);
+        }
+    }
 
     public void startAnimActivity(Class<?> cla) {
         this.startActivity(new Intent(this, cla));
