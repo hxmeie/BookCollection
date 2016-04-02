@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:fitsSystemWindows="true"
     android:background="@color/activity_back_color_gray"
     android:orientation="vertical">
     <include

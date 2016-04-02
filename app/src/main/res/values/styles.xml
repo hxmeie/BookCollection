@@ -11,7 +11,7 @@
     <!-- Activity切换主题-->
     <style name="AnimActivityTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowAnimationStyle">@style/AnimActivity</item>
-        <item name="android:fitsSystemWindows">true</item>
+        <!--<item name="android:fitsSystemWindows">true</item>-->
     </style>
 
     <!-- Activity切换动画，向右退出向左进入-->
