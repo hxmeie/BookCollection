@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-
 import com.alibaba.fastjson.JSON;
 import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
@@ -29,17 +28,14 @@ import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
 import com.hxm.books.utils.cache.FileCacheManger;
 import com.hxm.books.view.MyDialog;
-import com.hxm.books.view.listview.SwipeMenu;
-import com.hxm.books.view.listview.SwipeMenuCreator;
-import com.hxm.books.view.listview.SwipeMenuItem;
-import com.hxm.books.view.listview.SwipeMenuRefreshListView;
+import com.hxm.books.view.RefreshLayout;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
-
-import java.text.SimpleDateFormat;
+import com.hxm.books.view.swipelistview.SwipeMenu;
+import com.hxm.books.view.swipelistview.SwipeMenuCreator;
+import com.hxm.books.view.swipelistview.SwipeMenuItem;
+import com.hxm.books.view.swipelistview.SwipeMenuListView;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
@@ -49,24 +45,22 @@ import cn.bmob.v3.listener.FindListener;
  * 书架
  * Created by hxm on 2016/1/25.
  */
-public class BookshelfFragment extends Fragment implements View.OnClickListener, SwipeMenuRefreshListView.IXListViewListener {
+public class BookshelfFragment extends Fragment implements View.OnClickListener,RefreshLayout.OnRefreshListener,RefreshLayout.OnLoadListener {
     private ImageButton mScanBtn;
     private View view;
-    private SwipeMenuRefreshListView listBookshelf;
+    private SwipeMenuListView listview_book;
     private List<Book> bookList = new ArrayList<>();
     private BookShelfAdapter mAdapter;
-    private Handler mHandler;
     private FileCache mCache;
     private AVLoadingIndicatorView loading;
     private LinearLayout btnAddBooks;
     private  View emptyView;
+    private RefreshLayout refreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCache = MyApplication.cache;
-        mHandler = new Handler();
-
     }
 
     @Override
@@ -93,10 +87,8 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private void initView() {
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
         loading = (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
-        listBookshelf = (SwipeMenuRefreshListView) view.findViewById(R.id.list_bookshelf);
-        listBookshelf.setPullLoadEnable(true);
-        listBookshelf.setPullRefreshEnable(true);
-        listBookshelf.setXListViewListener(this);
+        listview_book = (SwipeMenuListView) view.findViewById(R.id.listview_bookshelf);
+        refreshLayout= (RefreshLayout) view.findViewById(R.id.refresh_layout);
         emptyView=View.inflate(getActivity(),R.layout.empty_listview,null);
         btnAddBooks= (LinearLayout) emptyView.findViewById(R.id.bookshelf_add_books);
         btnAddBooks.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +99,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             }
         });
         mScanBtn.setOnClickListener(this);
+        refreshLayout.setColorSchemeResources(R.color.colorBase,R.color.colorAccent,R.color.colorPrimary,R.color.colorBrowm);
     }
 
     /**
@@ -128,9 +121,9 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             }
         };
 
-        listBookshelf.setMenuCreator(creator);
-
-        listBookshelf.setOnMenuItemClickListener(new SwipeMenuRefreshListView.OnMenuItemClickListener() {
+        listview_book.setMenuCreator(creator);
+        //左滑的Item项点击事件
+        listview_book.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public void onMenuItemClick(int position, SwipeMenu menu, int index) {
                 Book item = bookList.get(position);
@@ -138,8 +131,8 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 mAdapter.notifyDataSetChanged();
             }
         });
-
-        listBookshelf.setOnSwipeListener(new SwipeMenuRefreshListView.OnSwipeListener() {
+        //左滑开始和结束可执行的事件
+        listview_book.setOnSwipeListener(new SwipeMenuListView.OnSwipeListener() {
             @Override
             public void onSwipeStart(int position) {
 
@@ -151,7 +144,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        listBookshelf.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listview_book.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), BookActivity.class);
@@ -162,7 +155,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        listBookshelf.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listview_book.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 MyDialog dialog = new MyDialog(getContext());
@@ -206,25 +199,25 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
             queryBookFromStar.setLimit(5);
             MyUser user= BmobUser.getCurrentUser(getActivity(),MyUser.class);
-            queryBookFromStar.addWhereRelatedTo("likes",new BmobPointer(user));
+            queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
             queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
                 @Override
                 public void onSuccess(List<Book> list) {
                     for (int i = 0; i < list.size(); i++) {
-                        LogUtil.i("bookshelf_list_size",list.size()+"");
+                        LogUtil.i("bookshelf_list_size", list.size() + "");
                         bookList.add(list.get(i));
                     }
 
                     mAdapter = new BookShelfAdapter(getContext(), bookList);
                     LogUtil.i("bookshelf_list_size:", bookList.size() + "");
-                    listBookshelf.setAdapter(mAdapter);
+                    listview_book.setAdapter(mAdapter);
                     loading.setVisibility(View.GONE);
-                    if (list.size()==0){
-                        ViewGroup viewGroup= (ViewGroup) listBookshelf.getParent();
+                    if (list.size() == 0) {
+                        ViewGroup viewGroup = (ViewGroup) listview_book.getParent();
                         viewGroup.addView(emptyView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                        listBookshelf.setEmptyView(emptyView);
+                        listview_book.setEmptyView(emptyView);
 
-                    }else {
+                    } else {
                         String bookJson = JSON.toJSONString(bookList, true);
                         mCache.put(Constants.CACHE_BOOK_LIST, bookJson);
                     }
@@ -232,35 +225,22 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
                 @Override
                 public void onError(int i, String s) {
-                    ToastUtils.show(getActivity(),"获取数据失败");
+                    ToastUtils.show(getActivity(), "获取数据失败");
                 }
             });
         }
     }
 
     @Override
-    public void onRefresh() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listBookshelf.stopRefresh();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                Date curDate = new Date(System.currentTimeMillis());
-                String time = format.format(curDate);
-                listBookshelf.setRefreshTime(time);
-            }
-        }, 2000);
+    public void onLoad() {
+
     }
 
     @Override
-    public void onLoadMore() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                listBookshelf.stopLoadMore();
-            }
-        }, 2000);
+    public void onRefresh() {
+
     }
+
 
     /**
      * 异步加载缓存
@@ -284,7 +264,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             bookList = JSON.parseArray(s, Book.class);
             mAdapter = new BookShelfAdapter(getContext(), bookList);
             LogUtil.i("hxmeie", bookList.size() + "");
-            listBookshelf.setAdapter(mAdapter);
+            listview_book.setAdapter(mAdapter);
             loading.setVisibility(View.GONE);
             LogUtil.i("getBookData", "从缓存中获取");
         }

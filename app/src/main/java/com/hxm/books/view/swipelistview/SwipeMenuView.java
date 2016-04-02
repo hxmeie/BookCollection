@@ -1,4 +1,4 @@
-package com.hxm.books.view.listview;
+package com.hxm.books.view.swipelistview;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import android.widget.TextView;
  */
 public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
-	private SwipeMenuRefreshListView mListView;
+	private SwipeMenuListView mListView;
 	private SwipeMenuLayout mLayout;
 	private SwipeMenu mMenu;
 	private OnSwipeItemClickListener onItemClickListener;
@@ -32,7 +32,7 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		this.position = position;
 	}
 
-	public SwipeMenuView(SwipeMenu menu, SwipeMenuRefreshListView listView) {
+	public SwipeMenuView(SwipeMenu menu, SwipeMenuListView listView) {
 		super(menu.getContext());
 		mListView = listView;
 		mMenu = menu;

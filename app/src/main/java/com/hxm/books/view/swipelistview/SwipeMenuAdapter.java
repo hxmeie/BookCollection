@@ -1,4 +1,4 @@
-package com.hxm.books.view.listview;
+package com.hxm.books.view.swipelistview;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -10,7 +10,7 @@ import android.widget.ListAdapter;
 import android.widget.WrapperListAdapter;
 
 /**
- *
+ * 
  * @author baoyz
  * @date 2014-8-24
  * 
@@ -20,7 +20,7 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 
 	private ListAdapter mAdapter;
 	private Context mContext;
-	private SwipeMenuRefreshListView.OnMenuItemClickListener onMenuItemClickListener;
+	private SwipeMenuListView.OnMenuItemClickListener onMenuItemClickListener;
 
 	public SwipeMenuAdapter(Context context, ListAdapter adapter) {
 		mAdapter = adapter;
@@ -51,9 +51,9 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 			menu.setViewType(mAdapter.getItemViewType(position));
 			createMenu(menu);
 			SwipeMenuView menuView = new SwipeMenuView(menu,
-					(SwipeMenuRefreshListView) parent);
+					(SwipeMenuListView) parent);
 			menuView.setOnSwipeItemClickListener(this);
-			SwipeMenuRefreshListView listView = (SwipeMenuRefreshListView) parent;
+			SwipeMenuListView listView = (SwipeMenuListView) parent;
 			layout = new SwipeMenuLayout(contentView, menuView,
 					listView.getCloseInterpolator(),
 					listView.getOpenInterpolator());
@@ -92,7 +92,7 @@ public class SwipeMenuAdapter implements WrapperListAdapter,
 	}
 
 	public void setOnMenuItemClickListener(
-			SwipeMenuRefreshListView.OnMenuItemClickListener onMenuItemClickListener) {
+			SwipeMenuListView.OnMenuItemClickListener onMenuItemClickListener) {
 		this.onMenuItemClickListener = onMenuItemClickListener;
 	}
 
