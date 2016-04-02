@@ -56,6 +56,8 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private LinearLayout btnAddBooks;
     private  View emptyView;
     private RefreshLayout refreshLayout;
+    private int pageLimit=10;
+    private int lastPageNum=0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
-
         initView();
         setSwipeMenuListView();
         getBookList();
@@ -100,6 +101,14 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         });
         mScanBtn.setOnClickListener(this);
         refreshLayout.setColorSchemeResources(R.color.colorBase,R.color.colorAccent,R.color.colorPrimary,R.color.colorBrowm);
+        refreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+            }
+        });
+        //setRefreshing(true) 是不会触发onRefresh的,必须要手动调用一次
+        onRefresh();
     }
 
     /**
@@ -197,7 +206,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             loading.setVisibility(View.VISIBLE);
             LogUtil.i("getBookData", "从网络中获取");
             BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
-            queryBookFromStar.setLimit(5);
+            queryBookFromStar.setLimit(10);
             MyUser user= BmobUser.getCurrentUser(getActivity(),MyUser.class);
             queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
             queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
@@ -238,7 +247,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onRefresh() {
-
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(false);
+            }
+        },2000);
     }
 
 

@@ -20,6 +20,7 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
+import com.hxm.books.bean.BookISBN;
 import com.hxm.books.config.Constants;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
@@ -50,7 +51,7 @@ import cn.bmob.v3.listener.FindListener;
  * Created by hxm on 2016/1/13.
  */
 public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback, View.OnClickListener {
-
+    private String TAG="ScanActivity";
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
     private boolean hasSurface;
@@ -224,7 +225,7 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
                 } else {
                     failureMsg = "网络未连接";
                 }
-                LogUtil.e("获取失败" + s);
+                LogUtil.e(TAG,"获取失败" + s);
                 dialog.dismiss();
                 final NormalDialog mDialog = new NormalDialog(ScanActivity.this);
                 mDialog.btnNum(1)
@@ -266,8 +267,12 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
             JSONObject jsonObject = new JSONObject(bookInfo);
             JSONArray authorArray = jsonObject.getJSONArray("author");
             JSONArray tagArray = jsonObject.getJSONArray("tags");
-            JSONObject tag1Obj = tagArray.getJSONObject(0);
-            JSONObject tag2Obj = tagArray.getJSONObject(1);
+            if (tagArray.length()>1){
+                JSONObject tag1Obj = tagArray.getJSONObject(0);
+                JSONObject tag2Obj = tagArray.getJSONObject(1);
+                mBook.setTag1(tag1Obj.getString("name"));
+                mBook.setTag2(tag2Obj.getString("name"));
+            }
             mBook.setPages(jsonObject.getString("pages"));
             mBook.setTitle(jsonObject.getString("title"));
             mBook.setPrice(jsonObject.getString("price"));
@@ -281,10 +286,6 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
                 author += authorArray.optString(index) + " ";
             }
             mBook.setAuthor(author);
-
-            mBook.setTag1(tag1Obj.getString("name"));
-            mBook.setTag2(tag2Obj.getString("name"));
-
             LogUtil.d(mBook.toString());
 
         } catch (JSONException e) {
@@ -301,15 +302,18 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                LogUtil.i("上传", "查询成功返回结果数" + list.size());
+                LogUtil.i(TAG, "查询list_size " + list.size());
                 if (list.size() == 0) {
                     mBook.save(ScanActivity.this);
+                    BookISBN bookISBN =new BookISBN();
+                    bookISBN.setBookISBN(mBook.getIsbn());
+                    bookISBN.save(ScanActivity.this);
                 }
             }
 
             @Override
             public void onError(int i, String s) {
-                LogUtil.i("上传", s);
+                LogUtil.i(TAG,"上传失败"+s);
             }
         });
 

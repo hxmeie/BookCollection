@@ -10,6 +10,7 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
+import com.hxm.books.bean.BookISBN;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
@@ -36,25 +37,25 @@ import cn.bmob.v3.listener.UpdateListener;
  * 扫描后的书籍信息界面
  */
 public class ScanBookDetailsActivity extends BaseActivity {
-
+    private String TAG="ScanBookDetailsActivity";
     private TextView mBookName, mBookPrice, mBookPublisher, mBookPages, mBookAuthor, mBookPubdate;
     private ImageView mBookPic;
     private TextView mBookSummary, mBookCatalog;
     private ImageView mArrowTextDownSum, mArrowTextDownCata;
     private Button btnAddToBookshelf;
     private AVLoadingIndicatorView loadingView;
-//    private View mDividerLineSum, mDividerLineCata;
     private int maxLineSum = 5;
     private int maxLineCata = 8;
     private String bookISBN;
     private Book mBook;
+    private BookISBN isbn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
         bookISBN=getIntent().getStringExtra("book_isbn");
-        LogUtil.i("图书ISBN号:"+bookISBN);
+        LogUtil.i(TAG,"图书ISBN号:"+bookISBN);
         initView();
         queryBook();
         queryStarBook();
@@ -98,7 +99,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                LogUtil.i("relation", "query_result_from_bookshelf list size is:" + list.size());
+                LogUtil.i(TAG, "query_result_from_bookshelf list size is:" + list.size());
                 for (int i = 0; i < list.size(); i++) {
                     if (bookISBN.equals(list.get(i).getIsbn())) {
                         setBtnState();
@@ -120,17 +121,31 @@ public class ScanBookDetailsActivity extends BaseActivity {
     private void queryBook(){
         loadingView.setVisibility(View.VISIBLE);
         BmobQuery<Book> query=new BmobQuery<>();
-        query.addWhereEqualTo("isbn",bookISBN);
+        query.addWhereEqualTo("isbn", bookISBN);
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                mBook=list.get(0);
+                mBook = list.get(0);
                 setBookData(mBook);
             }
 
             @Override
             public void onError(int i, String s) {
-                ToastUtils.show(ScanBookDetailsActivity.this,"获取图书信息失败");
+                ToastUtils.show(ScanBookDetailsActivity.this, "获取图书信息失败");
+                LogUtil.i(TAG, s);
+            }
+        });
+        BmobQuery<BookISBN> isbnQuery=new BmobQuery<>();
+        isbnQuery.addWhereEqualTo("bookISBN",bookISBN);
+        isbnQuery.findObjects(this, new FindListener<BookISBN>() {
+            @Override
+            public void onSuccess(List<BookISBN> list) {
+                isbn=list.get(0);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
             }
         });
     }
@@ -140,19 +155,22 @@ public class ScanBookDetailsActivity extends BaseActivity {
      */
     private void addStarBook() {
         MyUser user= BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
-        BmobRelation relation=new BmobRelation();
-        relation.add(mBook);
-        user.setLikes(relation);
+        BmobRelation bookRelation=new BmobRelation();
+        bookRelation.add(mBook);
+        BmobRelation isbnRelation=new BmobRelation();
+        isbnRelation.add(isbn);
+        user.setLikes(bookRelation);
+        user.setLikesISBN(isbnRelation);
         user.update(this, new UpdateListener() {
             @Override
             public void onSuccess() {
-                LogUtil.i("relation","多对多关系添加成功");
+                LogUtil.i(TAG,"多对多关系添加成功");
                 setBtnState();
             }
 
             @Override
             public void onFailure(int i, String s) {
-                LogUtil.i("relation","多对多关系添加失败"+s);
+                LogUtil.i(TAG,"多对多关系添加失败"+s);
             }
         });
     }

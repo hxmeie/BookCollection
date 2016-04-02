@@ -14,6 +14,15 @@ public class MyUser extends BmobUser {
     private String nickName;
     private BmobFile userAvatar;//用户头像
     private BmobRelation likes;//多对多关系:用户收藏的图书
+    private BmobRelation likesISBN;//用户收藏的图书的ISBN
+
+    public BmobRelation getLikesISBN() {
+        return likesISBN;
+    }
+
+    public void setLikesISBN(BmobRelation likesISBN) {
+        this.likesISBN = likesISBN;
+    }
 
     public BmobFile getUserAvatar() {
         return userAvatar;
