@@ -158,7 +158,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), BookActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("bookinfo", bookList.get(position - 1));
+                bundle.putSerializable("bookinfo", bookList.get(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
