@@ -1,11 +1,8 @@
 package com.hxm.books.config;
 
-import com.hxm.books.bean.MyUser;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
-
-import cn.bmob.v3.BmobUser;
 
 /**
  * Created by hxm on 2016/1/29.

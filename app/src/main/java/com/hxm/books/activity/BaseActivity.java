@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
+import com.hxm.books.config.AppManager;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.view.HeaderLayout;
@@ -27,6 +28,8 @@ public class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApplication = MyApplication.getInstance();
+        AppManager.getAppManager().addActivity(this);
+
         initWindow();
     }
     @TargetApi(19)

@@ -68,6 +68,9 @@
     <string name="scaning">正在扫描&#8230;</string>
     <string name="scan_failed">扫描失败，请重试</string>
 
+    <!--SettingActivity-->
+    <string name="logout">退出当前账号</string>
+
     <!-- BookActivity-->
     <string name="spread">展开</string>
     <string name="merge">合并</string>
