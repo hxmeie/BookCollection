@@ -23,6 +23,7 @@ import com.hxm.books.listener.FirstDisplayListener;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
+import com.hxm.books.view.EmptyView;
 import com.hxm.books.view.MyDialog;
 import com.hxm.books.view.RefreshLayout;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
@@ -52,10 +53,10 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private FileCache mCache;
     private AVLoadingIndicatorView loading;
     private RefreshLayout refreshLayout;
+    private EmptyView emptyView;
     private int pageLimit = 6;
     private int lastPageNum = 0;
-    private boolean firstLoad=true;
-    private boolean isRefresh=false;
+    private boolean firstLoad = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,14 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         loading = (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
         listview_book = (SwipeMenuListView) view.findViewById(R.id.listview_bookshelf);
         refreshLayout = (RefreshLayout) view.findViewById(R.id.refresh_layout);
+        emptyView = (EmptyView) view.findViewById(R.id.empty_view);
+        emptyView.setEmptyViewListener(new EmptyView.onEmptyViewClickListener() {
+            @Override
+            public void onLayoutClick() {
+                Intent intent = new Intent(getActivity(), ScanActivity.class);
+                startActivity(intent);
+            }
+        });
         mScanBtn.setOnClickListener(this);
         refreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
         refreshLayout.setOnRefreshListener(this);
@@ -199,7 +208,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
      * 获取图书数据
      */
     private void getBooks() {
-        if (firstLoad){
+        if (firstLoad) {
             loading.setVisibility(View.VISIBLE);
         }
         BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
@@ -210,17 +219,23 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                for (int i=0;i<list.size();i++){
+                for (int i = 0; i < list.size(); i++) {
                     bookList.add(list.get(i));
                 }
-                if (mAdapter==null){
-                    mAdapter=new BookShelfAdapter(getActivity(),bookList);
-                    listview_book.setAdapter(mAdapter);
+                if (bookList.size() != 0) {
+                    if (mAdapter == null) {
+                        mAdapter = new BookShelfAdapter(getActivity(), bookList);
+                        listview_book.setAdapter(mAdapter);
+                        loading.setVisibility(View.GONE);
+                        firstLoad = false;
+                    } else {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                } else {
                     loading.setVisibility(View.GONE);
-                    firstLoad=false;
-                }else {
-                    mAdapter.notifyDataSetChanged();
+                    listview_book.setEmptyView(emptyView);
                 }
+
             }
 
             @Override
@@ -232,8 +247,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onLoad() {
-        lastPageNum+=pageLimit;
-        isRefresh=false;
+        lastPageNum += pageLimit;
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -245,8 +259,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onRefresh() {
-        lastPageNum=0;
-        isRefresh=true;
+        lastPageNum = 0;
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {

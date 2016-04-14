@@ -34,6 +34,7 @@ public class EmptyView extends LinearLayout implements View.OnClickListener{
         btn_add_book= (LinearLayout) view.findViewById(R.id.bookshelf_add_books);
         btn_add_book.setOnClickListener(this);
         setOnClickListener(this);
+        addView(view);
     }
 
 
