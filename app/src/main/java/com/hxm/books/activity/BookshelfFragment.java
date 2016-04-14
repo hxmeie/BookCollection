@@ -54,6 +54,8 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private RefreshLayout refreshLayout;
     private int pageLimit = 6;
     private int lastPageNum = 0;
+    private boolean firstLoad=true;
+    private boolean isRefresh=false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,14 +92,15 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         refreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadingListener(this);
-        refreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.setRefreshing(true);
-            }
-        });
-        //setRefreshing(true) 是不会触发onRefresh的,必须要手动调用一次
-        onRefresh();
+
+//        refreshLayout.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                refreshLayout.setRefreshing(true);
+//            }
+//        });
+//        //setRefreshing(true) 是不会触发onRefresh的,必须要手动调用一次
+//        onRefresh();
     }
 
     /**
@@ -189,20 +192,18 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
      * 显示数据
      */
     private void setListViewData() {
-        getBooks(bookList);
-        LogUtil.i("bookData", "请求的数据大小"+bookList.size());
-        mAdapter=new BookShelfAdapter(getActivity(),bookList);
-        listview_book.setAdapter(mAdapter);
+        getBooks();
     }
 
     /**
      * 获取图书数据
      */
-    private void getBooks(List<Book> books) {
-        loading.setVisibility(View.VISIBLE);
-        final List<Book> list1=books;
+    private void getBooks() {
+        if (firstLoad){
+            loading.setVisibility(View.VISIBLE);
+        }
         BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
-        queryBookFromStar.setLimit(pageLimit);
+        queryBookFromStar.setLimit(6);
         queryBookFromStar.setSkip(lastPageNum);
         MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
         queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
@@ -210,9 +211,16 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             @Override
             public void onSuccess(List<Book> list) {
                 for (int i=0;i<list.size();i++){
-                    list1.add(list.get(i));
+                    bookList.add(list.get(i));
                 }
-                loading.setVisibility(View.GONE);
+                if (mAdapter==null){
+                    mAdapter=new BookShelfAdapter(getActivity(),bookList);
+                    listview_book.setAdapter(mAdapter);
+                    loading.setVisibility(View.GONE);
+                    firstLoad=false;
+                }else {
+                    mAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -225,12 +233,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onLoad() {
         lastPageNum+=pageLimit;
+        isRefresh=false;
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                getBooks(bookList);
-                mAdapter.notifyDataSetChanged();
                 refreshLayout.setLoading(false);
+                getBooks();
             }
         }, 2000);
     }
@@ -238,12 +246,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onRefresh() {
         lastPageNum=0;
-        bookList.clear();
+        isRefresh=true;
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
-                getBooks(bookList);
-                mAdapter.notifyDataSetChanged();
+                bookList.clear();
+                getBooks();
                 refreshLayout.setRefreshing(false);
             }
         }, 2000);
