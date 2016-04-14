@@ -52,15 +52,15 @@ public class FileCache {
         return get(cacheDir, MAX_SIZE, MAX_COUNT);
     }
 
-    public static FileCache get(Context ctx, long max_zise, int max_count) {
+    public static FileCache get(Context ctx, long max_size, int max_count) {
         File f = new File(ctx.getCacheDir(), "FileCache");
-        return get(f, max_zise, max_count);
+        return get(f, max_size, max_count);
     }
 
-    public static FileCache get(File cacheDir, long max_zise, int max_count) {
+    public static FileCache get(File cacheDir, long max_size, int max_count) {
         FileCache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
         if (manager == null) {
-            manager = new FileCache(cacheDir, max_zise, max_count);
+            manager = new FileCache(cacheDir, max_size, max_count);
             mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
         }
         return manager;

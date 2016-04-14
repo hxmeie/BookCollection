@@ -20,16 +20,13 @@
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-
         android:background="@drawable/btn_login_background"
-        android:paddingTop="@dimen/base_padding_10"
-        android:paddingBottom="@dimen/base_padding_10"
         android:layout_marginLeft="@dimen/base_margin_15"
         android:layout_marginRight="@dimen/base_margin_15"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/text_size_18"
-        android:layout_marginBottom="@dimen/base_margin_15"
+        android:layout_marginBottom="50dp"
         android:text="@string/logout"/>
 </RelativeLayout>

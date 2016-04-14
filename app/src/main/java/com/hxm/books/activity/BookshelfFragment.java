@@ -3,9 +3,7 @@ package com.hxm.books.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import com.alibaba.fastjson.JSON;
-import com.hxm.books.config.Constants;
+
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.adapter.BookShelfAdapter;
@@ -26,7 +23,6 @@ import com.hxm.books.listener.FirstDisplayListener;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
-import com.hxm.books.utils.cache.FileCacheManger;
 import com.hxm.books.view.MyDialog;
 import com.hxm.books.view.RefreshLayout;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
@@ -34,8 +30,10 @@ import com.hxm.books.view.swipelistview.SwipeMenu;
 import com.hxm.books.view.swipelistview.SwipeMenuCreator;
 import com.hxm.books.view.swipelistview.SwipeMenuItem;
 import com.hxm.books.view.swipelistview.SwipeMenuListView;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
@@ -45,7 +43,7 @@ import cn.bmob.v3.listener.FindListener;
  * 书架
  * Created by hxm on 2016/1/25.
  */
-public class BookshelfFragment extends Fragment implements View.OnClickListener,RefreshLayout.OnRefreshListener,RefreshLayout.OnLoadListener {
+public class BookshelfFragment extends Fragment implements View.OnClickListener, RefreshLayout.OnRefreshListener, RefreshLayout.OnLoadListener {
     private ImageButton mScanBtn;
     private View view;
     private SwipeMenuListView listview_book;
@@ -53,11 +51,9 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private BookShelfAdapter mAdapter;
     private FileCache mCache;
     private AVLoadingIndicatorView loading;
-    private LinearLayout btnAddBooks;
-    private  View emptyView;
     private RefreshLayout refreshLayout;
-    private int pageLimit=10;
-    private int lastPageNum=0;
+    private int pageLimit = 6;
+    private int lastPageNum = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +66,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
         initView();
         setSwipeMenuListView();
-        getBookList();
+        setListViewData();
         return view;
     }
 
@@ -89,18 +85,11 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         mScanBtn = (ImageButton) view.findViewById(R.id.im_btn_scan);
         loading = (AVLoadingIndicatorView) view.findViewById(R.id.loading_view);
         listview_book = (SwipeMenuListView) view.findViewById(R.id.listview_bookshelf);
-        refreshLayout= (RefreshLayout) view.findViewById(R.id.refresh_layout);
-        emptyView=View.inflate(getActivity(),R.layout.empty_listview,null);
-        btnAddBooks= (LinearLayout) emptyView.findViewById(R.id.bookshelf_add_books);
-        btnAddBooks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ScanActivity.class);
-                startActivity(intent);
-            }
-        });
+        refreshLayout = (RefreshLayout) view.findViewById(R.id.refresh_layout);
         mScanBtn.setOnClickListener(this);
-        refreshLayout.setColorSchemeResources(R.color.colorBase,R.color.colorAccent,R.color.colorPrimary,R.color.colorBrowm);
+        refreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setOnLoadingListener(this);
         refreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -197,91 +186,67 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     }
 
     /**
-     * 获取图书收藏列表
+     * 显示数据
      */
-    private void getBookList() {
-        if (FileCacheManger.isExistDataCache(getContext(), Constants.CACHE_BOOK_LIST.hashCode() + "")) {
-            new DataSetAsync().execute();
-        } else {
-            loading.setVisibility(View.VISIBLE);
-            LogUtil.i("getBookData", "从网络中获取");
-            BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
-            queryBookFromStar.setLimit(10);
-            MyUser user= BmobUser.getCurrentUser(getActivity(),MyUser.class);
-            queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
-            queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
-                @Override
-                public void onSuccess(List<Book> list) {
-                    for (int i = 0; i < list.size(); i++) {
-                        LogUtil.i("bookshelf_list_size", list.size() + "");
-                        bookList.add(list.get(i));
-                    }
+    private void setListViewData() {
+        getBooks(bookList);
+        LogUtil.i("bookData", "请求的数据大小"+bookList.size());
+        mAdapter=new BookShelfAdapter(getActivity(),bookList);
+        listview_book.setAdapter(mAdapter);
+    }
 
-                    mAdapter = new BookShelfAdapter(getContext(), bookList);
-                    LogUtil.i("bookshelf_list_size:", bookList.size() + "");
-                    listview_book.setAdapter(mAdapter);
-                    loading.setVisibility(View.GONE);
-                    if (list.size() == 0) {
-                        ViewGroup viewGroup = (ViewGroup) listview_book.getParent();
-                        viewGroup.addView(emptyView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                        listview_book.setEmptyView(emptyView);
-
-                    } else {
-                        String bookJson = JSON.toJSONString(bookList, true);
-                        mCache.put(Constants.CACHE_BOOK_LIST, bookJson);
-                    }
+    /**
+     * 获取图书数据
+     */
+    private void getBooks(List<Book> books) {
+        loading.setVisibility(View.VISIBLE);
+        final List<Book> list1=books;
+        BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
+        queryBookFromStar.setLimit(pageLimit);
+        queryBookFromStar.setSkip(lastPageNum);
+        MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
+        queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
+        queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
+            @Override
+            public void onSuccess(List<Book> list) {
+                for (int i=0;i<list.size();i++){
+                    list1.add(list.get(i));
                 }
+                loading.setVisibility(View.GONE);
+            }
 
-                @Override
-                public void onError(int i, String s) {
-                    ToastUtils.show(getActivity(), "获取数据失败");
-                }
-            });
-        }
+            @Override
+            public void onError(int i, String s) {
+                ToastUtils.show(getActivity(), "获取数据失败");
+            }
+        });
     }
 
     @Override
     public void onLoad() {
-
+        lastPageNum+=pageLimit;
+        refreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getBooks(bookList);
+                mAdapter.notifyDataSetChanged();
+                refreshLayout.setLoading(false);
+            }
+        }, 2000);
     }
 
     @Override
     public void onRefresh() {
+        lastPageNum=0;
+        bookList.clear();
         refreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
+                getBooks(bookList);
+                mAdapter.notifyDataSetChanged();
                 refreshLayout.setRefreshing(false);
             }
-        },2000);
-    }
-
-
-    /**
-     * 异步加载缓存
-     */
-    private class DataSetAsync extends AsyncTask<Void, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            loading.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            String jsonString = mCache.getAsString("book_list");
-            return jsonString;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            bookList = JSON.parseArray(s, Book.class);
-            mAdapter = new BookShelfAdapter(getContext(), bookList);
-            LogUtil.i("hxmeie", bookList.size() + "");
-            listview_book.setAdapter(mAdapter);
-            loading.setVisibility(View.GONE);
-            LogUtil.i("getBookData", "从缓存中获取");
-        }
+        }, 2000);
     }
 
     private int dp2px(int dp) {
