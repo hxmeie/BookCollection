@@ -36,7 +36,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/title_bookshelf_frag">
 
-        <com.hxm.books.view.swipelistview.SwipeMenuListView
+        <ListView
             android:id="@+id/listview_bookshelf"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
