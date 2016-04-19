@@ -189,7 +189,9 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                         mAdapter.notifyDataSetChanged();
                     }
                 } else {
+                    firstLoad=false;
                     loading.setVisibility(View.GONE);
+                    refreshLayout.setRefreshing(false);
                     listview_book.setEmptyView(emptyView);
                 }
 
@@ -227,8 +229,4 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         }, 2000);
     }
 
-    private int dp2px(int dp) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
-                getResources().getDisplayMetrics());
-    }
 }
