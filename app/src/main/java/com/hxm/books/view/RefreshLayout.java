@@ -119,7 +119,7 @@ public class RefreshLayout extends SwipeRefreshLayout implements AbsListView.OnS
      * @return true or false
      */
     private boolean canLoad() {
-        return isBottom() && !isLoading && isPullUp();
+        return isBottom() && !isLoading && isPullUp()&&mListView.getAdapter().getCount()>10;
     }
 
     /**
