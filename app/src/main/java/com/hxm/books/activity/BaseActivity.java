@@ -32,6 +32,7 @@ public class BaseActivity extends FragmentActivity {
 
         initWindow();
     }
+
     @TargetApi(19)
     private void initWindow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -53,17 +54,19 @@ public class BaseActivity extends FragmentActivity {
 
     /**
      * 获取string。xml字符串
+     *
      * @param id 字符串id
      */
-    public String stringId(Context context,int id){
-       return context.getResources().getString(id);
+    public String stringId(Context context, int id) {
+        return context.getResources().getString(id);
     }
 
     /**
      * 获取string。xml字符串
+     *
      * @param id 字符串id
      */
-    public String stringId(int id){
+    public String stringId(int id) {
         return getResources().getString(id);
     }
 
@@ -118,6 +121,12 @@ public class BaseActivity extends FragmentActivity {
         mHeaderLayout.setTitleAndRightBtn(titleName, text, rightId, listener);
     }
 
+    public void initMiddleSearchView(String rightBtnText, int rightBackColorId,  HeaderLayout.headerLayoutRightOnclickLister rightListener) {
+        mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
+        mHeaderLayout.initHeaderStytle(HeaderLayout.HeaderStyle.LEFT_SEARCH_AND_RIGHT);
+        mHeaderLayout.setSearch(rightBtnText, rightBackColorId, R.drawable.base_action_bar_back_bg_selector, new onLeftCilckListener(), rightListener);
+    }
+
     /**
      * 左侧按钮点击事件
      */
@@ -132,7 +141,7 @@ public class BaseActivity extends FragmentActivity {
     /**
      * 右侧按钮点击事件
      */
-    public class onRightClickListener implements HeaderLayout.headerLayoutRightOnclickLister{
+    public class onRightClickListener implements HeaderLayout.headerLayoutRightOnclickLister {
 
         @Override
         public void onClick() {
