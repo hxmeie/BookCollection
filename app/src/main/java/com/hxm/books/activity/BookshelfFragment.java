@@ -31,7 +31,9 @@ import java.util.List;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * 书架
@@ -124,7 +126,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
         listview_book.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 MyDialog dialog = new MyDialog(getContext());
                 dialog.DialogWithTwoBtn("是否删除", "提示", new DiakogTwoBtnEvent() {
                     @Override
@@ -134,7 +136,26 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 
                     @Override
                     public void rightOnClick() {
-                        ToastUtils.show(getContext(), "点击右边");
+                        MyUser user= BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
+                        BmobRelation bookRelation=new BmobRelation();
+                        bookRelation.remove(bookList.get(position));
+                        user.setLikes(bookRelation);
+                        user.update(getActivity(), new UpdateListener() {
+                            @Override
+                            public void onSuccess() {
+                                ToastUtils.show(getActivity(),"删除成功");
+                                bookList.remove(position);
+                                mAdapter.notifyDataSetChanged();
+                                if (bookList.size()==0){
+                                    listview_book.setEmptyView(emptyView);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int i, String s) {
+                                ToastUtils.show(getActivity(),"删除失败"+s);
+                            }
+                        });
                     }
                 });
                 return true;

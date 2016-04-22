@@ -13,7 +13,7 @@
         android:paddingLeft="@dimen/base_padding_5"
         android:paddingRight="@dimen/base_padding_5"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/text_size_15"
+        android:textSize="16dp"
         android:clickable="false"
         android:focusable="false"/>
 </LinearLayout>

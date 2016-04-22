@@ -5,7 +5,7 @@
     android:orientation="vertical">
     <com.hxm.books.view.ClearEditText
         android:id="@+id/et_search"
-        android:layout_width="260dp"
+        android:layout_width="240dp"
         android:layout_height="35dp"
         android:background="@drawable/edit_text_background"
         android:maxLines="1"

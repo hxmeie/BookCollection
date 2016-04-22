@@ -24,4 +24,14 @@ public class Constants {
     //缓存文件名
     public static final String CACHE_BOOK_LIST="book_list";
 
+    /**
+     * 图书搜索
+     * <p>
+     * q	查询关键字	q和tag必传其一<br/>
+     * tag	查询的tag	q和tag必传其一<br/>
+     * start	取结果的offset	默认为0<br/>
+     * count	取结果的条数	默认为20，最大为100
+     */
+    public static String SearchBookApi = "https://api.douban.com/v2/book/search";
+
 }
