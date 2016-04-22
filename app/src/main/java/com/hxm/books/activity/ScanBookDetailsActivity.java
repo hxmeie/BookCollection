@@ -157,10 +157,10 @@ public class ScanBookDetailsActivity extends BaseActivity {
         MyUser user= BmobUser.getCurrentUser(MyApplication.getInstance(),MyUser.class);
         BmobRelation bookRelation=new BmobRelation();
         bookRelation.add(mBook);
-        BmobRelation isbnRelation=new BmobRelation();
-        isbnRelation.add(isbn);
+//        BmobRelation isbnRelation=new BmobRelation();
+//        isbnRelation.add(isbn);
         user.setLikes(bookRelation);
-        user.setLikesISBN(isbnRelation);
+//        user.setLikesISBN(isbnRelation);
         user.update(this, new UpdateListener() {
             @Override
             public void onSuccess() {
