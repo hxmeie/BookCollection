@@ -66,7 +66,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mBook=bookList.get(position);
                 String isbn=mBook.getIsbn();
-                LogUtil.i("SearchActivity",isbn);
+                LogUtil.i("SearchActivity",isbn+"");
                 Intent intent=new Intent(SearchActivity.this,ScanBookDetailsActivity.class);
                 intent.putExtra("book_isbn",isbn);
                 startActivity(intent);
