@@ -21,13 +21,13 @@ import java.util.List;
  * Created by hxm on 2016/2/1.
  * 书架ListView的适配
  */
-public class BookShelfAdapter extends BaseAdapter {
+public class BookAdapter extends BaseAdapter {
     private Context context;
     private List<Book> mBook;
     private DisplayImageOptions options;
     private ImageLoadingListener imageLoadingListener;
 
-    public BookShelfAdapter(Context context,List<Book> mBook){
+    public BookAdapter(Context context, List<Book> mBook){
         this.context=context;
         this.mBook=mBook;
         imageLoadingListener = new FirstDisplayListener();

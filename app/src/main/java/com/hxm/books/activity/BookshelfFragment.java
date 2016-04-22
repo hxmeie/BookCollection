@@ -3,7 +3,6 @@ package com.hxm.books.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.widget.ListView;
 
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
-import com.hxm.books.adapter.BookShelfAdapter;
+import com.hxm.books.adapter.BookAdapter;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.listener.DiakogTwoBtnEvent;
@@ -44,7 +43,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private View view;
     private ListView listview_book;
     private List<Book> bookList = new ArrayList<>();
-    private BookShelfAdapter mAdapter;
+    private BookAdapter mAdapter;
     private FileCache mCache;
     private AVLoadingIndicatorView loading;
     private RefreshLayout refreshLayout;
@@ -202,7 +201,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 }
                 if (bookList.size() != 0) {
                     if (mAdapter == null) {
-                        mAdapter = new BookShelfAdapter(getActivity(), bookList);
+                        mAdapter = new BookAdapter(getActivity(), bookList);
                         listview_book.setAdapter(mAdapter);
                         loading.setVisibility(View.GONE);
                         firstLoad = false;

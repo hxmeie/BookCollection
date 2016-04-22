@@ -34,6 +34,8 @@ public class HeaderLayout extends LinearLayout {
 
     private Button mHeaderRightButton;
     private ClearEditText mEditText;
+    public String searchKeyWord=null;
+    View middleSearchEditText;
 
     //标题栏样式
     public enum HeaderStyle {
@@ -53,6 +55,9 @@ public class HeaderLayout extends LinearLayout {
     public void init(Context context) {
         mInflater = LayoutInflater.from(context);
         mHeader = mInflater.inflate(R.layout.common_header, null);
+        middleSearchEditText = mInflater.inflate(R.layout.common_header_search_view, null);
+        mEditText = (ClearEditText) middleSearchEditText.findViewById(R.id.et_search);
+        searchKeyWord=mEditText.getText().toString().trim();
         addView(mHeader);
         initViews();
     }
@@ -138,18 +143,14 @@ public class HeaderLayout extends LinearLayout {
 
     //中间搜索框
     public void middleSearchView() {
-        View middleSearchEditText = mInflater.inflate(R.layout.common_header_search_view, null);
+        //View middleSearchEditText = mInflater.inflate(R.layout.common_header_search_view, null);
         mLayoutMiddleContainer.addView(middleSearchEditText);
-        mEditText = (ClearEditText) middleSearchEditText.findViewById(R.id.et_search);
-
+//        mEditText = (ClearEditText) middleSearchEditText.findViewById(R.id.et_search);
     }
 
     //获取EditText
-    public EditText getSearchEditText() {
-        if (mEditText != null) {
-            return mEditText;
-        }
-        return null;
+    public ClearEditText getSearchEditText() {
+       return mEditText;
     }
 
     //获取右侧按钮
