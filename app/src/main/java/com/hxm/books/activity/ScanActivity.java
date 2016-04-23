@@ -214,9 +214,41 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         dialog.setMessage("已扫描,查询中...");
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+        final String url = Constants.GET_BOOK_BASE_URL + result;
+        BmobQuery<Book> query=new BmobQuery<>();
+        query.addWhereEqualTo("isbn",result);
+        query.findObjects(this, new FindListener<Book>() {
+            @Override
+            public void onSuccess(List<Book> list) {
+                if (list.size()==0){
+                    LogUtil.i("ScanActivity","get book"+mBook.getTitle()+" from douban api");
+                    getDataFromDouban(url,dialog);
+                }
+                mBook=list.get(0);
+                LogUtil.i("ScanActivity","get book"+mBook.getTitle()+" from my database");
+                Intent resultIntent = new Intent(ScanActivity.this, ScanBookDetailsActivity.class);
+                resultIntent.putExtra("book_isbn", mBook.getIsbn());
+                startAnimActivity(resultIntent);
+                dialog.dismiss();
+                finish();
 
-        String url = Constants.GET_BOOK_BASE_URL + result;
-        HttpUtil.get(url, new TextHttpResponseHandler() {
+            }
+
+            @Override
+            public void onError(int i, String s) {
+                getDataFromDouban(url,dialog);
+            }
+        });
+
+    }
+
+    /**
+     * 如果数据库中没有图书信息，则从豆瓣获取
+     * @param str
+     * @param dialog
+     */
+    private void getDataFromDouban(String str, final ProgressDialog dialog){
+        HttpUtil.get(str, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
                 String failureMsg = null;

@@ -127,7 +127,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 MyDialog dialog = new MyDialog(getContext());
-                dialog.DialogWithTwoBtn("是否删除", "提示", new DiakogTwoBtnEvent() {
+                dialog.DialogWithTwoBtn("是否从书架中删除?", "提示", new DiakogTwoBtnEvent() {
                     @Override
                     public void leftOnClick() {
                         ToastUtils.show(getContext(), "点击左边");
@@ -233,7 +233,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 refreshLayout.setLoading(false);
                 getBooks();
             }
-        }, 2000);
+        }, 100);
     }
 
     @Override
@@ -246,7 +246,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 getBooks();
                 refreshLayout.setRefreshing(false);
             }
-        }, 2000);
+        }, 1000);
     }
 
 }

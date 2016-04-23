@@ -37,6 +37,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
     private BookAdapter adapter;
     private int mPageSize = 10;
     private int mCurrentPageIndex = 1;
+    private int search_tag=1;
     private ArrayList<Book> bookList=new ArrayList<>();
 
     @Override
@@ -55,7 +56,16 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
                 editText=mHeaderLayout.getSearchEditText();
                 KeyBoardUtils.closeKeybord(editText,SearchActivity.this);
                 ToastUtils.show(SearchActivity.this,editText.getText().toString());
-                getSearchResult();
+                switch (search_tag){
+                    case 1:
+                        getSearchResult();
+                        search_tag=2;
+                        break;
+                    case 2:
+                        bookList.clear();
+                        getSearchResult();
+                        break;
+                }
             }
         });
         refreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
