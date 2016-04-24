@@ -15,5 +15,10 @@
             android:layout_centerInParent="true"
             android:textColor="@color/colorWhite"/>
     </RelativeLayout>
-
+    <ListView
+        android:id="@+id/lv_classify"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:divider="@null"/>
 </LinearLayout>

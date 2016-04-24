@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp"
+    app:contentPadding="@dimen/base_margin_10">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_book_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="80dp"
+            android:maxWidth="100dp"
+            android:gravity="center_horizontal"
+            android:textSize="30dp"
+            android:textColor="@color/colorBase"
+            tools:text="60"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base_margin_10"
+            android:text="本"
+            android:textSize="25dp"/>
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"
+            android:layout_marginTop="@dimen/base_margin_10"
+            android:layout_marginBottom="@dimen/base_margin_10"
+            android:layout_marginLeft="15dp"/>
+        <TextView
+            android:id="@+id/tv_classify_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="22dp"
+            android:maxLines="1"
+            tools:text="文学艺术"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
