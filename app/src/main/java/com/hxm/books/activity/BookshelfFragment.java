@@ -193,6 +193,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         queryBookFromStar.setSkip(lastPageNum);
         MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
         queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
+        queryBookFromStar.addQueryKeys("title,bookImage,author,summary,tag1,tag2");
         queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {

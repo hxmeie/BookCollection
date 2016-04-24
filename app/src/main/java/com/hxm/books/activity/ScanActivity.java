@@ -217,15 +217,16 @@ public class ScanActivity extends BaseActivity implements SurfaceHolder.Callback
         final String url = Constants.GET_BOOK_BASE_URL + result;
         BmobQuery<Book> query=new BmobQuery<>();
         query.addWhereEqualTo("isbn",result);
+        query.addQueryKeys("isbn");
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
                 if (list.size()==0){
-                    LogUtil.i("ScanActivity","get book"+mBook.getTitle()+" from douban api");
+                    LogUtil.i("ScanActivity","get book"+mBook.getIsbn()+" from douban api");
                     getDataFromDouban(url,dialog);
                 }
                 mBook=list.get(0);
-                LogUtil.i("ScanActivity","get book"+mBook.getTitle()+" from my database");
+                LogUtil.i("ScanActivity","get book"+mBook.getIsbn()+" from my database");
                 Intent resultIntent = new Intent(ScanActivity.this, ScanBookDetailsActivity.class);
                 resultIntent.putExtra("book_isbn", mBook.getIsbn());
                 startAnimActivity(resultIntent);
