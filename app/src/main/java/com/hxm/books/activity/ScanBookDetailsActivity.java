@@ -96,6 +96,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
         BmobQuery<Book> query=new BmobQuery<>();
         MyUser user=BmobUser.getCurrentUser(MyApplication.getInstance(), MyUser.class);
         query.addWhereRelatedTo("likes",new BmobPointer(user));
+        query.addQueryKeys("isbn");
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {

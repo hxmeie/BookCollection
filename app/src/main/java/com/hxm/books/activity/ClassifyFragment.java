@@ -1,11 +1,17 @@
 package com.hxm.books.activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.hxm.books.R;
 import com.hxm.books.adapter.ClassifyAdapter;
@@ -13,6 +19,8 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.bean.ClassifyData;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.view.RefreshLayout;
+import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,11 +40,13 @@ import cn.bmob.v3.listener.FindStatisticsListener;
  * 分类
  * Created by hxm on 2016/1/25.
  */
-public class ClassifyFragment extends Fragment {
+public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefreshListener {
 
     private ListView listView;
     private List<ClassifyData> mList;
     private ClassifyAdapter adapter;
+    private AVLoadingIndicatorView loadingView;
+    private RefreshLayout mRefreshLayout;
     private String classify[] = {"小说",
             "文学艺术",
             "动漫/幽默",
@@ -58,49 +68,66 @@ public class ClassifyFragment extends Fragment {
             "科学技术"};
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mList = new ArrayList<>();
-        getDataFromServer();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         listView = (ListView) view.findViewById(R.id.lv_classify);
+        mRefreshLayout = (RefreshLayout) view.findViewById(R.id.classify_refresh_layout);
+        loadingView = (AVLoadingIndicatorView) view.findViewById(R.id.classify_loading_view);
+        mRefreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
+        mRefreshLayout.setOnRefreshListener(this);
+        getDataFromServer();
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        adapter=new ClassifyAdapter(getActivity(),mList);
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    private void initListView(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String tag=mList.get(position).getClassifyName();
+            }
+        });
     }
 
     private void getDataFromServer() {
+        loadingView.setVisibility(View.VISIBLE);
         MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
         BmobQuery<Book> query = new BmobQuery<>();
         query.addWhereRelatedTo("likes", new BmobPointer(user));
-        query.addQueryKeys("tag1");
+//        query.addQueryKeys("tag1");//添加此代码会让查询的返回值里没有“_count”字段
         query.groupby(new String[]{"tag1"});
         query.setHasGroupCount(true);
         query.findStatistics(getActivity(), Book.class, new FindStatisticsListener() {
             @Override
             public void onSuccess(Object o) {
                 JSONArray jsonArray = (JSONArray) o;
+                ClassifyData data = null;
                 if (jsonArray != null) {
                     try {
                         for (int i = 1; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String classifyName = jsonObject.getString("tag1");
-                            getClassifyNum(classifyName);
+                            int count = jsonObject.getInt("_count");
+                            data = new ClassifyData();
+                            data.setCount(String.valueOf(count));
+                            data.setClassifyName(classifyName);
+                            mList.add(data);
                         }
+                        if (adapter != null) {
+                            adapter.notifyDataSetChanged();
+                        }
+                        adapter = new ClassifyAdapter(getActivity(), mList);
+                        listView.setAdapter(adapter);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                loadingView.setVisibility(View.GONE);
             }
 
             @Override
@@ -110,26 +137,15 @@ public class ClassifyFragment extends Fragment {
         });
     }
 
-    private void getClassifyNum(final String tag){
-        MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
-        BmobQuery<Book> query = new BmobQuery<>();
-        query.addWhereRelatedTo("likes", new BmobPointer(user));
-        query.addQueryKeys("tag1");
-        query.addWhereEqualTo("tag1",tag);
-        query.count(getActivity(), Book.class, new CountListener() {
+    @Override
+    public void onRefresh() {
+        mRefreshLayout.postDelayed(new Runnable() {
             @Override
-            public void onSuccess(int i) {
-                ClassifyData data=new ClassifyData();
-                data.setClassifyName(tag);
-                data.setCount(String.valueOf(i));
-                LogUtil.i("ClassifyFragment",tag+i);
-                mList.add(data);
+            public void run() {
+                mList.clear();
+                getDataFromServer();
+                mRefreshLayout.setRefreshing(false);
             }
-
-            @Override
-            public void onFailure(int i, String s) {
-
-            }
-        });
+        }, 1000);
     }
 }

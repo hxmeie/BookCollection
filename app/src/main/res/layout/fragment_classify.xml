@@ -17,13 +17,18 @@
             android:layout_centerInParent="true"
             android:textColor="@color/colorWhite"/>
     </RelativeLayout>
+    <com.hxm.books.view.RefreshLayout
+        android:id="@+id/classify_refresh_layout"
+        android:layout_below="@id/classify_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ListView
         android:id="@+id/lv_classify"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/classify_header"
         android:listSelector="@android:color/transparent"
         android:divider="@null"/>
+    </com.hxm.books.view.RefreshLayout>
     <com.hxm.books.view.loadingindicator.AVLoadingIndicatorView
         android:id="@+id/classify_loading_view"
         android:layout_width="wrap_content"

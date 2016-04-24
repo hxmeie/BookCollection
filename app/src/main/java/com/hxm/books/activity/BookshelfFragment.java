@@ -17,6 +17,7 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.listener.DiakogTwoBtnEvent;
 import com.hxm.books.listener.FirstDisplayListener;
+import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.utils.cache.FileCache;
 import com.hxm.books.view.EmptyView;
@@ -44,7 +45,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     private ListView listview_book;
     private List<Book> bookList = new ArrayList<>();
     private BookAdapter mAdapter;
-    private FileCache mCache;
     private AVLoadingIndicatorView loading;
     private RefreshLayout refreshLayout;
     private EmptyView emptyView;
@@ -55,11 +55,12 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCache = MyApplication.cache;
+        LogUtil.i("fragmet","onCreate");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LogUtil.i("fragmet","onCreateView");
         view = inflater.inflate(R.layout.fragment_bookshelf, container, false);
         initView();
         setListViewData();
@@ -69,12 +70,19 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onResume() {
         super.onResume();
-        onRefresh();
+//        onRefresh();
+        LogUtil.i("fragmet","onResume");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LogUtil.i("fragmet","onDestory");
         FirstDisplayListener.displayedImages.clear();
     }
 
@@ -107,9 +115,6 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
 //        onRefresh();
     }
 
-    /**
-     * 设置左滑从书架中删除藏书
-     */
     private void initListView() {
 
         listview_book.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,7 +135,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 dialog.DialogWithTwoBtn("是否从书架中删除?", "提示", new DiakogTwoBtnEvent() {
                     @Override
                     public void leftOnClick() {
-                        ToastUtils.show(getContext(), "点击左边");
+//                        ToastUtils.show(getContext(), "点击左边");
                     }
 
                     @Override
@@ -193,7 +198,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         queryBookFromStar.setSkip(lastPageNum);
         MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
         queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
-        queryBookFromStar.addQueryKeys("title,bookImage,author,summary,tag1,tag2");
+//        queryBookFromStar.addQueryKeys("title,bookImage,author,summary,tag1,tag2");
         queryBookFromStar.findObjects(getActivity(), new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
@@ -223,6 +228,24 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
                 ToastUtils.show(getActivity(), "获取数据失败");
             }
         });
+    }
+
+    private void display(){
+        if (bookList.size() != 0) {
+            if (mAdapter == null) {
+                mAdapter = new BookAdapter(getActivity(), bookList);
+                listview_book.setAdapter(mAdapter);
+                loading.setVisibility(View.GONE);
+                firstLoad = false;
+            } else {
+                mAdapter.notifyDataSetChanged();
+            }
+        } else {
+            firstLoad=false;
+            loading.setVisibility(View.GONE);
+            refreshLayout.setRefreshing(false);
+            listview_book.setEmptyView(emptyView);
+        }
     }
 
     @Override
