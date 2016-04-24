@@ -68,10 +68,15 @@ public class ClassifyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classify, container, false);
         listView = (ListView) view.findViewById(R.id.lv_classify);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         adapter=new ClassifyAdapter(getActivity(),mList);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        return view;
     }
 
     private void getDataFromServer() {

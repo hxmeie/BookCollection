@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <RelativeLayout
+        android:id="@+id/classify_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/base_action_bar_height"
         android:background="@color/colorBase">
@@ -19,6 +21,14 @@
         android:id="@+id/lv_classify"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/classify_header"
         android:listSelector="@android:color/transparent"
         android:divider="@null"/>
-</LinearLayout>
+    <com.hxm.books.view.loadingindicator.AVLoadingIndicatorView
+        android:id="@+id/classify_loading_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        app:indicator="BallSpinFadeLoader" />
+</RelativeLayout>
