@@ -229,25 +229,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
             }
         });
     }
-
-    private void display(){
-        if (bookList.size() != 0) {
-            if (mAdapter == null) {
-                mAdapter = new BookAdapter(getActivity(), bookList);
-                listview_book.setAdapter(mAdapter);
-                loading.setVisibility(View.GONE);
-                firstLoad = false;
-            } else {
-                mAdapter.notifyDataSetChanged();
-            }
-        } else {
-            firstLoad=false;
-            loading.setVisibility(View.GONE);
-            refreshLayout.setRefreshing(false);
-            listview_book.setEmptyView(emptyView);
-        }
-    }
-
+    //等待添加判断是否加载完全部数据的功能，通过判断lastPageNum是否大于书架书的数量
     @Override
     public void onLoad() {
         lastPageNum += pageLimit;

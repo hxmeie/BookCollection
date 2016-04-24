@@ -16,6 +16,7 @@ import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
 import com.hxm.books.view.HeaderLayout;
 import com.hxm.books.view.RefreshLayout;
+import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -35,6 +36,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
     private ClearEditText editText;
     private Book mBook;
     private BookAdapter adapter;
+    private AVLoadingIndicatorView loadingVIew;
     private int mPageSize = 10;
     private int mCurrentPageIndex = 1;
     private int search_tag=1;
@@ -50,6 +52,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
     private void initView() {
         lvSearch= (ListView) findViewById(R.id.listview_search_result);
         refreshLayout= (RefreshLayout) findViewById(R.id.search_result_refreshlayout);
+        loadingVIew= (AVLoadingIndicatorView) findViewById(R.id.search_loading_view);
         initMiddleSearchView("搜索", R.color.colorBase, new HeaderLayout.headerLayoutRightOnclickLister() {
             @Override
             public void onClick() {
@@ -85,6 +88,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
     }
 
     public void getSearchResult(){
+        loadingVIew.setVisibility(View.VISIBLE);
         String keyWord=editText.getText().toString().trim();
         String url= Constants.SearchBookApi+ "?q=" + keyWord + "&start=" + (mCurrentPageIndex - 1) * mPageSize +
                 "&count=" + mPageSize;
@@ -99,9 +103,11 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
                 setJSONData(s);
                 if (adapter!=null){
                     adapter.notifyDataSetChanged();
+                    loadingVIew.setVisibility(View.GONE);
                 }else {
                     adapter=new BookAdapter(SearchActivity.this,bookList);
                     lvSearch.setAdapter(adapter);
+                    loadingVIew.setVisibility(View.GONE);
                 }
 
             }
