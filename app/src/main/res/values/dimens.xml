@@ -43,4 +43,7 @@
     <!-- bottom_menu-->
     <dimen name="menu_height">55dp</dimen>
     <dimen name="line_height">1dp</dimen>
+
+    <!--cardview-->
+    <dimen name="card_padding">1dp</dimen>
 </resources>
