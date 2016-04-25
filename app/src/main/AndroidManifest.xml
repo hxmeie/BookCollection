@@ -89,6 +89,13 @@
 
         </activity>
 
+        <!-- 分类-->
+        <activity
+            android:name=".activity.ClassifyActivity"
+            android:theme="@style/AnimActivityTheme">
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />

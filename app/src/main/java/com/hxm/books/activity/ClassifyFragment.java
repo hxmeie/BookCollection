@@ -1,5 +1,6 @@
 package com.hxm.books.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -82,6 +83,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
         mRefreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
         mRefreshLayout.setOnRefreshListener(this);
         getDataFromServer();
+        initListView();
         return view;
     }
 
@@ -90,6 +92,9 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String tag=mList.get(position).getClassifyName();
+                Intent intent=new Intent(getActivity(),ClassifyActivity.class);
+                intent.putExtra("tag",tag);
+                startActivity(intent);
             }
         });
     }
