@@ -67,16 +67,16 @@ public class BookAdapter extends BaseAdapter {
         TextView bookName=ViewHolder.get(convertView,R.id.tv_bookshelf_item_bookname);
         TextView bookSummary=ViewHolder.get(convertView,R.id.tv_bookshelf_item_summary);
         TextView bookAuthor=ViewHolder.get(convertView,R.id.tv_bookshelf_item_bookauthor);
-        TextView bookType1=ViewHolder.get(convertView,R.id.tv_bookshelf_item_type_1);
-        TextView bookType2= ViewHolder.get(convertView, R.id.tv_bookshelf_item_type_2);
+//        TextView bookType1=ViewHolder.get(convertView,R.id.tv_bookshelf_item_type_1);
+//        TextView bookType2= ViewHolder.get(convertView, R.id.tv_bookshelf_item_type_2);
 
         Book book = (Book) getItem(position);
         ImageLoader.getInstance().displayImage(book.getBookImage(),bookPic,options,imageLoadingListener);
         bookName.setText(book.getTitle());
         bookSummary.setText(book.getSummary());
         bookAuthor.setText(book.getAuthor());
-        bookType1.setText(book.getTag1());
-        bookType2.setText(book.getTag2());
+//        bookType1.setText(book.getTag1());
+//        bookType2.setText(book.getTag2());
         return convertView;
     }
 

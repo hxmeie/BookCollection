@@ -118,6 +118,41 @@
 
                 </RelativeLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/base_margin_10"
+                android:layout_marginRight="@dimen/base_margin_10"
+                android:layout_marginTop="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="类别:"
+                    android:textSize="@dimen/text_size_18"/>
+                <TextView
+                    android:id="@+id/tv_book_activity_classify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_18"
+                    android:layout_marginLeft="@dimen/base_margin_10"
+                    android:textColor="@color/colorBrowm"
+                    tools:text="计算机/网络/编程"/>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <Button
+                    android:id="@+id/btn_modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改"
+                    android:textSize="@dimen/text_size_18"
+                    android:background="@drawable/white_clickable_background"
+                    android:padding="5dp"
+                    android:textColor="@color/book_tag_color"/>
+            </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/base_margin_5"

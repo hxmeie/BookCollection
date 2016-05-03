@@ -48,30 +48,18 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
     private ClassifyAdapter adapter;
     private AVLoadingIndicatorView loadingView;
     private RefreshLayout mRefreshLayout;
-    private String classify[] = {"小说",
-            "文学艺术",
-            "动漫/幽默",
-            "娱乐时尚",
-            "地图/地理/旅游",
-            "生活",
-            "育儿/成长",
-            "保健/心理健康",
-            "体育",
-            "经济管理",
-            "法律/政治",
-            "哲学宗教",
-            "社会科学",
-            "古籍",
-            "教育",
-            "未分类",
-            "计算机/网络/编程",
-            "医学",
-            "科学技术"};
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mList = new ArrayList<>();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mList.clear();
+        getDataFromServer();
     }
 
     @Override
@@ -82,7 +70,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
         loadingView = (AVLoadingIndicatorView) view.findViewById(R.id.classify_loading_view);
         mRefreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
         mRefreshLayout.setOnRefreshListener(this);
-        getDataFromServer();
+        //getDataFromServer();
         initListView();
         return view;
     }
@@ -111,12 +99,16 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
             @Override
             public void onSuccess(Object o) {
                 JSONArray jsonArray = (JSONArray) o;
+                LogUtil.i("Class",jsonArray.toString());
                 ClassifyData data = null;
                 if (jsonArray != null) {
                     try {
-                        for (int i = 1; i < jsonArray.length(); i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String classifyName = jsonObject.getString("tag1");
+                            if(classifyName.isEmpty()){
+                                classifyName="未分类";
+                            }
                             int count = jsonObject.getInt("_count");
                             data = new ClassifyData();
                             data.setCount(String.valueOf(count));

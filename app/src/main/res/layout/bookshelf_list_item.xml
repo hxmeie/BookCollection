@@ -11,10 +11,10 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:background="@drawable/white_clickable_background"
-        android:paddingBottom="@dimen/base_padding_5"
+        android:paddingBottom="@dimen/base_padding_10"
         android:paddingLeft="@dimen/base_padding_15"
         android:paddingRight="@dimen/base_padding_15"
-        android:paddingTop="@dimen/base_padding_5">
+        android:paddingTop="@dimen/base_padding_10">
 
         <ImageView
             android:id="@+id/iv_bookshelf_item_bookpic"
@@ -29,8 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/base_margin_10"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/base_padding_10">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_bookshelf_item_bookname"
@@ -59,41 +58,41 @@
                 android:textSize="@dimen/text_size_13"
                 tools:text="《Android开发艺术探索》是一本Android进阶类书籍，采用理论、源码和实践相结合的方式来阐述高水准的Android应用开发要点。" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/base_margin_10">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="@dimen/base_margin_10">-->
 
-                <TextView
-                    android:id="@+id/tv_bookshelf_item_type_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/book_tag_background"
-                    android:paddingBottom="@dimen/base_padding_2"
-                    android:paddingLeft="@dimen/base_padding_5"
-                    android:paddingRight="@dimen/base_padding_5"
-                    android:paddingTop="@dimen/base_padding_2"
-                    android:textColor="@color/bookshelf_item_text_color_1"
-                    android:textSize="@dimen/text_size_10"
-                    tools:text="android" />
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_bookshelf_item_type_1"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentLeft="true"-->
+                    <!--android:background="@drawable/book_tag_background"-->
+                    <!--android:paddingBottom="@dimen/base_padding_2"-->
+                    <!--android:paddingLeft="@dimen/base_padding_5"-->
+                    <!--android:paddingRight="@dimen/base_padding_5"-->
+                    <!--android:paddingTop="@dimen/base_padding_2"-->
+                    <!--android:textColor="@color/bookshelf_item_text_color_1"-->
+                    <!--android:textSize="@dimen/text_size_10"-->
+                    <!--tools:text="android" />-->
 
-                <TextView
-                    android:id="@+id/tv_bookshelf_item_type_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/base_margin_15"
-                    android:layout_toRightOf="@id/tv_bookshelf_item_type_1"
-                    android:background="@drawable/book_tag_background"
-                    android:paddingBottom="@dimen/base_padding_2"
-                    android:paddingLeft="@dimen/base_padding_5"
-                    android:paddingRight="@dimen/base_padding_5"
-                    android:paddingTop="@dimen/base_padding_2"
-                    android:textColor="@color/bookshelf_item_text_color_1"
-                    android:textSize="@dimen/text_size_10"
-                    tools:text="计算机" />
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_bookshelf_item_type_2"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/base_margin_15"-->
+                    <!--android:layout_toRightOf="@id/tv_bookshelf_item_type_1"-->
+                    <!--android:background="@drawable/book_tag_background"-->
+                    <!--android:paddingBottom="@dimen/base_padding_2"-->
+                    <!--android:paddingLeft="@dimen/base_padding_5"-->
+                    <!--android:paddingRight="@dimen/base_padding_5"-->
+                    <!--android:paddingTop="@dimen/base_padding_2"-->
+                    <!--android:textColor="@color/bookshelf_item_text_color_1"-->
+                    <!--android:textSize="@dimen/text_size_10"-->
+                    <!--tools:text="计算机" />-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
         </LinearLayout>
     </LinearLayout>

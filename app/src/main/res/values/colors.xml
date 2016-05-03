@@ -14,6 +14,7 @@
     <color name="divider_horizontal">#B06E6E6E</color>
     <color name="bookshelf_item_text_color_1">#B0AFADAD</color>
     <color name="bookshelf_item_divider">#B0DAD9D9</color>
+    <color name="btn_onclick">#b0a7a6a6</color>
     <color name="book_tag_color">#FF0ED20B</color>
     <color name="colorBrowm">#ae7433</color>
     <color name="layout_background_color">#f1efef</color>

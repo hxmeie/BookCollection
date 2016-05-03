@@ -39,6 +39,12 @@ public class ClassifyActivity extends BaseActivity {
         tag=getIntent().getStringExtra("tag");
         mList=new ArrayList<>();
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mList.clear();
         getDataFromServer();
     }
 
