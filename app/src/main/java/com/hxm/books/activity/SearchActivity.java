@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.hxm.books.R;
 import com.hxm.books.adapter.BookAdapter;
 import com.hxm.books.bean.Book;
+import com.hxm.books.bean.MyUser;
 import com.hxm.books.config.Constants;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.KeyBoardUtils;
@@ -25,6 +28,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
+import cn.bmob.v3.listener.FindListener;
 
 /**
  * 搜索图书
@@ -34,6 +43,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
     private ListView lvSearch;
     private RefreshLayout refreshLayout;
     private ClearEditText editText;
+    private TextView tvEmpty;
     private Book mBook;
     private BookAdapter adapter;
     private AVLoadingIndicatorView loadingVIew;
@@ -53,40 +63,47 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
         lvSearch= (ListView) findViewById(R.id.listview_search_result);
         refreshLayout= (RefreshLayout) findViewById(R.id.search_result_refreshlayout);
         loadingVIew= (AVLoadingIndicatorView) findViewById(R.id.search_loading_view);
+        tvEmpty= (TextView) findViewById(R.id.tv_empty);
         initMiddleSearchView("搜索", R.color.colorBase, new HeaderLayout.headerLayoutRightOnclickLister() {
             @Override
             public void onClick() {
                 editText=mHeaderLayout.getSearchEditText();
+                String keyWord=editText.getText().toString();
                 KeyBoardUtils.closeKeybord(editText,SearchActivity.this);
-                ToastUtils.show(SearchActivity.this,editText.getText().toString());
+                ToastUtils.show(SearchActivity.this,keyWord);
                 switch (search_tag){
                     case 1:
-                        getSearchResult();
+//                        getSearchResult();
+                        getLocalBooks(keyWord);
                         search_tag=2;
                         break;
                     case 2:
                         bookList.clear();
-                        getSearchResult();
+//                        getSearchResult();
+                        getLocalBooks(keyWord);
                         break;
                 }
             }
         });
-        refreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
-        refreshLayout.setOnRefreshListener(this);
-        refreshLayout.setOnLoadingListener(this);
+//        refreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
+//        refreshLayout.setOnRefreshListener(this);
+//        refreshLayout.setOnLoadingListener(this);
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mBook=bookList.get(position);
-                String isbn=mBook.getIsbn();
-                LogUtil.i("SearchActivity",isbn+"");
-                Intent intent=new Intent(SearchActivity.this,ScanBookDetailsActivity.class);
-                intent.putExtra("book_isbn",isbn);
+                Intent intent=new Intent(SearchActivity.this,BookActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("bookinfo",mBook);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
     }
 
+    /**
+     * 从豆瓣获取图书资源
+     */
     public void getSearchResult(){
         loadingVIew.setVisibility(View.VISIBLE);
         String keyWord=editText.getText().toString().trim();
@@ -109,6 +126,38 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
                     lvSearch.setAdapter(adapter);
                     loadingVIew.setVisibility(View.GONE);
                 }
+
+            }
+        });
+    }
+
+    public void getLocalBooks(String text){
+        MyUser user= BmobUser.getCurrentUser(this,MyUser.class);
+        BmobQuery<Book> query=new BmobQuery<>();
+        query.addWhereRelatedTo("likes",new BmobPointer(user));
+        query.addWhereContains("title",text);
+        query.findObjects(this, new FindListener<Book>() {
+            @Override
+            public void onSuccess(List<Book> list) {
+                if (list.size()!=0){
+                    for (int i=0;i<list.size();i++){
+                        bookList.add(list.get(i));
+                    }
+                    if (adapter!=null){
+                        adapter.notifyDataSetChanged();
+                        loadingVIew.setVisibility(View.GONE);
+                    }else {
+                        adapter=new BookAdapter(SearchActivity.this,bookList);
+                        lvSearch.setAdapter(adapter);
+                        loadingVIew.setVisibility(View.GONE);
+                    }
+                }else {
+                    tvEmpty.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onError(int i, String s) {
 
             }
         });
