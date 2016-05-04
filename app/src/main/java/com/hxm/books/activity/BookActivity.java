@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
@@ -78,6 +79,7 @@ public class BookActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onSuccess() {
                         tvClassifyName.setText(key);
+                        MyApplication.isRefresh=true;
                         ToastUtils.show(BookActivity.this,"修改成功");
                     }
 

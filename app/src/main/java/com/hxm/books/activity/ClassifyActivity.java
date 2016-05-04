@@ -10,6 +10,7 @@ import com.hxm.books.R;
 import com.hxm.books.adapter.BookAdapter;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -39,13 +40,16 @@ public class ClassifyActivity extends BaseActivity {
         tag=getIntent().getStringExtra("tag");
         mList=new ArrayList<>();
         initView();
+        getDataFromServer();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mList.clear();
-        getDataFromServer();
+        if (MyApplication.isRefresh){
+            mList.clear();
+            getDataFromServer();
+        }
     }
 
     private void initView() {
@@ -55,6 +59,7 @@ public class ClassifyActivity extends BaseActivity {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MyApplication.isRefresh=false;
                 Intent intent=new Intent(ClassifyActivity.this,BookActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putSerializable("bookinfo",mList.get(position));

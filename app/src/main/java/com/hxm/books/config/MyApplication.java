@@ -25,7 +25,7 @@ public class MyApplication extends Application {
 
     public static MyApplication mInstance;
     public static FileCache cache;
-
+    public static boolean isRefresh=false;
     @Override
     public void onCreate() {
         super.onCreate();

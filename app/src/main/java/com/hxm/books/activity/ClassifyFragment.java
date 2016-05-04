@@ -19,6 +19,7 @@ import com.hxm.books.adapter.ClassifyAdapter;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.ClassifyData;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.view.RefreshLayout;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
@@ -58,8 +59,11 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
     @Override
     public void onResume() {
         super.onResume();
-        mList.clear();
-        getDataFromServer();
+        if (MyApplication.isRefresh){
+            mList.clear();
+            getDataFromServer();
+            MyApplication.isRefresh=false;
+        }
     }
 
     @Override
@@ -70,7 +74,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
         loadingView = (AVLoadingIndicatorView) view.findViewById(R.id.classify_loading_view);
         mRefreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
         mRefreshLayout.setOnRefreshListener(this);
-        //getDataFromServer();
+        getDataFromServer();
         initListView();
         return view;
     }
