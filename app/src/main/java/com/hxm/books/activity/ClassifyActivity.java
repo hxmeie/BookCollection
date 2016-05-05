@@ -53,7 +53,11 @@ public class ClassifyActivity extends BaseActivity {
     }
 
     private void initView() {
-        initOnlyTitleAndLeftBar(tag);
+        if (!tag.isEmpty()) {
+            initOnlyTitleAndLeftBar(tag);
+        } else {
+            initOnlyTitleAndLeftBar("未分类");
+        }
         loadingView= (AVLoadingIndicatorView) findViewById(R.id.classify_activity_loading_view);
         listview= (ListView) findViewById(R.id.lv_classify_activity);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
