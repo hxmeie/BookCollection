@@ -78,6 +78,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
                         search_tag=2;
                         break;
                     case 2:
+                        tvEmpty.setVisibility(View.GONE);
                         bookList.clear();
 //                        getSearchResult();
                         getLocalBooks(keyWord);
@@ -132,6 +133,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
     }
 
     public void getLocalBooks(String text){
+        loadingVIew.setVisibility(View.VISIBLE);
         MyUser user= BmobUser.getCurrentUser(this,MyUser.class);
         BmobQuery<Book> query=new BmobQuery<>();
         query.addWhereRelatedTo("likes",new BmobPointer(user));
@@ -152,6 +154,7 @@ public class SearchActivity extends BaseActivity implements RefreshLayout.OnRefr
                         loadingVIew.setVisibility(View.GONE);
                     }
                 }else {
+                    loadingVIew.setVisibility(View.GONE);
                     tvEmpty.setVisibility(View.VISIBLE);
                 }
             }
