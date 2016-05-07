@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/base_padding_10"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/set_book_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_background"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                android:paddingLeft="@dimen/base_padding_10"
+                android:paddingRight="@dimen/base_padding_10"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="封面(可选)"
+                    android:textSize="@dimen/text_size_18" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iv_set_book_pic"
+                    android:layout_width="60dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/no_cover" />
+            </LinearLayout>
+
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1px"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@color/colorBlack" />-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_background"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="书名:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_book_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="必填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ISBN号:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_isbn"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="必填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="分类:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_classify"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="必填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="作者:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_author"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="页数:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_pages"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="价格:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="出版日期:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_publish_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                   style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="出版社:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_publishing_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="图书简介:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+                <View
+                    style="@style/set_book_view_line" />
+
+                <LinearLayout
+                    style="@style/set_book_linearlayout_style">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="图书目录:"
+                        android:textSize="@dimen/text_size_18" />
+
+                    <com.hxm.books.view.ClearEditText
+                        android:id="@+id/ev_set_catalog"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:hint="选填"
+                        android:maxLines="1"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <Button
+                android:id="@+id/btn_set_book_commit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height_45"
+                android:layout_marginTop="@dimen/base_margin_20"
+                android:layout_marginLeft="@dimen/base_margin_10"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="@dimen/base_margin_10"
+                android:background="@drawable/btn_login_background"
+                android:text="提交"
+                android:textSize="@dimen/text_size_18"
+                android:textColor="@color/btn_login_text_color"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -85,7 +85,7 @@ public class ClearEditText extends EditText implements
             setClearIconVisible(false);
         }
         if(!hasFocus){
-            KeyBoardUtils.closeKeybord(v,getContext());
+           // KeyBoardUtils.closeKeybord(v,getContext());
         }
     }
 

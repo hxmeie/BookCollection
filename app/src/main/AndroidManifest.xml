@@ -96,6 +96,14 @@
 
         </activity>
 
+        <!-- 添加新书-->
+        <activity
+            android:name=".activity.AddNewBookActivity"
+            android:theme="@style/AnimActivityTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+        </activity>
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />

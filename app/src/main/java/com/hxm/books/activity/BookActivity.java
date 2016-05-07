@@ -113,7 +113,11 @@ public class BookActivity extends BaseActivity implements View.OnClickListener{
             tvClassifyName.setText(obj.getTag1());
         }
         setTextContent();
-        ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
+        if (!obj.getBookImage().equals("")){
+            ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
+        }else {
+           mBookPic.setImageResource(R.mipmap.no_cover);
+        }
     }
 
     /**

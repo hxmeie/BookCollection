@@ -38,7 +38,8 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener{
         Intent intent=null;
         switch (v.getId()){
             case R.id.fg_discovery_recommend:
-
+                intent=new Intent(getActivity(),AddNewBookActivity.class);
+                startActivity(intent);
                 break;
             case R.id.fg_discovery_search:
                 intent=new Intent(getActivity(),SearchActivity.class);
