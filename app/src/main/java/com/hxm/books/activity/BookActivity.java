@@ -1,8 +1,8 @@
 package com.hxm.books.activity;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -113,11 +113,13 @@ public class BookActivity extends BaseActivity implements View.OnClickListener{
             tvClassifyName.setText(obj.getTag1());
         }
         setTextContent();
-        if (!obj.getBookImage().equals("")){
-            ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
+        if (obj.getBookImage() == "null") {
+            mBookPic.setImageResource(R.mipmap.no_cover);
+            ToastUtils.show(this, "hahaha");
         }else {
-           mBookPic.setImageResource(R.mipmap.no_cover);
+            ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
         }
+
     }
 
     /**

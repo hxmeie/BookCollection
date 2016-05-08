@@ -10,20 +10,20 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.hxm.books.config.MyApplication;
 import com.hxm.books.R;
 import com.hxm.books.adapter.BookAdapter;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.listener.DiakogTwoBtnEvent;
 import com.hxm.books.listener.FirstDisplayListener;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.ToastUtils;
-import com.hxm.books.utils.cache.FileCache;
 import com.hxm.books.view.EmptyView;
 import com.hxm.books.view.MyDialog;
 import com.hxm.books.view.RefreshLayout;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
+import com.hxm.books.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         emptyView.setEmptyViewListener(new EmptyView.onEmptyViewClickListener() {
             @Override
             public void onLayoutClick() {
-                Intent intent = new Intent(getActivity(), ScanActivity.class);
+                Intent intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivity(intent);
             }
         });
@@ -173,7 +173,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         Intent intent;
         switch (v.getId()) {
             case R.id.im_btn_scan:
-                intent = new Intent(getActivity(), ScanActivity.class);
+                intent = new Intent(getActivity(), CaptureActivity.class);
                 startActivity(intent);
                 break;
         }

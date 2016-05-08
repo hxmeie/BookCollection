@@ -55,11 +55,6 @@
 
         </activity>
          <!--扫描页面-->
-        <activity
-            android:name=".activity.ScanActivity"
-            android:theme="@style/AnimActivityTheme">
-
-        </activity>
 
         <!-- 个人资料界面-->
         <activity
@@ -99,6 +94,14 @@
         <!-- 添加新书-->
         <activity
             android:name=".activity.AddNewBookActivity"
+            android:theme="@style/AnimActivityTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+        </activity>
+
+        <!-- saomiao-->
+        <activity
+            android:name=".zxing.activity.CaptureActivity"
             android:theme="@style/AnimActivityTheme"
             android:windowSoftInputMode="stateHidden|adjustResize">
 
