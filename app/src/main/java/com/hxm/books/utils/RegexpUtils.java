@@ -15,6 +15,7 @@ public class RegexpUtils {
     private RegexpUtils() {
     }
 
+    public static final String ISBN = "^[0-9]{13}$";
     /**
      * 匹配图象
      *

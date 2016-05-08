@@ -3,15 +3,16 @@ package com.hxm.books.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
+import com.hxm.books.view.HeaderLayout;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobRelation;
@@ -34,7 +35,13 @@ public class AddNewBookActivity extends BaseActivity {
     }
 
     private void initView() {
-        initOnlyTitleAndLeftBar("添加新书");
+//        initOnlyTitleAndLeftBar("添加新书");
+        initBothLeftAndRightBar("添加新书", "清空", R.color.transparent, new HeaderLayout.headerLayoutRightOnclickLister() {
+            @Override
+            public void onClick() {
+                setEmptyText();
+            }
+        });
         setBook= (ClearEditText) findViewById(R.id.ev_set_book_name);
         setISBN= (ClearEditText) findViewById(R.id.ev_set_isbn);
         setAuthor= (ClearEditText) findViewById(R.id.ev_set_author);
@@ -55,9 +62,18 @@ public class AddNewBookActivity extends BaseActivity {
                 addNewBook();
             }
         });
+
     }
 
     private void addNewBook(){
+        if (getText(setBook).isEmpty() || getText(setISBN).isEmpty() || getText(setClassify).isEmpty()) {
+            ToastUtils.show(this, "必填项不能为空！");
+            return;
+        }
+        if (!RegexpUtils.isRegexpValidate(getText(setISBN), RegexpUtils.ISBN)) {
+            ToastUtils.show(this, "ISBN号填写不正确！");
+            return;
+        }
         final Book book=new Book();
         book.setTitle(getText(setBook));
         book.setIsbn(getText(setISBN));
@@ -87,6 +103,19 @@ public class AddNewBookActivity extends BaseActivity {
         });
     }
 
+    public void setEmptyText() {
+        setBook.setText("");
+        setISBN.setText("");
+        setClassify.setText("");
+        setAuthor.setText("");
+        setPages.setText("");
+        setPrice.setText("");
+        setPublishDate.setText("");
+        setPublishingCompany.setText("");
+        setBookSummary.setText("");
+        setBookCatalog.setText("");
+
+    }
     private String getText(ClearEditText editText){
         return editText.getText().toString().trim();
     }
