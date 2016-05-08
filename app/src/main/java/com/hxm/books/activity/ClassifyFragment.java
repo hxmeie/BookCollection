@@ -190,9 +190,6 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String classifyName = jsonObject.getString("tag1");
-                            if(classifyName.isEmpty()){
-                                classifyName="未分类";
-                            }
                             int count = jsonObject.getInt("_count");
                             data = new ClassifyData();
                             data.setCount(String.valueOf(count));

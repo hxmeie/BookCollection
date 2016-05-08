@@ -53,11 +53,8 @@ public class ClassifyActivity extends BaseActivity {
     }
 
     private void initView() {
-        if (!tag.isEmpty()) {
-            initOnlyTitleAndLeftBar(tag);
-        } else {
-            initOnlyTitleAndLeftBar("未分类");
-        }
+
+        initOnlyTitleAndLeftBar(tag);
         loadingView= (AVLoadingIndicatorView) findViewById(R.id.classify_activity_loading_view);
         listview= (ListView) findViewById(R.id.lv_classify_activity);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -78,6 +75,7 @@ public class ClassifyActivity extends BaseActivity {
         MyUser user= BmobUser.getCurrentUser(this,MyUser.class);
         BmobQuery<Book> query=new BmobQuery<>();
         query.addWhereRelatedTo("likes",new BmobPointer(user));
+        query.order("-updatedAt");//按更新时间降序查询
         query.addWhereEqualTo("tag1",tag);
         query.findObjects(this, new FindListener<Book>() {
             @Override
@@ -88,9 +86,10 @@ public class ClassifyActivity extends BaseActivity {
                 loadingView.setVisibility(View.GONE);
                 if (adapter!=null){
                     adapter.notifyDataSetChanged();
+                } else {
+                    adapter = new BookAdapter(ClassifyActivity.this, mList);
+                    listview.setAdapter(adapter);
                 }
-                adapter=new BookAdapter(ClassifyActivity.this,mList);
-                listview.setAdapter(adapter);
             }
 
             @Override

@@ -38,12 +38,12 @@ import com.flyco.dialog.listener.OnBtnClickL;
 import com.flyco.dialog.widget.NormalDialog;
 import com.google.zxing.Result;
 import com.hxm.books.R;
+import com.hxm.books.activity.AddNewBookActivity;
 import com.hxm.books.activity.BaseActivity;
 import com.hxm.books.activity.ScanBookDetailsActivity;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookISBN;
 import com.hxm.books.config.Constants;
-import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.zxing.camera.CameraManager;
@@ -234,15 +234,15 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 if (list.size() == 0) {
                     LogUtil.i("CaptureActivity", "get book" + mBook.getIsbn() + " from douban api");
                     getDataFromDouban(url, dialog);
+                } else {
+                    mBook = list.get(0);
+                    LogUtil.i("CaptureActivity", "get book" + mBook.getIsbn() + " from my database");
+                    Intent resultIntent = new Intent(CaptureActivity.this, ScanBookDetailsActivity.class);
+                    resultIntent.putExtra("book_isbn", mBook.getIsbn());
+                    startAnimActivity(resultIntent);
+                    dialog.dismiss();
+                    CaptureActivity.this.finish();
                 }
-                mBook = list.get(0);
-                LogUtil.i("CaptureActivity", "get book" + mBook.getIsbn() + " from my database");
-                Intent resultIntent = new Intent(CaptureActivity.this, ScanBookDetailsActivity.class);
-                resultIntent.putExtra("book_isbn", mBook.getIsbn());
-                startAnimActivity(resultIntent);
-                dialog.dismiss();
-                CaptureActivity.this.finish();
-
             }
 
             @Override
@@ -263,26 +263,31 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         HttpUtil.get(str, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-                String failureMsg = null;
-                if (CommonUtils.isNetworkAvailable(CaptureActivity.this)) {
-                    failureMsg = s;
-                } else {
-                    failureMsg = "网络未连接";
-                }
+//                String failureMsg = null;
+//                if (CommonUtils.isNetworkAvailable(CaptureActivity.this)) {
+//                    failureMsg = s;
+//                } else {
+//                    failureMsg = "网络未连接";
+//                }
                 LogUtil.e(TAG, "获取失败" + s);
                 dialog.dismiss();
                 final NormalDialog mDialog = new NormalDialog(CaptureActivity.this);
-                mDialog.btnNum(1)
-                        .showAnim(null)
+                mDialog.showAnim(null)
                         .dismissAnim(null)
-                        .content(failureMsg)
-                        .btnText("确定")
+                        .content("未查到书籍，是否手动添加？")
                         .show();
                 mDialog.setOnBtnClickL(new OnBtnClickL() {
                     @Override
                     public void onBtnClick() {
                         CaptureActivity.this.finish();
                         mDialog.dismiss();
+                    }
+                }, new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        CaptureActivity.this.finish();
+                        mDialog.dismiss();
+                        startActivity(new Intent(CaptureActivity.this, AddNewBookActivity.class));
                     }
                 });
             }
@@ -311,11 +316,15 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
             JSONObject jsonObject = new JSONObject(bookInfo);
             JSONArray authorArray = jsonObject.getJSONArray("author");
             JSONArray tagArray = jsonObject.getJSONArray("tags");
-            if (tagArray.length() > 1) {
+            if (tagArray.length() > 0) {
                 JSONObject tag1Obj = tagArray.getJSONObject(0);
-                JSONObject tag2Obj = tagArray.getJSONObject(1);
-                mBook.setTag1(tag1Obj.getString("name"));
-                mBook.setTag2(tag2Obj.getString("name"));
+                String tag1 = tag1Obj.getString("name");
+                if (tag1 == null || tag1 == "" || tag1 == "null" || tag1.isEmpty()) {
+                    tag1 = "未分类";
+                }
+                mBook.setTag1(tag1);
+            } else {
+                mBook.setTag1("未分类");
             }
             mBook.setPages(jsonObject.getString("pages"));
             mBook.setTitle(jsonObject.getString("title"));

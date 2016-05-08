@@ -3,19 +3,16 @@ package com.hxm.books.config;
 import android.app.Application;
 import android.content.Context;
 
-import com.hxm.books.bean.MyUser;
+import com.hxm.books.R;
+import com.hxm.books.listener.FirstDisplayListener;
 import com.hxm.books.utils.LogUtil;
-import com.hxm.books.utils.cache.FileCache;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.utils.StorageUtils;
-
-import java.io.File;
-
-import cn.bmob.v3.BmobUser;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * 自定义全局类
@@ -24,16 +21,29 @@ import cn.bmob.v3.BmobUser;
 public class MyApplication extends Application {
 
     public static MyApplication mInstance;
-    public static FileCache cache;
+    //    public static FileCache cache;
     public static boolean isRefresh=false;
+    public static DisplayImageOptions options;
+    public static ImageLoadingListener imageLoadingListener;
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
         //设置是否打印log
         LogUtil.isDebug=true;
-        cache=FileCache.get(Constants.cacheDir);
+//        cache=FileCache.get(Constants.cacheDir);
         initImamgeLoader(getApplicationContext());
+        imageLoadingListener = new FirstDisplayListener();
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.mipmap.no_cover)
+                .showImageForEmptyUri(R.mipmap.no_cover)
+                .showImageOnFail(R.mipmap.no_cover)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+//                .displayer(new RoundedBitmapDisplayer(20))
+//                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
+                .build();
     }
 
 

@@ -7,14 +7,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.hxm.books.R;
-import com.hxm.books.activity.BookshelfFragment;
 import com.hxm.books.bean.Book;
-import com.hxm.books.listener.FirstDisplayListener;
+import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.ViewHolder;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 import java.util.List;
 
 /**
@@ -30,17 +31,8 @@ public class BookAdapter extends BaseAdapter {
     public BookAdapter(Context context, List<Book> mBook){
         this.context=context;
         this.mBook=mBook;
-        imageLoadingListener = new FirstDisplayListener();
-        options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.mipmap.no_cover)
-                .showImageForEmptyUri(R.mipmap.no_cover)
-                .showImageOnFail(R.mipmap.no_cover)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-//                .displayer(new RoundedBitmapDisplayer(20))
-//                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
-                .build();
+        options = MyApplication.options;
+        imageLoadingListener = MyApplication.imageLoadingListener;
     }
 
     @Override

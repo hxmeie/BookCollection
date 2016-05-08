@@ -107,18 +107,10 @@ public class BookActivity extends BaseActivity implements View.OnClickListener{
         mBookPubdate.setText(obj.getPubdate());
         mBookSummary.setText(obj.getSummary());
         mBookCatalog.setText(obj.getCatalog());
-        if (obj.getTag1().isEmpty()){
-            tvClassifyName.setText("未分类");
-        }else {
-            tvClassifyName.setText(obj.getTag1());
-        }
+        tvClassifyName.setText(obj.getTag1());
         setTextContent();
-        if (obj.getBookImage() == "null") {
-            mBookPic.setImageResource(R.mipmap.no_cover);
-            ToastUtils.show(this, "hahaha");
-        }else {
-            ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
-        }
+        ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic, MyApplication.options, MyApplication.imageLoadingListener);
+
 
     }
 

@@ -89,7 +89,7 @@
 
     <!-- fragment_discovery-->
     <string name="search">搜索</string>
-    <string name="recommend">推荐</string>
+    <string name="recommend">手动添加书籍</string>
 
     <!-- xListView-->
     <string name="hello">Hello World, XListViewActivity!</string>

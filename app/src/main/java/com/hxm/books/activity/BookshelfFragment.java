@@ -196,6 +196,7 @@ public class BookshelfFragment extends Fragment implements View.OnClickListener,
         BmobQuery<Book> queryBookFromStar = new BmobQuery<>();
         queryBookFromStar.setLimit(pageLimit);
         queryBookFromStar.setSkip(lastPageNum);
+        queryBookFromStar.order("-updatedAt");//按更新时间降序查询
         MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
         queryBookFromStar.addWhereRelatedTo("likes", new BmobPointer(user));
 //        queryBookFromStar.addQueryKeys("title,bookImage,author,summary,tag1,tag2");
