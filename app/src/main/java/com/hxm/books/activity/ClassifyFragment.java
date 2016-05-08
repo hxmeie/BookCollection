@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.hxm.books.R;
 import com.hxm.books.adapter.ClassifyAdapter;
@@ -51,6 +52,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
     private ClassifyAdapter adapter;
     private AVLoadingIndicatorView loadingView;
     private RefreshLayout mRefreshLayout;
+    private TextView noBook;
     private EditText editText;
     private AlertDialog dialog;
 
@@ -63,6 +65,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
     @Override
     public void onResume() {
         super.onResume();
+        noBook.setVisibility(View.GONE);
         if (MyApplication.isRefresh){
             mList.clear();
             getDataFromServer();
@@ -76,6 +79,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
         listView = (ListView) view.findViewById(R.id.lv_classify);
         mRefreshLayout = (RefreshLayout) view.findViewById(R.id.classify_refresh_layout);
         loadingView = (AVLoadingIndicatorView) view.findViewById(R.id.classify_loading_view);
+        noBook = (TextView) view.findViewById(R.id.tv_no_book_exist);
         mRefreshLayout.setColorSchemeResources(R.color.colorBase, R.color.colorAccent, R.color.colorPrimary, R.color.colorBrowm);
         mRefreshLayout.setOnRefreshListener(this);
         getDataFromServer();
@@ -183,8 +187,7 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
             @Override
             public void onSuccess(Object o) {
                 JSONArray jsonArray = (JSONArray) o;
-                LogUtil.i("Class",jsonArray.toString());
-                ClassifyData data = null;
+                ClassifyData data;
                 if (jsonArray != null) {
                     try {
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -204,6 +207,8 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    noBook.setVisibility(View.VISIBLE);
                 }
                 loadingView.setVisibility(View.GONE);
             }
