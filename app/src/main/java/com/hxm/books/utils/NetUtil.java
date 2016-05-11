@@ -14,7 +14,7 @@ import com.hxm.books.listener.TextAndArrowListener;
  */
 
 
-public class CommonUtils {
+public class NetUtil {
 
     /** 检查是否有网络 */
     public static boolean isNetworkAvailable(Context context) {

@@ -264,7 +264,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
 //                String failureMsg = null;
-//                if (CommonUtils.isNetworkAvailable(CaptureActivity.this)) {
+//                if (NetUtil.isNetworkAvailable(CaptureActivity.this)) {
 //                    failureMsg = s;
 //                } else {
 //                    failureMsg = "网络未连接";

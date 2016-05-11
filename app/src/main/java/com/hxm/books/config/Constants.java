@@ -9,24 +9,28 @@ import java.io.File;
  */
 public class Constants {
     //AppId
-    public static final String APP_ID="aeb5c4b32145065bb54ea83c40734e88";
+    public static final String APP_ID = "aeb5c4b32145065bb54ea83c40734e88";
+
+    public static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
+    public static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
+    public static final int PHOTO_REQUEST_CUT = 3;// 结果
 
     //time day
-    public static final int TIME_DAY=60*60*24;
+    public static final int TIME_DAY = 60 * 60 * 24;
 
     //接口
-    public static final String GET_BOOK_BASE_URL="https://api.douban.com/v2/book/isbn/:";
+    public static final String GET_BOOK_BASE_URL = "https://api.douban.com/v2/book/isbn/:";
 
     //缓存目录
-    public static final File cacheDir= MyApplication.getInstance().getFilesDir();
-    public static final File imageCacheDir=StorageUtils.getOwnCacheDirectory(MyApplication.getInstance(),"MyBook/image");
+    public static final File cacheDir = MyApplication.getInstance().getFilesDir();
+    public static final File imageCacheDir = StorageUtils.getOwnCacheDirectory(MyApplication.getInstance(), "MyBook/image");
 
     //缓存文件名
-    public static final String CACHE_BOOK_LIST="book_list";
+    public static final String CACHE_BOOK_LIST = "book_list";
 
     /**
      * 图书搜索
-     * <p>
+     * <p/>
      * q	查询关键字	q和tag必传其一<br/>
      * tag	查询的tag	q和tag必传其一<br/>
      * start	取结果的offset	默认为0<br/>

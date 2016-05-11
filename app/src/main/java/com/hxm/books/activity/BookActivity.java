@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.config.MyApplication;
-import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.NetUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -118,8 +118,8 @@ public class BookActivity extends BaseActivity implements View.OnClickListener{
      * 设置图书简介和目录的折叠效果
      */
     private void setTextContent() {
-        CommonUtils.setTextAnim(mBookSummary, mArrowTextDownSum, maxLineSum);
-        CommonUtils.setTextAnim(mBookCatalog, mArrowTextDownCata,  maxLineCata);
+        NetUtil.setTextAnim(mBookSummary, mArrowTextDownSum, maxLineSum);
+        NetUtil.setTextAnim(mBookCatalog, mArrowTextDownCata, maxLineCata);
     }
 
     @Override

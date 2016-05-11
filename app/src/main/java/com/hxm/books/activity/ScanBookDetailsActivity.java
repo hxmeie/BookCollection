@@ -6,21 +6,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.flyco.dialog.listener.OnBtnClickL;
-import com.flyco.dialog.widget.NormalDialog;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.BookISBN;
 import com.hxm.books.bean.MyUser;
-import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
-import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.NetUtil;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -28,7 +24,6 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.GetListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 
@@ -181,8 +176,8 @@ public class ScanBookDetailsActivity extends BaseActivity {
      * 设置图书简介和目录的折叠效果
      */
     private void setTextContent() {
-        CommonUtils.setTextAnim(mBookSummary, mArrowTextDownSum, maxLineSum);
-        CommonUtils.setTextAnim(mBookCatalog, mArrowTextDownCata, maxLineCata);
+        NetUtil.setTextAnim(mBookSummary, mArrowTextDownSum, maxLineSum);
+        NetUtil.setTextAnim(mBookCatalog, mArrowTextDownCata, maxLineCata);
     }
 
     private void setBookData(Book obj) {

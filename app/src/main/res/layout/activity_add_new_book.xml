@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -49,7 +48,7 @@
                     android:id="@+id/iv_set_book_pic"
                     android:layout_width="60dp"
                     android:layout_height="80dp"
-                    android:scaleType="centerInside"
+                    android:scaleType="centerCrop"
                     android:src="@mipmap/no_cover" />
             </LinearLayout>
 

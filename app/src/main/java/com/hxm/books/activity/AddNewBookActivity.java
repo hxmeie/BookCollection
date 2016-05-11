@@ -1,23 +1,39 @@
 package com.hxm.books.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.NormalDialog;
+import com.flyco.dialog.widget.NormalListDialog;
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
 import com.hxm.books.bean.MyUser;
+import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
+import com.hxm.books.utils.FileUtil;
+import com.hxm.books.utils.ImageUtils;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.RegexpUtils;
+import com.hxm.books.utils.StringUtils;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
 import com.hxm.books.view.HeaderLayout;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
@@ -36,6 +52,15 @@ public class AddNewBookActivity extends BaseActivity {
     private Button btnCommit;
     private LinearLayout setImage;
     private ImageView bookPic;
+    private String[] mString = new String[]{"从相册中选择", "打开相机拍照"};
+    private final String FILE_SAVEPATH = Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + "/MyBook/Portrait/";
+    private Uri origUri;
+    private Uri cropUri;
+    private File protraitFile;
+    private Bitmap protraitBitmap;
+    private String protraitPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +98,13 @@ public class AddNewBookActivity extends BaseActivity {
             }
         });
 
+        setImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                normalListDialog();
+            }
+        });
+
     }
 
     private void addNewBook() {
@@ -86,6 +118,170 @@ public class AddNewBookActivity extends BaseActivity {
         }
         queryStarBook();
     }
+
+    private void normalListDialog() {
+        final NormalListDialog dialog = new NormalListDialog(this, mString);
+        dialog.title("请选择")
+                .showAnim(null)
+                .dismissAnim(null)
+                .layoutAnimation(null)
+                .itemTextSize(18)
+                .isTitleShow(false)
+                .show();
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        //从相册中获取
+                        getPictureFromGallery();
+                        dialog.dismiss();
+                        break;
+                    case 1:
+                        //打开相机
+                        getPictureFromCamera();
+                        dialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+    /**
+     * 从相册中获取图片
+     */
+    private void getPictureFromGallery() {
+        Intent intent;
+        if (Build.VERSION.SDK_INT < 19) {
+            intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "选择图片"),
+                    Constants.PHOTO_REQUEST_GALLERY);
+        } else {
+            intent = new Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.setType("image/*");
+            startActivityForResult(Intent.createChooser(intent, "选择图片"),
+                    Constants.PHOTO_REQUEST_GALLERY);
+        }
+    }
+
+    private void getPictureFromCamera() {
+        Intent intent;
+        // 判断是否挂载了SD卡
+        String savePath = "";
+        String storageState = Environment.getExternalStorageState();
+        if (storageState.equals(Environment.MEDIA_MOUNTED)) {
+            savePath = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/MyBook/Camera/";
+            File savedir = new File(savePath);
+            if (!savedir.exists()) {
+                savedir.mkdirs();
+            }
+        }
+
+        // 没有挂载SD卡，无法保存文件
+        if (StringUtils.isEmpty(savePath)) {
+            ToastUtils.show(this, "无法保存照片，请检查SD卡是否挂载");
+            return;
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
+                .format(new Date());
+        String fileName = "book_" + timeStamp + ".jpg";// 照片命名
+        File out = new File(savePath, fileName);
+        Uri uri = Uri.fromFile(out);
+        origUri = uri;
+        //savePath + fileName 该照片的绝对路径
+        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent,
+                Constants.PHOTO_REQUEST_CAREMA);
+    }
+
+    /**
+     * 拍照后裁剪
+     *
+     * @param data 原始图片
+     */
+    private void startActionCrop(Uri data) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(data, "image/*");
+        intent.putExtra("output", this.getUploadTempFile(data));
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 3);// 裁剪框比例
+        intent.putExtra("aspectY", 4);
+        intent.putExtra("outputX", 90);// 输出图片大小
+        intent.putExtra("outputY", 120);
+        intent.putExtra("scale", true);// 去黑边
+        intent.putExtra("scaleUpIfNeeded", true);// 去黑边
+        startActivityForResult(intent,
+                Constants.PHOTO_REQUEST_CUT);
+    }
+
+    private Uri getUploadTempFile(Uri uri) {
+        String storageState = Environment.getExternalStorageState();
+        if (storageState.equals(Environment.MEDIA_MOUNTED)) {
+            File savedir = new File(FILE_SAVEPATH);
+            if (!savedir.exists()) {
+                savedir.mkdirs();
+            }
+        } else {
+            ToastUtils.show(this, "无法保存上传的头像，请检查SD卡是否挂载");
+            return null;
+        }
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
+                .format(new Date());
+        String thePath = ImageUtils.getAbsolutePathFromNoStandardUri(uri);
+
+        // 如果是标准Uri
+        if (StringUtils.isEmpty(thePath)) {
+            thePath = ImageUtils.getAbsoluteImagePath(this, uri);
+        }
+        String ext = FileUtil.getFileFormat(thePath);
+        ext = StringUtils.isEmpty(ext) ? "jpg" : ext;
+        // 照片命名
+        String cropFileName = "osc_crop_" + timeStamp + "." + ext;
+        // 裁剪头像的绝对路径
+        protraitPath = FILE_SAVEPATH + cropFileName;
+        protraitFile = new File(protraitPath);
+
+        cropUri = Uri.fromFile(protraitFile);
+        return this.cropUri;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case Constants.PHOTO_REQUEST_GALLERY:
+                startActionCrop(data.getData());
+                break;
+            case Constants.PHOTO_REQUEST_CAREMA:
+                startActionCrop(origUri);// 拍照后裁剪
+                break;
+            case Constants.PHOTO_REQUEST_CUT:
+                uploadNewPhoto();
+                break;
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void uploadNewPhoto() {
+        // 获取头像缩略图
+        if (!StringUtils.isEmpty(protraitPath) && protraitFile.exists()) {
+            protraitBitmap = ImageUtils
+                    .loadImgThumbnail(protraitPath, 200, 200);
+        } else {
+            ToastUtils.show(this, "图像不存在，上传失败");
+        }
+        if (protraitBitmap != null) {
+            bookPic.setImageBitmap(protraitBitmap);
+        }
+    }
+
 
     /**
      * 查询当前用户是否收藏该书
@@ -122,6 +318,7 @@ public class AddNewBookActivity extends BaseActivity {
                 }
 
             }
+
             @Override
             public void onError(int i, String s) {
                 ToastUtils.show(AddNewBookActivity.this, "失败" + s);

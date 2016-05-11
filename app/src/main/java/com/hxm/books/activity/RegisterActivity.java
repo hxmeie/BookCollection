@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import com.hxm.books.R;
 import com.hxm.books.bean.MyUser;
-import com.hxm.books.utils.CommonUtils;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.MD5Util;
+import com.hxm.books.utils.NetUtil;
 import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
@@ -87,7 +87,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
 
         //检查网络是否可用
-        boolean isNetConnected = CommonUtils.isNetworkAvailable(this);
+        boolean isNetConnected = NetUtil.isNetworkAvailable(this);
         if (!isNetConnected) {
             ToastUtils.show(this, R.string.toast_net_wrong, Toast.LENGTH_SHORT);
             return;
