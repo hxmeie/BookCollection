@@ -42,7 +42,6 @@ import com.hxm.books.activity.AddNewBookActivity;
 import com.hxm.books.activity.BaseActivity;
 import com.hxm.books.activity.ScanBookDetailsActivity;
 import com.hxm.books.bean.Book;
-import com.hxm.books.bean.BookISBN;
 import com.hxm.books.config.Constants;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
@@ -358,9 +357,6 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 LogUtil.i(TAG, "查询list_size " + list.size());
                 if (list.size() == 0) {
                     mBook.save(CaptureActivity.this);
-                    BookISBN bookISBN = new BookISBN();
-                    bookISBN.setBookISBN(mBook.getIsbn());
-                    bookISBN.save(CaptureActivity.this);
                 }
             }
 

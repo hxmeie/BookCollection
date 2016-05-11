@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.hxm.books.R;
 import com.hxm.books.bean.Book;
-import com.hxm.books.bean.BookISBN;
 import com.hxm.books.bean.MyUser;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.LogUtil;
@@ -43,7 +42,6 @@ public class ScanBookDetailsActivity extends BaseActivity {
     private int maxLineCata = 8;
     private String bookISBN;
     private Book mBook;
-    private BookISBN isbn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,19 +127,6 @@ public class ScanBookDetailsActivity extends BaseActivity {
             public void onError(int i, String s) {
                 ToastUtils.show(ScanBookDetailsActivity.this, "获取图书信息失败");
                 LogUtil.i(TAG, s);
-            }
-        });
-        BmobQuery<BookISBN> isbnQuery=new BmobQuery<>();
-        isbnQuery.addWhereEqualTo("bookISBN",bookISBN);
-        isbnQuery.findObjects(this, new FindListener<BookISBN>() {
-            @Override
-            public void onSuccess(List<BookISBN> list) {
-                isbn=list.get(0);
-            }
-
-            @Override
-            public void onError(int i, String s) {
-
             }
         });
     }

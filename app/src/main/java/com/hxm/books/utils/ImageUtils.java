@@ -2,6 +2,8 @@ package com.hxm.books.utils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,9 +12,13 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by hxm on 2016/5/11.
@@ -22,6 +28,84 @@ public class ImageUtils {
     public final static String SDCARD_MNT = "/mnt/sdcard";
     public final static String SDCARD = "/sdcard";
 
+    /**
+     * 写图片文件 在Android系统中，文件保存在 /data/data/PACKAGE_NAME/files 目录下
+     *
+     * @throws IOException
+     */
+    public static void saveImage(Context context, String fileName, Bitmap bitmap)
+            throws IOException {
+        saveImage(context, fileName, bitmap, 100);
+    }
+
+    public static void saveImage(Context context, String fileName,
+                                 Bitmap bitmap, int quality) throws IOException {
+        if (bitmap == null || fileName == null || context == null)
+            return;
+
+        FileOutputStream fos = context.openFileOutput(fileName,
+                Context.MODE_PRIVATE);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+        byte[] bytes = stream.toByteArray();
+        fos.write(bytes);
+        fos.close();
+    }
+
+    /**
+     * 写图片文件到SD卡
+     *
+     * @throws IOException
+     */
+    public static void saveImageToSD(Context ctx, String filePath,
+                                     Bitmap bitmap, int quality) throws IOException {
+        if (bitmap != null) {
+            File file = new File(filePath.substring(0,
+                    filePath.lastIndexOf(File.separator)));
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(
+                    new FileOutputStream(filePath));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, bos);
+            bos.flush();
+            bos.close();
+            if (ctx != null) {
+                scanPhoto(ctx, filePath);
+            }
+        }
+    }
+
+    public static void saveBackgroundImage(Context ctx, String filePath,
+                                           Bitmap bitmap, int quality) throws IOException {
+        if (bitmap != null) {
+            File file = new File(filePath.substring(0,
+                    filePath.lastIndexOf(File.separator)));
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(
+                    new FileOutputStream(filePath));
+            bitmap.compress(Bitmap.CompressFormat.PNG, quality, bos);
+            bos.flush();
+            bos.close();
+            if (ctx != null) {
+                scanPhoto(ctx, filePath);
+            }
+        }
+    }
+
+    /**
+     * 让Gallery上能马上看到该图片
+     */
+    private static void scanPhoto(Context ctx, String imgFileName) {
+        Intent mediaScanIntent = new Intent(
+                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File file = new File(imgFileName);
+        Uri contentUri = Uri.fromFile(file);
+        mediaScanIntent.setData(contentUri);
+        ctx.sendBroadcast(mediaScanIntent);
+    }
 
     /**
      * 获取图片缩略图 只有Android2.1以上版本支持

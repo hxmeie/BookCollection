@@ -1,5 +1,6 @@
 package com.hxm.books.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -28,20 +29,26 @@ import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.StringUtils;
 import com.hxm.books.utils.ToastUtils;
+import com.hxm.books.utils.cache.FileCache;
 import com.hxm.books.view.ClearEditText;
 import com.hxm.books.view.HeaderLayout;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * 如果扫描图书没有结果，则可以自己手动添加图书
@@ -56,16 +63,22 @@ public class AddNewBookActivity extends BaseActivity {
     private final String FILE_SAVEPATH = Environment
             .getExternalStorageDirectory().getAbsolutePath()
             + "/MyBook/Portrait/";
+    private final String THUMBNAIL_PATH = Environment
+            .getExternalStorageDirectory().getAbsolutePath()
+            + "/MyBook/Thumbnail/";
     private Uri origUri;
     private Uri cropUri;
     private File protraitFile;
     private Bitmap protraitBitmap;
     private String protraitPath;
+    private FileCache cache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_book);
+        File cacheDir = new File(Environment.getExternalStorageDirectory(), "MyBook/Thumbnail");
+        cache = FileCache.get(cacheDir);
         initView();
     }
 
@@ -229,7 +242,7 @@ public class AddNewBookActivity extends BaseActivity {
                 savedir.mkdirs();
             }
         } else {
-            ToastUtils.show(this, "无法保存上传的头像，请检查SD卡是否挂载");
+            ToastUtils.show(this, "无法保存上传的图片，请检查SD卡是否挂载");
             return null;
         }
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
@@ -240,10 +253,10 @@ public class AddNewBookActivity extends BaseActivity {
         if (StringUtils.isEmpty(thePath)) {
             thePath = ImageUtils.getAbsoluteImagePath(this, uri);
         }
-        String ext = FileUtil.getFileFormat(thePath);
+        String ext = FileUtil.getFileFormat(thePath);//获取文件扩展名
         ext = StringUtils.isEmpty(ext) ? "jpg" : ext;
         // 照片命名
-        String cropFileName = "osc_crop_" + timeStamp + "." + ext;
+        String cropFileName = "book_crop_" + timeStamp + "." + ext;
         // 裁剪头像的绝对路径
         protraitPath = FILE_SAVEPATH + cropFileName;
         protraitFile = new File(protraitPath);
@@ -254,6 +267,8 @@ public class AddNewBookActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK)
+            return;
         switch (requestCode) {
             case Constants.PHOTO_REQUEST_GALLERY:
                 startActionCrop(data.getData());
@@ -270,18 +285,60 @@ public class AddNewBookActivity extends BaseActivity {
     }
 
     private void uploadNewPhoto() {
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
+                .format(new Date());
+        String key = "bitmap_thumbnail" + timeStamp + ".png";
         // 获取头像缩略图
         if (!StringUtils.isEmpty(protraitPath) && protraitFile.exists()) {
             protraitBitmap = ImageUtils
-                    .loadImgThumbnail(protraitPath, 200, 200);
+                    .loadImgThumbnail(protraitPath, 90, 120);
+            try {
+                saveBitmap(protraitBitmap, key);
+            } catch (IOException e) {
+                e.printStackTrace();
+                ToastUtils.show(this, "保存临时缩略图失败");
+            }
         } else {
             ToastUtils.show(this, "图像不存在，上传失败");
         }
         if (protraitBitmap != null) {
             bookPic.setImageBitmap(protraitBitmap);
+            final BmobFile bmobFile = new BmobFile(new File(THUMBNAIL_PATH + key));
+            bmobFile.uploadblock(this, new UploadFileListener() {
+                @Override
+                public void onSuccess() {
+                    bmobFile.getFileUrl(AddNewBookActivity.this);
+                    LogUtil.i("file_upload", "success");
+                    LogUtil.i("file_upload", THUMBNAIL_PATH);
+                }
+
+                @Override
+                public void onFailure(int i, String s) {
+                    LogUtil.i("file_upload", "failed" + s);
+                }
+            });
+            LogUtil.i("file_upload", protraitBitmap.getByteCount() + "");
         }
     }
 
+    private void saveBitmap(Bitmap bitmap, String bitName) throws IOException {
+        File file = new File(THUMBNAIL_PATH + bitName);
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream out;
+        try {
+            out = new FileOutputStream(file);
+            if (bitmap.compress(Bitmap.CompressFormat.PNG, 90, out)) {
+                out.flush();
+                out.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 查询当前用户是否收藏该书

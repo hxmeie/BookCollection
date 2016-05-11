@@ -18,6 +18,7 @@ public class Book extends BmobObject {
     private String publisher;
     private String pubdate;
     private String isbn;
+
     public String getIsbn() {
         return isbn;
     }
@@ -120,6 +121,6 @@ public class Book extends BmobObject {
 
     @Override
     public String toString() {
-        return "bookName=" + title + "\n" + "price=" + price + "\n" + "pages=" + pages + "\n" + "author=" + author + "\n" + "summary=" + summary + "\n" + "bookImage=" + bookImage + "\n" + "publisher=" + publisher+ "\n" + "tag1=" + tag1+ "\n" + "tag2=" + tag2;
+        return "bookName=" + title + "\n" + "price=" + price + "\n" + "pages=" + pages + "\n" + "author=" + author + "\n" + "summary=" + summary + "\n" + "bookImage=" + bookImage + "\n" + "publisher=" + publisher + "\n" + "tag1=" + tag1 + "\n" + "tag2=" + tag2;
     }
 }
