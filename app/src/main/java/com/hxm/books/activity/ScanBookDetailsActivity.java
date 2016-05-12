@@ -13,6 +13,7 @@ import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.NetUtil;
 import com.hxm.books.utils.ToastUtils;
+import com.hxm.books.view.HeaderLayout;
 import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -56,7 +57,12 @@ public class ScanBookDetailsActivity extends BaseActivity {
 
     //    初始化view
     private void initView() {
-        initOnlyTitleAndLeftBar(stringId(this, R.string.activity_book_details_title));
+        initBothLeftAndRightBar("图书信息", "刷新", R.color.transparent, new HeaderLayout.headerLayoutRightOnclickLister() {
+            @Override
+            public void onClick() {
+                queryBook();
+            }
+        });
         mBookAuthor = (TextView) findViewById(R.id.tv_book_author_content);
         mBookName = (TextView) findViewById(R.id.tv_book_name_content);
         mBookPages = (TextView) findViewById(R.id.tv_book_pages_content);
@@ -119,8 +125,12 @@ public class ScanBookDetailsActivity extends BaseActivity {
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
-                mBook = list.get(0);
-                setBookData(mBook);
+                if (!(list.size() == 0)) {
+                    mBook = list.get(0);
+                    setBookData(mBook);
+                } else {
+                    ToastUtils.show(ScanBookDetailsActivity.this, "点击刷新试一试");
+                }
             }
 
             @Override
@@ -178,6 +188,7 @@ public class ScanBookDetailsActivity extends BaseActivity {
         mBookCatalog.setText(obj.getCatalog());
         setTextContent();
         ImageLoader.getInstance().displayImage(obj.getBookImage(), mBookPic);
+        loadingView.setVisibility(View.GONE);
     }
 
     private void setBtnState() {

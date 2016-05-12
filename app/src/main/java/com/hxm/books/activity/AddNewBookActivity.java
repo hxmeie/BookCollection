@@ -25,12 +25,14 @@ import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.FileUtil;
 import com.hxm.books.utils.ImageUtils;
+import com.hxm.books.utils.KeyBoardUtils;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.StringUtils;
 import com.hxm.books.utils.ToastUtils;
 import com.hxm.books.view.ClearEditText;
 import com.hxm.books.view.HeaderLayout;
+import com.hxm.books.view.loadingindicator.AVLoadingIndicatorView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,6 +59,7 @@ public class AddNewBookActivity extends BaseActivity {
     private ClearEditText setBook, setISBN, setAuthor, setClassify, setPages, setPrice, setPublishDate, setPublishingCompany, setBookSummary, setBookCatalog;
     private Button btnCommit;
     private LinearLayout setImage;
+    private AVLoadingIndicatorView loadingView;
     private ImageView bookPic;
     private String[] mString = new String[]{"从相册中选择", "打开相机拍照"};
     private final String FILE_SAVEPATH = Environment
@@ -73,6 +76,8 @@ public class AddNewBookActivity extends BaseActivity {
     private Bitmap protraitBitmap;
     private String protraitPath;
     private String newBookImageUrl;
+    private String timeStamp;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,12 +130,14 @@ public class AddNewBookActivity extends BaseActivity {
         setBookCatalog = (ClearEditText) findViewById(R.id.ev_set_catalog);
         btnCommit = (Button) findViewById(R.id.btn_set_book_commit);
         setImage = (LinearLayout) findViewById(R.id.set_book_pic);
+        loadingView = (AVLoadingIndicatorView) findViewById(R.id.add_new_book_loading_view);
         bookPic = (ImageView) findViewById(R.id.iv_set_book_pic);
 
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewBook();
+                KeyBoardUtils.closeKeybord(AddNewBookActivity.this);
+                savePicToServer();
             }
         });
 
@@ -249,8 +256,8 @@ public class AddNewBookActivity extends BaseActivity {
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 3);// 裁剪框比例
         intent.putExtra("aspectY", 4);
-        intent.putExtra("outputX", 165);// 输出图片大小
-        intent.putExtra("outputY", 220);
+        intent.putExtra("outputX", 600);// 输出图片大小
+        intent.putExtra("outputY", 800);
         intent.putExtra("scale", true);// 去黑边
         intent.putExtra("scaleUpIfNeeded", true);// 去黑边
         startActivityForResult(intent,
@@ -308,13 +315,13 @@ public class AddNewBookActivity extends BaseActivity {
     }
 
     private void uploadNewPhoto() {
-        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
+        timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
                 .format(new Date());
-        String key = "bitmap_thumbnail" + timeStamp + ".png";
+        key = "bitmap_thumbnail" + timeStamp + ".png";
         // 获取头像缩略图
         if (!StringUtils.isEmpty(protraitPath) && protraitFile.exists()) {
             protraitBitmap = ImageUtils
-                    .loadImgThumbnail(protraitPath, 90, 120);
+                    .loadImgThumbnail(protraitPath, 150, 200);
             try {
                 saveBitmap(protraitBitmap, key);
             } catch (IOException e) {
@@ -330,21 +337,26 @@ public class AddNewBookActivity extends BaseActivity {
             if (!file.exists()) {
                 file.mkdirs();
             }
-            final BmobFile bmobFile = new BmobFile(new File(THUMBNAIL_PATH + key));
-            bmobFile.uploadblock(this, new UploadFileListener() {
-                @Override
-                public void onSuccess() {
-                    newBookImageUrl = bmobFile.getFileUrl(AddNewBookActivity.this);
-                    LogUtil.i("file_upload", "success" + newBookImageUrl);
-                }
-
-                @Override
-                public void onFailure(int i, String s) {
-                    LogUtil.i("file_upload", "failed" + s);
-                }
-            });
-            LogUtil.i("file_upload", protraitBitmap.getByteCount() + "");
         }
+    }
+
+    private void savePicToServer() {
+        loadingView.setVisibility(View.VISIBLE);
+        final BmobFile bmobFile = new BmobFile(new File(THUMBNAIL_PATH + key));
+        bmobFile.uploadblock(this, new UploadFileListener() {
+            @Override
+            public void onSuccess() {
+                newBookImageUrl = bmobFile.getFileUrl(AddNewBookActivity.this);
+                LogUtil.i("file_upload", "success" + newBookImageUrl);
+                addNewBook();
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+                LogUtil.i("file_upload", "failed" + s);
+            }
+        });
+        LogUtil.i("file_upload", protraitBitmap.getByteCount() + "");
     }
 
     private void saveBitmap(Bitmap bitmap, String bitName) throws IOException {
@@ -378,6 +390,7 @@ public class AddNewBookActivity extends BaseActivity {
         query.findObjects(this, new FindListener<Book>() {
             @Override
             public void onSuccess(List<Book> list) {
+                loadingView.setVisibility(View.GONE);
                 LogUtil.i("list_size", list.size() + "");
                 if (list.size() != 0) {
                     if (getText(setISBN).equals(list.get(0).getIsbn())) {

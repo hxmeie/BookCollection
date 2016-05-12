@@ -262,12 +262,6 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
         HttpUtil.get(str, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
-//                String failureMsg = null;
-//                if (NetUtil.isNetworkAvailable(CaptureActivity.this)) {
-//                    failureMsg = s;
-//                } else {
-//                    failureMsg = "网络未连接";
-//                }
                 LogUtil.e(TAG, "获取失败" + s);
                 dialog.dismiss();
                 final NormalDialog mDialog = new NormalDialog(CaptureActivity.this);
@@ -278,8 +272,8 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
                 mDialog.setOnBtnClickL(new OnBtnClickL() {
                     @Override
                     public void onBtnClick() {
-                        CaptureActivity.this.finish();
                         mDialog.dismiss();
+                        CaptureActivity.this.finish();
                     }
                 }, new OnBtnClickL() {
                     @Override
