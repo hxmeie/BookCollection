@@ -25,7 +25,6 @@ import com.hxm.books.config.Constants;
 import com.hxm.books.config.MyApplication;
 import com.hxm.books.utils.FileUtil;
 import com.hxm.books.utils.ImageUtils;
-import com.hxm.books.utils.KeyBoardUtils;
 import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.StringUtils;
@@ -78,6 +77,7 @@ public class AddNewBookActivity extends BaseActivity {
     private String newBookImageUrl;
     private String timeStamp;
     private String key;
+    private boolean IS_CHECK_BOOK_PIC = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +136,18 @@ public class AddNewBookActivity extends BaseActivity {
         btnCommit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KeyBoardUtils.closeKeybord(AddNewBookActivity.this);
+                if (!IS_CHECK_BOOK_PIC) {
+                    ToastUtils.show(AddNewBookActivity.this, "图片必须添加！");
+                    return;
+                }
+                if (getText(setBook).isEmpty() || getText(setISBN).isEmpty() || getText(setClassify).isEmpty()) {
+                    ToastUtils.show(AddNewBookActivity.this, "必填项不能为空！");
+                    return;
+                }
+                if (!RegexpUtils.isRegexpValidate(getText(setISBN), RegexpUtils.ISBN)) {
+                    ToastUtils.show(AddNewBookActivity.this, "ISBN号填写不正确！");
+                    return;
+                }
                 savePicToServer();
             }
         });
@@ -148,18 +159,6 @@ public class AddNewBookActivity extends BaseActivity {
             }
         });
 
-    }
-
-    private void addNewBook() {
-        if (getText(setBook).isEmpty() || getText(setISBN).isEmpty() || getText(setClassify).isEmpty()) {
-            ToastUtils.show(this, "必填项不能为空！");
-            return;
-        }
-        if (!RegexpUtils.isRegexpValidate(getText(setISBN), RegexpUtils.ISBN)) {
-            ToastUtils.show(this, "ISBN号填写不正确！");
-            return;
-        }
-        queryStarBook();
     }
 
     private void normalListDialog() {
@@ -307,6 +306,7 @@ public class AddNewBookActivity extends BaseActivity {
                 startActionCrop(origUri);// 拍照后裁剪
                 break;
             case Constants.PHOTO_REQUEST_CUT:
+                IS_CHECK_BOOK_PIC = true;
                 uploadNewPhoto();
                 break;
 
@@ -346,9 +346,10 @@ public class AddNewBookActivity extends BaseActivity {
         bmobFile.uploadblock(this, new UploadFileListener() {
             @Override
             public void onSuccess() {
+                IS_CHECK_BOOK_PIC = false;
                 newBookImageUrl = bmobFile.getFileUrl(AddNewBookActivity.this);
                 LogUtil.i("file_upload", "success" + newBookImageUrl);
-                addNewBook();
+                queryStarBook();
             }
 
             @Override
@@ -455,6 +456,8 @@ public class AddNewBookActivity extends BaseActivity {
                 dialog.setOnBtnClickL(new OnBtnClickL() {
                     @Override
                     public void onBtnClick() {
+                        bookPic.setImageResource(R.mipmap.no_cover);
+                        setEmptyText();
                         dialog.dismiss();
                     }
                 });
