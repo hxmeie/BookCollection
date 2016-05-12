@@ -29,7 +29,6 @@ import com.hxm.books.utils.LogUtil;
 import com.hxm.books.utils.RegexpUtils;
 import com.hxm.books.utils.StringUtils;
 import com.hxm.books.utils.ToastUtils;
-import com.hxm.books.utils.cache.FileCache;
 import com.hxm.books.view.ClearEditText;
 import com.hxm.books.view.HeaderLayout;
 
@@ -71,15 +70,23 @@ public class AddNewBookActivity extends BaseActivity {
     private File protraitFile;
     private Bitmap protraitBitmap;
     private String protraitPath;
-    private FileCache cache;
+    private String newBookImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_book);
         File cacheDir = new File(Environment.getExternalStorageDirectory(), "MyBook/Thumbnail");
-        cache = FileCache.get(cacheDir);
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        FileUtil.clearFileWithPath(THUMBNAIL_PATH);
+        FileUtil.clearFileWithPath(FILE_SAVEPATH);
+        FileUtil.clearFileWithPath(Environment.getExternalStorageDirectory()
+                .getAbsolutePath() + "/MyBook/Camera/");
     }
 
     private void initView() {
@@ -307,9 +314,8 @@ public class AddNewBookActivity extends BaseActivity {
             bmobFile.uploadblock(this, new UploadFileListener() {
                 @Override
                 public void onSuccess() {
-                    bmobFile.getFileUrl(AddNewBookActivity.this);
-                    LogUtil.i("file_upload", "success");
-                    LogUtil.i("file_upload", THUMBNAIL_PATH);
+                    newBookImageUrl = bmobFile.getFileUrl(AddNewBookActivity.this);
+                    LogUtil.i("file_upload", "success" + newBookImageUrl);
                 }
 
                 @Override
@@ -395,6 +401,8 @@ public class AddNewBookActivity extends BaseActivity {
         book.setPublisher(getText(setPublishingCompany));
         book.setSummary(getText(setBookSummary));
         book.setCatalog(getText(setBookCatalog));
+        book.setIdentifyBook("自定义");
+        book.setBookImage(newBookImageUrl);
         book.save(AddNewBookActivity.this, new SaveListener() {
             @Override
             public void onSuccess() {

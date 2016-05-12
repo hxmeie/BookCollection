@@ -28,9 +28,9 @@ public class BookAdapter extends BaseAdapter {
     private DisplayImageOptions options;
     private ImageLoadingListener imageLoadingListener;
 
-    public BookAdapter(Context context, List<Book> mBook){
-        this.context=context;
-        this.mBook=mBook;
+    public BookAdapter(Context context, List<Book> mBook) {
+        this.context = context;
+        this.mBook = mBook;
         options = MyApplication.options;
         imageLoadingListener = MyApplication.imageLoadingListener;
     }
@@ -52,29 +52,25 @@ public class BookAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView==null){
-            convertView=LayoutInflater.from(context).inflate(R.layout.bookshelf_list_item,parent,false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.bookshelf_list_item, parent, false);
         }
-        ImageView bookPic= ViewHolder.get(convertView,R.id.iv_bookshelf_item_bookpic);
-        TextView bookName=ViewHolder.get(convertView,R.id.tv_bookshelf_item_bookname);
-        TextView bookSummary=ViewHolder.get(convertView,R.id.tv_bookshelf_item_summary);
-        TextView bookAuthor=ViewHolder.get(convertView,R.id.tv_bookshelf_item_bookauthor);
-//        TextView bookType1=ViewHolder.get(convertView,R.id.tv_bookshelf_item_type_1);
-//        TextView bookType2= ViewHolder.get(convertView, R.id.tv_bookshelf_item_type_2);
-
+        ImageView bookPic = ViewHolder.get(convertView, R.id.iv_bookshelf_item_bookpic);
+        TextView bookName = ViewHolder.get(convertView, R.id.tv_bookshelf_item_bookname);
+        TextView bookSummary = ViewHolder.get(convertView, R.id.tv_bookshelf_item_summary);
+        TextView bookAuthor = ViewHolder.get(convertView, R.id.tv_bookshelf_item_bookauthor);
         Book book = (Book) getItem(position);
-        ImageLoader.getInstance().displayImage(book.getBookImage(),bookPic,options,imageLoadingListener);
+        ImageLoader.getInstance().displayImage(book.getBookImage(), bookPic, options, imageLoadingListener);
+
         bookName.setText(book.getTitle());
         bookSummary.setText(book.getSummary());
         bookAuthor.setText(book.getAuthor());
-//        bookType1.setText(book.getTag1());
-//        bookType2.setText(book.getTag2());
         return convertView;
     }
 
-    }
+}
 
-    //传统ViewHolder写法，用ViewHolder类替代
+//传统ViewHolder写法，用ViewHolder类替代
 //    @Override
 //    public View getView(int position, View convertView, ViewGroup parent) {
 //        ViewHolder holder;

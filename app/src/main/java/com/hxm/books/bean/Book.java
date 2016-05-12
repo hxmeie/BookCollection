@@ -18,6 +18,15 @@ public class Book extends BmobObject {
     private String publisher;
     private String pubdate;
     private String isbn;
+    private String identifyBook;
+
+    public String getIdentifyBook() {
+        return identifyBook;
+    }
+
+    public void setIdentifyBook(String identifyBook) {
+        this.identifyBook = identifyBook;
+    }
 
     public String getIsbn() {
         return isbn;

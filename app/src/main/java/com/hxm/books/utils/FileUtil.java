@@ -1,6 +1,8 @@
 package com.hxm.books.utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hxm on 2016/5/11.
@@ -127,4 +129,83 @@ public class FileUtil {
         }
         return dirSize;
     }
+
+    /**
+     * 删除文件
+     *
+     * @param filePath
+     */
+    public static boolean deleteFileWithPath(String filePath) {
+        SecurityManager checker = new SecurityManager();
+        File f = new File(filePath);
+        checker.checkDelete(filePath);
+        if (f.isFile()) {
+            f.delete();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 清空一个文件夹
+     *
+     * @param filePath
+     */
+    public static void clearFileWithPath(String filePath) {
+        List<File> files = FileUtil.listPathFiles(filePath);
+        if (files.isEmpty()) {
+            return;
+        }
+        for (File f : files) {
+            if (f.isDirectory()) {
+                clearFileWithPath(f.getAbsolutePath());
+            } else {
+                f.delete();
+            }
+        }
+    }
+
+    /**
+     * 获取一个文件夹下的所有文件
+     *
+     * @param root
+     * @return
+     */
+    public static List<File> listPathFiles(String root) {
+        List<File> allDir = new ArrayList<File>();
+        SecurityManager checker = new SecurityManager();
+        File path = new File(root);
+        checker.checkRead(root);
+        File[] files = path.listFiles();
+        for (File f : files) {
+            if (f.isFile())
+                allDir.add(f);
+            else
+                listPath(f.getAbsolutePath());
+        }
+        return allDir;
+    }
+
+    /**
+     * 列出root目录下所有子目录
+     *
+     * @param root
+     * @return 绝对路径
+     */
+    public static List<String> listPath(String root) {
+        List<String> allDir = new ArrayList<String>();
+        SecurityManager checker = new SecurityManager();
+        File path = new File(root);
+        checker.checkRead(root);
+        // 过滤掉以.开始的文件夹
+        if (path.isDirectory()) {
+            for (File f : path.listFiles()) {
+                if (f.isDirectory() && !f.getName().startsWith(".")) {
+                    allDir.add(f.getAbsolutePath());
+                }
+            }
+        }
+        return allDir;
+    }
+
 }
