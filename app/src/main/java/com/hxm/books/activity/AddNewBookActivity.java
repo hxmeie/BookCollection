@@ -65,6 +65,8 @@ public class AddNewBookActivity extends BaseActivity {
     private final String THUMBNAIL_PATH = Environment
             .getExternalStorageDirectory().getAbsolutePath()
             + "/MyBook/Thumbnail/";
+    private final String CAMERA_PATH = Environment.getExternalStorageDirectory()
+            .getAbsolutePath() + "/MyBook/Camera/";
     private Uri origUri;
     private Uri cropUri;
     private File protraitFile;
@@ -76,8 +78,23 @@ public class AddNewBookActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_book);
-        File cacheDir = new File(Environment.getExternalStorageDirectory(), "MyBook/Thumbnail");
+        makeDir();
         initView();
+    }
+
+    private void makeDir() {
+        File thumbnail = new File(THUMBNAIL_PATH);
+        File camera = new File(CAMERA_PATH);
+        File protrait = new File(FILE_SAVEPATH);
+        if (!thumbnail.exists()) {
+            thumbnail.mkdirs();
+        }
+        if (!camera.exists()) {
+            camera.mkdirs();
+        }
+        if (!protrait.exists()) {
+            protrait.mkdirs();
+        }
     }
 
     @Override
@@ -85,8 +102,7 @@ public class AddNewBookActivity extends BaseActivity {
         super.onDestroy();
         FileUtil.clearFileWithPath(THUMBNAIL_PATH);
         FileUtil.clearFileWithPath(FILE_SAVEPATH);
-        FileUtil.clearFileWithPath(Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/MyBook/Camera/");
+        FileUtil.clearFileWithPath(CAMERA_PATH);
     }
 
     private void initView() {
@@ -191,19 +207,19 @@ public class AddNewBookActivity extends BaseActivity {
     private void getPictureFromCamera() {
         Intent intent;
         // 判断是否挂载了SD卡
-        String savePath = "";
+//        String savePath = "";
         String storageState = Environment.getExternalStorageState();
         if (storageState.equals(Environment.MEDIA_MOUNTED)) {
-            savePath = Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/MyBook/Camera/";
-            File savedir = new File(savePath);
+//            savePath = Environment.getExternalStorageDirectory()
+//                    .getAbsolutePath() + "/MyBook/Camera/";
+            File savedir = new File(CAMERA_PATH);
             if (!savedir.exists()) {
                 savedir.mkdirs();
             }
         }
 
         // 没有挂载SD卡，无法保存文件
-        if (StringUtils.isEmpty(savePath)) {
+        if (StringUtils.isEmpty(CAMERA_PATH)) {
             ToastUtils.show(this, "无法保存照片，请检查SD卡是否挂载");
             return;
         }
@@ -211,7 +227,7 @@ public class AddNewBookActivity extends BaseActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss")
                 .format(new Date());
         String fileName = "book_" + timeStamp + ".jpg";// 照片命名
-        File out = new File(savePath, fileName);
+        File out = new File(CAMERA_PATH, fileName);
         Uri uri = Uri.fromFile(out);
         origUri = uri;
         //savePath + fileName 该照片的绝对路径
@@ -233,8 +249,8 @@ public class AddNewBookActivity extends BaseActivity {
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 3);// 裁剪框比例
         intent.putExtra("aspectY", 4);
-        intent.putExtra("outputX", 90);// 输出图片大小
-        intent.putExtra("outputY", 120);
+        intent.putExtra("outputX", 165);// 输出图片大小
+        intent.putExtra("outputY", 220);
         intent.putExtra("scale", true);// 去黑边
         intent.putExtra("scaleUpIfNeeded", true);// 去黑边
         startActivityForResult(intent,
@@ -310,6 +326,10 @@ public class AddNewBookActivity extends BaseActivity {
         }
         if (protraitBitmap != null) {
             bookPic.setImageBitmap(protraitBitmap);
+            File file = new File(THUMBNAIL_PATH);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
             final BmobFile bmobFile = new BmobFile(new File(THUMBNAIL_PATH + key));
             bmobFile.uploadblock(this, new UploadFileListener() {
                 @Override

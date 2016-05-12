@@ -28,9 +28,15 @@ public class DiscoveryFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_discovery,container,false);
         layout_recommend= (RelativeLayout) view.findViewById(R.id.fg_discovery_recommend);
         layout_search= (RelativeLayout) view.findViewById(R.id.fg_discovery_search);
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         layout_search.setOnClickListener(this);
         layout_recommend.setOnClickListener(this);
-        return view;
     }
 
     @Override
