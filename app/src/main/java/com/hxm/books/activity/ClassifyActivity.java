@@ -71,6 +71,9 @@ public class ClassifyActivity extends BaseActivity {
     }
 
     private void getDataFromServer(){
+//        if(tag=="未分类"){
+//            tag="";
+//        }
         loadingView.setVisibility(View.VISIBLE);
         MyUser user= BmobUser.getCurrentUser(this,MyUser.class);
         BmobQuery<Book> query=new BmobQuery<>();

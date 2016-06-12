@@ -45,6 +45,7 @@ import com.hxm.books.bean.Book;
 import com.hxm.books.config.Constants;
 import com.hxm.books.utils.HttpUtil;
 import com.hxm.books.utils.LogUtil;
+import com.hxm.books.utils.StringUtils;
 import com.hxm.books.zxing.camera.CameraManager;
 import com.hxm.books.zxing.decode.DecodeThread;
 import com.hxm.books.zxing.utils.BeepManager;
@@ -312,7 +313,7 @@ public final class CaptureActivity extends BaseActivity implements SurfaceHolder
             if (tagArray.length() > 0) {
                 JSONObject tag1Obj = tagArray.getJSONObject(0);
                 String tag1 = tag1Obj.getString("name");
-                if (tag1 == null || tag1 == "" || tag1 == "null" || tag1.isEmpty()) {
+                if (StringUtils.isEmpty(tag1)) {
                     tag1 = "未分类";
                 }
                 mBook.setTag1(tag1);

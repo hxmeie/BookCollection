@@ -92,9 +92,9 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String tag=mList.get(position).getClassifyName();
-                if (tag.equals("未分类")) {
-                    tag = "";
-                }
+//                if (tag.equals("未分类")) {
+//                    tag = "";
+//                }
                 Intent intent=new Intent(getActivity(),ClassifyActivity.class);
                 intent.putExtra("tag",tag);
                 startActivity(intent);
@@ -107,9 +107,9 @@ public class ClassifyFragment extends Fragment implements RefreshLayout.OnRefres
                 LogUtil.i("onItemLongClick", "true");
                 mBookList = new ArrayList<Book>();
                 String tag = mList.get(position).getClassifyName();
-                if (tag.equals("未分类")) {
-                    tag = "";
-                }
+//                if (tag.equals("未分类")) {
+//                    tag = "";
+//                }
                 BmobQuery<Book> query = new BmobQuery<Book>();
                 MyUser user = BmobUser.getCurrentUser(getActivity(), MyUser.class);
                 query.addWhereRelatedTo("likes", new BmobPointer(user));
